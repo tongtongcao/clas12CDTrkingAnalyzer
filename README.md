@@ -1,1 +1,1 @@
-Platform for analysis of central tracking
+Platform for analysis of CLAS12 central tracking
