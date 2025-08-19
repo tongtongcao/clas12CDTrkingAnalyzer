@@ -33,8 +33,8 @@ import org.jlab.groot.data.H2F;
 public class BgOnValidTracks extends BaseAnalysis{ 
     
     final static int CUTOPTIONS = 6;
-    final static double EFFICIENCYCUT[] = {0.5, 0.6, 0.7, 0.8, 0.9, 0.95};
-    final static double PURITYCUT[] = {0.5, 0.6, 0.7, 0.8, 0.9, 0.95};
+    final static double EFFICIENCYCUT[] = {0.45, 0.55, 0.65, 0.75, 0.85, 0.95};
+    final static double PURITYCUT[] = {0.45, 0.55, 0.65, 0.75, 0.85, 0.95};
     
     private int numTotalTracks1 = 0;
     
@@ -1945,7 +1945,118 @@ public class BgOnValidTracks extends BaseAnalysis{
         }
     }
     
-    public void postEventProcess() {                
+    public void postEventProcess() {  
+        HistoGroup histoGroupTrkEfficiencyBasedHitMatch= new HistoGroup("trkEfficiencyBasedHitMatch", 3, 2);
+        H2F h2_ratioRemainingTrackBasedHitMatchHitLevel = new H2F("ratioRemainingTrackBasedHitMatchHitLevel", "ratio of remaining track based on hit match at hit level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedHitMatchHitLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedHitMatchHitLevel.setTitleY("purity");        
+        H2F h2_ratioRemainingTrackBasedHitMatchClusterLevel = new H2F("ratioRemainingTrackBasedHitMatchClusterLevel", "ratio of remaining track based on hit match at cluster level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedHitMatchClusterLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedHitMatchClusterLevel.setTitleY("purity");          
+        H2F h2_ratioRemainingTrackBasedHitMatchCrossLevel = new H2F("ratioRemainingTrackBasedHitMatchCrossLevel", "ratio of remaining track based on hit match at cross level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedHitMatchCrossLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedHitMatchCrossLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedHitMatchSeedLevel = new H2F("ratioRemainingTrackBasedHitMatchSeedLevel", "ratio of remaining track based on hit match at seed level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedHitMatchSeedLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedHitMatchSeedLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedHitMatchTrackLevel = new H2F("ratioRemainingTrackBasedHitMatchTrackLevel", "ratio of remaining track based on hit match at track level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedHitMatchTrackLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedHitMatchTrackLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedHitMatchValidTrackLevel = new H2F("ratioRemainingTrackBasedHitMatchValidTrackLevel", "ratio of remaining track based on hit match at valid track level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedHitMatchValidTrackLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedHitMatchValidTrackLevel.setTitleY("purity");                 
+        for(int i = 0; i < CUTOPTIONS; i++){
+            for(int j = 0; j < CUTOPTIONS; j++){
+                h2_ratioRemainingTrackBasedHitMatchHitLevel.setBinContent(i, j, (double)numHitMatchedTracksHitLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedHitMatchClusterLevel.setBinContent(i, j, (double)numHitMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedHitMatchCrossLevel.setBinContent(i, j, (double)numHitMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedHitMatchSeedLevel.setBinContent(i, j, (double)numHitMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedHitMatchTrackLevel.setBinContent(i, j, (double)numHitMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedHitMatchValidTrackLevel.setBinContent(i, j, (double)numHitMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
+            }
+        }
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_ratioRemainingTrackBasedHitMatchHitLevel, 0);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_ratioRemainingTrackBasedHitMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_ratioRemainingTrackBasedHitMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_ratioRemainingTrackBasedHitMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_ratioRemainingTrackBasedHitMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_ratioRemainingTrackBasedHitMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyBasedHitMatch.getName(), histoGroupTrkEfficiencyBasedHitMatch); 
+
+        HistoGroup histoGroupTrkEfficiencyBasedClusterMatch= new HistoGroup("trkEfficiencyBasedClusterMatch", 3, 2);
+        H2F h2_ratioRemainingTrackBasedClusterMatchHitLevel = new H2F("ratioRemainingTrackBasedClusterMatchHitLevel", "ratio of remaining track based on cluster match at hit level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedClusterMatchHitLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedClusterMatchHitLevel.setTitleY("purity");        
+        H2F h2_ratioRemainingTrackBasedClusterMatchClusterLevel = new H2F("ratioRemainingTrackBasedClusterMatchClusterLevel", "ratio of remaining track based on cluster match at cluster level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedClusterMatchClusterLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedClusterMatchClusterLevel.setTitleY("purity");          
+        H2F h2_ratioRemainingTrackBasedClusterMatchCrossLevel = new H2F("ratioRemainingTrackBasedClusterMatchCrossLevel", "ratio of remaining track based on cluster match at cross level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedClusterMatchCrossLevel.setTitleX("pefficiency");
+        h2_ratioRemainingTrackBasedClusterMatchCrossLevel.setTitleY("urity"); 
+        H2F h2_ratioRemainingTrackBasedClusterMatchSeedLevel = new H2F("ratioRemainingTrackBasedClusterMatchSeedLevel", "ratio of remaining track based on cluster match at seed level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedClusterMatchSeedLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedClusterMatchSeedLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedClusterMatchTrackLevel = new H2F("ratioRemainingTrackBasedClusterMatchTrackLevel", "ratio of remaining track based on cluster match at track level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedClusterMatchTrackLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedClusterMatchTrackLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedClusterMatchValidTrackLevel = new H2F("ratioRemainingTrackBasedClusterMatchValidTrackLevel", "ratio of remaining track based on cluster match at valid track level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedClusterMatchValidTrackLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedClusterMatchValidTrackLevel.setTitleY("purity");                 
+        for(int i = 0; i < CUTOPTIONS; i++){
+            for(int j = 0; j < CUTOPTIONS; j++){
+                h2_ratioRemainingTrackBasedClusterMatchHitLevel.setBinContent(i, j, (double)numClusterMatchedTracksHitLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedClusterMatchClusterLevel.setBinContent(i, j, (double)numClusterMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedClusterMatchCrossLevel.setBinContent(i, j, (double)numClusterMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedClusterMatchSeedLevel.setBinContent(i, j, (double)numClusterMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedClusterMatchTrackLevel.setBinContent(i, j, (double)numClusterMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedClusterMatchValidTrackLevel.setBinContent(i, j, (double)numClusterMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
+            }
+        }
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_ratioRemainingTrackBasedClusterMatchHitLevel, 0);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_ratioRemainingTrackBasedClusterMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_ratioRemainingTrackBasedClusterMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_ratioRemainingTrackBasedClusterMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_ratioRemainingTrackBasedClusterMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_ratioRemainingTrackBasedClusterMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyBasedClusterMatch.getName(), histoGroupTrkEfficiencyBasedClusterMatch);  
+
+        HistoGroup histoGroupTrkEfficiencyBasedCrossMatch= new HistoGroup("trkEfficiencyBasedCrossMatch", 3, 2);
+        H2F h2_ratioRemainingTrackBasedCrossMatchHitLevel = new H2F("ratioRemainingTrackBasedCrossMatchHitLevel", "ratio of remaining track based on cross match at hit level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedCrossMatchHitLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedCrossMatchHitLevel.setTitleY("purity");        
+        H2F h2_ratioRemainingTrackBasedCrossMatchClusterLevel = new H2F("ratioRemainingTrackBasedCrossMatchClusterLevel", "ratio of remaining track based on cross match at cluster level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedCrossMatchClusterLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedCrossMatchClusterLevel.setTitleY("purity");          
+        H2F h2_ratioRemainingTrackBasedCrossMatchCrossLevel = new H2F("ratioRemainingTrackBasedCrossMatchCrossLevel", "ratio of remaining track based on cross match at cross level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedCrossMatchCrossLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedCrossMatchCrossLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedCrossMatchSeedLevel = new H2F("ratioRemainingTrackBasedCrossMatchSeedLevel", "ratio of remaining track based on cross match at seed level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedCrossMatchSeedLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedCrossMatchSeedLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedCrossMatchTrackLevel = new H2F("ratioRemainingTrackBasedCrossMatchTrackLevel", "ratio of remaining track based on cross match at track level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedCrossMatchTrackLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedCrossMatchTrackLevel.setTitleY("purity"); 
+        H2F h2_ratioRemainingTrackBasedCrossMatchValidTrackLevel = new H2F("ratioRemainingTrackBasedCrossMatchValidTrackLevel", "ratio of remaining track based on cross match at valid track level", CUTOPTIONS, 0.4, 1., CUTOPTIONS, 0.4, 1.);
+        h2_ratioRemainingTrackBasedCrossMatchValidTrackLevel.setTitleX("efficiency");
+        h2_ratioRemainingTrackBasedCrossMatchValidTrackLevel.setTitleY("purity");                 
+        for(int i = 0; i < CUTOPTIONS; i++){
+            for(int j = 0; j < CUTOPTIONS; j++){
+                h2_ratioRemainingTrackBasedCrossMatchHitLevel.setBinContent(i, j, (double)numCrossMatchedTracksHitLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedCrossMatchClusterLevel.setBinContent(i, j, (double)numCrossMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedCrossMatchCrossLevel.setBinContent(i, j, (double)numCrossMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedCrossMatchSeedLevel.setBinContent(i, j, (double)numCrossMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedCrossMatchTrackLevel.setBinContent(i, j, (double)numCrossMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
+                h2_ratioRemainingTrackBasedCrossMatchValidTrackLevel.setBinContent(i, j, (double)numCrossMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
+            }
+        }
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_ratioRemainingTrackBasedCrossMatchHitLevel, 0);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_ratioRemainingTrackBasedCrossMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_ratioRemainingTrackBasedCrossMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_ratioRemainingTrackBasedCrossMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_ratioRemainingTrackBasedCrossMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_ratioRemainingTrackBasedCrossMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyBasedCrossMatch.getName(), histoGroupTrkEfficiencyBasedCrossMatch);                                  
+                
         HistoGroup histoGroupTrackEfficiencyBasedHitMatch = new HistoGroup("trackEfficiencyBasedHitMatch", CUTOPTIONS, CUTOPTIONS);
         for(int i = 0; i < CUTOPTIONS; i++){
             for(int j = 0; j < CUTOPTIONS; j++){
