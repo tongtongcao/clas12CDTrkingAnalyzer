@@ -347,5 +347,10 @@ public class LocalEvent {
         if(pass == Constants.TRACKINGPASS1) return uTracks;
         else if(pass == Constants.TRACKINGPASS2) return recUTracks;
         else return null;
-    }    
+    }
+
+    public List<Track> getTracks(int pass, boolean uTrack){
+        if(!uTrack) return this.getTracks(pass);
+        else return this.getUTracks(pass);
+    }
 } 

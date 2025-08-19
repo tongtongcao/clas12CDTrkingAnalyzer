@@ -223,8 +223,8 @@ public class TrackBg extends BaseAnalysis {
         parser.addOption("-o", "", "output file name prefix");
         parser.addOption("-n", "-1", "maximum number of events to process");
         parser.addOption("-plot", "1", "display histograms (0/1)");
-        parser.addOption("-pass", "1", "if bg (1/2)"); 
-        parser.addOption("-uTrack", "0", "if bg (0/1)");        
+        parser.addOption("-pass", "2", "pass 1 or 2");
+        parser.addOption("-uTrack", "0", "if unconstrained track (0/1)");      
         parser.addOption("-histo"      ,"0",    "read histogram file (0/1)");  
         parser.parse(args);
 

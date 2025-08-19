@@ -29,7 +29,7 @@ import org.clas.reader.LocalEvent;
  * @author Tongtong Cao
  */
 public class CheckDAFWeight extends BaseAnalysis{ 
-    final static double PURITYCUT = 0.8;   
+    final static double PURITYCUT = 0.0;   
     
     public CheckDAFWeight(){}
     
@@ -139,11 +139,8 @@ public class CheckDAFWeight extends BaseAnalysis{
                     }
                 }               
             }
-        }
-        
-        
+        }                
     }
-
     
     public void postEventProcess() {
                       
@@ -157,7 +154,7 @@ public class CheckDAFWeight extends BaseAnalysis{
         parser.addOption("-n"          ,"-1",   "maximum number of events to process");        
         parser.addOption("-plot"       ,"1",    "display histograms (0/1)");
         parser.addOption("-bg", "1", "if bg (0/1)");
-        parser.addOption("-pass", "1", "if bg (1/2)");
+        parser.addOption("-pass", "1", "pass 1 or 2 (1/2)");
         parser.addOption("-histo"      ,"0",    "read histogram file (0/1)");        
         parser.parse(args);
         
