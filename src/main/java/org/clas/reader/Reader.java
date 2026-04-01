@@ -313,11 +313,8 @@ public class Reader {
                             clusterBank.getInt("Hit4_ID", loop),
                             clusterBank.getInt("Hit5_ID", loop));
                                 
-                try{
+                if (clusterBank.getSchema().hasEntry("DAFWeight")) {
                     cls.dafWeight(clusterBank.getFloat("DAFWeight", loop));
-                }              
-                catch(Exception e){
-                   LOGGER.log(Level.FINER, "no item DAFWeight in cluster bank!");
                 }
                 
                 clusters.add(cls); 
