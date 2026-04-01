@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javax.swing.JFrame;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.jlab.groot.data.H1F;
 import org.jlab.groot.data.H2F;
 import org.jlab.groot.graphics.EmbeddedCanvasTabbed;
@@ -227,6 +231,32 @@ public class SingleParticleMC extends BaseAnalysis{
         func_vz.setLineColor(2);
         func_vz.setOptStat(1110);
         histoDiffGroup.getH1F("vzDiff").fit(func_vz);        
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("fit_results.txt"))) {
+
+            writer.write("Parameter\tMean\tSigma\n");
+
+            writer.write(String.format("p\t%f\t%f\n",
+                    func_p.getParameter(1), func_p.getParameter(2)));
+
+            writer.write(String.format("theta\t%f\t%f\n",
+                    func_theta.getParameter(1), func_theta.getParameter(2)));
+
+            writer.write(String.format("phi\t%f\t%f\n",
+                    func_phi.getParameter(1), func_phi.getParameter(2)));
+
+            writer.write(String.format("vx\t%f\t%f\n",
+                    func_vx.getParameter(1), func_vx.getParameter(2)));
+
+            writer.write(String.format("vy\t%f\t%f\n",
+                    func_vy.getParameter(1), func_vy.getParameter(2)));
+
+            writer.write(String.format("vz\t%f\t%f\n",
+                    func_vz.getParameter(1), func_vz.getParameter(2)));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
                         
     public static void main(String[] args){
