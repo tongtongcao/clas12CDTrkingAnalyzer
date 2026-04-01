@@ -31,7 +31,8 @@ import org.clas.reader.LocalEvent;
  *
  * @author Tongtong Cao
  */
-public class SingleParticleMC extends BaseAnalysis{
+public class SingleParticleMC extends BaseAnalysis{    
+    private String outputPrefix = "";
     
     public SingleParticleMC(){}
 
@@ -232,7 +233,8 @@ public class SingleParticleMC extends BaseAnalysis{
         func_vz.setOptStat(1110);
         histoDiffGroup.getH1F("vzDiff").fit(func_vz);        
         
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("fit_results.txt"))) {
+        String fitFileName = (outputPrefix.isEmpty() ? "" : outputPrefix + "_") + "fit_results.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fitFileName))) {
 
             writer.write("Parameter\tMean\tSigma\n");
 
@@ -257,6 +259,10 @@ public class SingleParticleMC extends BaseAnalysis{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void setOutputPrefix(String prefix) {
+        this.outputPrefix = prefix;
     }
                         
     public static void main(String[] args){
@@ -300,6 +306,7 @@ public class SingleParticleMC extends BaseAnalysis{
         }
         
         SingleParticleMC analysis = new SingleParticleMC();
+        analysis.setOutputPrefix(namePrefix);
         analysis.createHistoGroupMap();
 
         if(!readHistos) {                 

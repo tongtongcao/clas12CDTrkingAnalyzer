@@ -58,7 +58,7 @@ public class TrackHistoGroup extends HistoGroup{
     }
     
     public void addTrackHistos(String postflix, int color, int startOrder){        
-        H1F h1_chi2overndf= new H1F("chi2overndf"+postflix, "#Chi^2/ndf", 100, 0, 100);
+        H1F h1_chi2overndf= new H1F("chi2overndf"+postflix, "#Chi^2/ndf", 100, 0, 40);
         h1_chi2overndf.setTitleX("#Chi^2/ndf");
         h1_chi2overndf.setTitleY("Counts");
         h1_chi2overndf.setLineColor(color);                
@@ -66,7 +66,7 @@ public class TrackHistoGroup extends HistoGroup{
         h1_p.setTitleX("p (GeV/c)");
         h1_p.setTitleY("Counts");
         h1_p.setLineColor(color);
-        H1F h1_theta = new H1F("theta"+postflix, "#theta", 100, 0, 1);
+        H1F h1_theta = new H1F("theta"+postflix, "#theta", 100, 0, Math.PI);
         h1_theta.setTitleX("#theta (rad)");
         h1_theta.setTitleY("Counts");
         h1_theta.setLineColor(color);
@@ -74,15 +74,15 @@ public class TrackHistoGroup extends HistoGroup{
         h1_phi.setTitleX("#phi (rad)");
         h1_phi.setTitleY("Counts");
         h1_phi.setLineColor(color);
-        H1F h1_vx = new H1F("vx"+postflix, "vx", 100, -50, 50);
+        H1F h1_vx = new H1F("vx"+postflix, "vx", 100, -5, 5);
         h1_vx.setTitleX("vx (cm)");
         h1_vx.setTitleY("Counts");
         h1_vx.setLineColor(color);        
-        H1F h1_vy = new H1F("vy"+postflix, "vy", 100, -50, 50);
+        H1F h1_vy = new H1F("vy"+postflix, "vy", 100, -5, 5);
         h1_vy.setTitleX("vy (cm)");
         h1_vy.setTitleY("Counts");
         h1_vy.setLineColor(color);                
-        H1F h1_vz = new H1F("vz"+postflix, "vz", 100, -50, 50);
+        H1F h1_vz = new H1F("vz"+postflix, "vz", 100, -20, 20);
         h1_vz.setTitleX("vz (cm)");
         h1_vz.setTitleY("Counts");
         h1_vz.setLineColor(color);   
