@@ -76,7 +76,6 @@ public class SingleParticleMC extends BaseAnalysis{
         histoGroupMapping.addDataSet(h2_trkMCPartMap, 0);                 
         histoGroupMap.put(histoGroupMapping.getName(), histoGroupMapping);
         
-        
         HistoGroup histoDiffGroup = new HistoGroup("Diff", 3, 2);
         H1F h1_p_diff = new H1F("pDiff", "#Deltap/p", 100, -0.5, 0.5);
         h1_p_diff.setTitleX("#Deltap/p");
@@ -102,16 +101,52 @@ public class SingleParticleMC extends BaseAnalysis{
         histoDiffGroup.addDataSet(h1_vx_diff, 3);
         histoDiffGroup.addDataSet(h1_vy_diff, 4);
         histoDiffGroup.addDataSet(h1_vz_diff, 5);        
-        histoGroupMap.put(histoDiffGroup.getName(), histoDiffGroup);        
+        histoGroupMap.put(histoDiffGroup.getName(), histoDiffGroup);         
+        
+        
+        HistoGroup histoGroupUTrackMapping = new HistoGroup("uTrackMapping", 2, 1);
+        H2F h2_utrkMCPartMap = new H2F("utrkMCPartMap", "utrkMCPartMap", 100, 0, 1, 100, 0, 10);
+        h2_utrkMCPartMap.setTitleX("dist. for mom. (GeV)");
+        h2_utrkMCPartMap.setTitleY("dist. for vtx (cm)");
+        histoGroupUTrackMapping.addDataSet(h2_utrkMCPartMap, 0);                 
+        histoGroupMap.put(histoGroupUTrackMapping.getName(), histoGroupUTrackMapping);
+        
+        HistoGroup histoUTrackDiffGroup = new HistoGroup("uTrackDiff", 3, 2);
+        H1F h1_p_diff_uTrack = new H1F("pDiff", "#Deltap/p", 100, -0.5, 0.5);
+        h1_p_diff_uTrack.setTitleX("#Deltap/p");
+        h1_p_diff_uTrack.setTitleY("Counts");
+        H1F h1_theta_diff_uTrack = new H1F("thetaDiff", "#Delta#theta", 100, -5, 5);
+        h1_theta_diff_uTrack.setTitleX("#Delta#theta (deg)");
+        h1_theta_diff_uTrack.setTitleY("Counts");
+        H1F h1_phi_diff_uTrack = new H1F("phiDiff", "#Delta#phi", 100, -5, 5);
+        h1_phi_diff_uTrack.setTitleX("#Delta#phi (deg)");
+        h1_phi_diff_uTrack.setTitleY("Counts");
+        H1F h1_vx_diff_uTrack = new H1F("vxDiff", "#DeltaV_x", 100, -0.3, 0.3);
+        h1_vx_diff_uTrack.setTitleX("#DeltaV_x (cm)");
+        h1_vx_diff.setTitleY("Counts");     
+        H1F h1_vy_diff_uTrack = new H1F("vyDiff", "#DeltaV_y", 100, -0.3, 0.3);
+        h1_vy_diff_uTrack.setTitleX("#DeltaV_y (cm)");
+        h1_vy_diff_uTrack.setTitleY("Counts");                
+        H1F h1_vz_diff_uTrack = new H1F("vzDiff", "#DeltaV_z", 100, -1, 1);
+        h1_vz_diff_uTrack.setTitleX("#DeltaV_z (cm)");
+        h1_vz_diff_uTrack.setTitleY("Counts");        
+        histoUTrackDiffGroup.addDataSet(h1_p_diff_uTrack, 0);
+        histoUTrackDiffGroup.addDataSet(h1_theta_diff_uTrack, 1);
+        histoUTrackDiffGroup.addDataSet(h1_phi_diff_uTrack, 2);
+        histoUTrackDiffGroup.addDataSet(h1_vx_diff_uTrack, 3);
+        histoUTrackDiffGroup.addDataSet(h1_vy_diff_uTrack, 4);
+        histoUTrackDiffGroup.addDataSet(h1_vz_diff_uTrack, 5);        
+        histoGroupMap.put(histoUTrackDiffGroup.getName(), histoUTrackDiffGroup);        
     }
              
-    public void processEvent(Event event, boolean uTrack){
+    public void processEvent(Event event){
         //Read banks
         LocalEvent localEvent = new LocalEvent(reader, event);        
         
         List<MCParticle> mcParts = localEvent.getMCParticles();
              
-        List<Track> tracks = localEvent.getTracks(Constants.PASS, uTrack);       
+        List<Track> tracks = localEvent.getTracks(Constants.PASS, false);  
+        List<Track> utracks = localEvent.getTracks(Constants.PASS, true);  
                         
         HistoGroup histoGroupMCParticle = histoGroupMap.get("MCParticle");
         for(MCParticle mcPart : mcParts){
@@ -123,7 +158,7 @@ public class SingleParticleMC extends BaseAnalysis{
             histoGroupMCParticle.getH1F("vzMCParticle").fill(mcPart.vertex().z()); 
         }
         
-        HistoGroup histoGroupMapping = histoGroupMap.get("Mapping");        
+        HistoGroup histoGroupMapping = histoGroupMap.get("Mapping");         
         Map<MCParticle, List<Track>> map_mcPart_trkList = new HashMap();
         for(MCParticle mcPart : mcParts){
             for(Track trk : tracks){                                
@@ -140,8 +175,7 @@ public class SingleParticleMC extends BaseAnalysis{
                     }
             }
         }
-        
-        
+                
         Map<MCParticle, Track> map_mcPart_trk = new HashMap();
         for(MCParticle mcPart : map_mcPart_trkList.keySet()){
             double minDistMom = 9999;
@@ -166,72 +200,71 @@ public class SingleParticleMC extends BaseAnalysis{
             histoDiffGroup.getH1F("vxDiff").fill(mcPart.vertex().x() - trk.vertex().x());
             histoDiffGroup.getH1F("vyDiff").fill(mcPart.vertex().y() - trk.vertex().y());
             histoDiffGroup.getH1F("vzDiff").fill(mcPart.vertex().z() - trk.vertex().z()); 
-        }                
+        }
+        
+        HistoGroup histoGroupUTrackMapping = histoGroupMap.get("uTrackMapping");         
+        Map<MCParticle, List<Track>> map_mcPart_utrkList = new HashMap();
+        for(MCParticle mcPart : mcParts){
+            for(Track trk : utracks){                                
+                    double distMom = mcPart.euclideanDistanceMom(trk);
+                    double distVtx = mcPart.euclideanDistanceVertex(trk);
+                    histoGroupUTrackMapping.getH2F("utrkMCPartMap").fill(distMom, distVtx);
+                    if(map_mcPart_utrkList.get(mcPart) == null){
+                        List<Track> trkList = new ArrayList();
+                        trkList.add(trk);
+                        map_mcPart_utrkList.put(mcPart, trkList);
+                    }
+                    else {
+                        map_mcPart_utrkList.get(mcPart).add(trk);
+                    }
+            }
+        }        
+        
+        
+        Map<MCParticle, Track> map_mcPart_utrk = new HashMap();
+        for(MCParticle mcPart : map_mcPart_utrkList.keySet()){
+            double minDistMom = 9999;
+            Track cloestTrk = null;            
+            for(Track trk : map_mcPart_utrkList.get(mcPart)){
+                double distMom = mcPart.euclideanDistanceMom(trk);
+                if(distMom < minDistMom){
+                    minDistMom = distMom;
+                    cloestTrk = trk;
+                }
+            }
+            map_mcPart_utrk.put(mcPart, cloestTrk);
+        }
+        
+        HistoGroup histoUTrackDiffGroup = histoGroupMap.get("uTrackDiff");
+        for(MCParticle mcPart : map_mcPart_utrk.keySet()){
+            Track trk = map_mcPart_utrk.get(mcPart);
+            
+            histoUTrackDiffGroup.getH1F("pDiff").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
+            histoUTrackDiffGroup.getH1F("thetaDiff").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
+            histoUTrackDiffGroup.getH1F("phiDiff").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
+            histoUTrackDiffGroup.getH1F("vxDiff").fill(mcPart.vertex().x() - trk.vertex().x());
+            histoUTrackDiffGroup.getH1F("vyDiff").fill(mcPart.vertex().y() - trk.vertex().y());
+            histoUTrackDiffGroup.getH1F("vzDiff").fill(mcPart.vertex().z() - trk.vertex().z()); 
+        }        
     }
     
     public void postEventProcessing(){
         
-        HistoGroup histoDiffGroup = histoGroupMap.get("Diff");
-        F1D func_p  = new F1D("func_p","[amp]*gaus(x,[mean],[sigma])", -0.05,0.05);
-        func_p.setParameter(0, histoDiffGroup.getH1F("pDiff").getMax());
-        func_p.setParameter(1, 0.004);
-        func_p.setParameter(2, 0.03);
-        //func_p.setParLimits(1, -0.01, 0.01);
-        //func_p.setParLimits(2, -0.1, 0.1); 
-        func_p.setLineColor(2);
-        func_p.setOptStat(1110);
-        histoDiffGroup.getH1F("pDiff").fit(func_p);
+        HistoGroup histoDiffGroup = histoGroupMap.get("Diff");        
+        F1D func_p     = fitPeakGaussian(histoDiffGroup.getH1F("pDiff"), "func_p");
+        F1D func_theta = fitPeakGaussian(histoDiffGroup.getH1F("thetaDiff"), "func_theta");
+        F1D func_phi   = fitPeakGaussian(histoDiffGroup.getH1F("phiDiff"), "func_phi");
+        F1D func_vx    = fitPeakGaussian(histoDiffGroup.getH1F("vxDiff"), "func_vx");
+        F1D func_vy    = fitPeakGaussian(histoDiffGroup.getH1F("vyDiff"), "func_vy");
+        F1D func_vz    = fitPeakGaussian(histoDiffGroup.getH1F("vzDiff"), "func_vz");
         
-        F1D func_theta  = new F1D("func_theta","[amp]*gaus(x,[mean],[sigma])", -0.5, 0.5);
-        func_theta.setParameter(0, histoDiffGroup.getH1F("thetaDiff").getMax());
-        func_theta.setParameter(1, 0.01);
-        func_theta.setParameter(2, 0.2);
-        //func_theta.setParLimits(1, -0.1, 0.1);
-        //func_theta.setParLimits(2, 0, 0.5); 
-        func_theta.setLineColor(2);
-        func_theta.setOptStat(1110);
-        histoDiffGroup.getH1F("thetaDiff").fit(func_theta);
-        
-        F1D func_phi  = new F1D("func_phi","[amp]*gaus(x,[mean],[sigma])", -0.35, 0.35);
-        func_phi.setParameter(0, histoDiffGroup.getH1F("phiDiff").getMax());
-        func_phi.setParameter(1, 0.004);
-        func_phi.setParameter(2, 0.1);
-        //func_phi.setParLimits(1, -0.3, 0.3);
-        //func_phi.setParLimits(2, -3, 3); 
-        func_phi.setLineColor(2);
-        func_phi.setOptStat(1110);
-        histoDiffGroup.getH1F("phiDiff").fit(func_phi);
-        
-        F1D func_vx  = new F1D("func_vx","[amp]*gaus(x,[mean],[sigma])", -0.008, 0.008);
-        func_vx.setParameter(0, histoDiffGroup.getH1F("vxDiff").getMax());
-        func_vx.setParameter(1, 0.);
-        func_vx.setParameter(2, 0.005);
-        //func_vx.setParLimits(1, -0.05, 0.05);
-        //func_vx.setParLimits(2, -0.1, 0.1); 
-        func_vx.setLineColor(2);
-        func_vx.setOptStat(1110);
-        histoDiffGroup.getH1F("vxDiff").fit(func_vx);
-        
-        F1D func_vy  = new F1D("func_vy","[amp]*gaus(x,[mean],[sigma])", -0.008, 0.008);
-        func_vy.setParameter(0, histoDiffGroup.getH1F("vyDiff").getMax());
-        func_vy.setParameter(1, 0.);
-        func_vy.setParameter(2, 0.005);
-        //func_vy.setParLimits(1, -0.05, 0.05);
-        //func_vy.setParLimits(2, 0, 0.1); 
-        func_vy.setLineColor(2);
-        func_vy.setOptStat(1110);
-        histoDiffGroup.getH1F("vyDiff").fit(func_vy);
-        
-        
-        F1D func_vz  = new F1D("func_vz","[amp]*gaus(x,[mean],[sigma])", -0.12, 0.12);
-        func_vz.setParameter(0, histoDiffGroup.getH1F("vzDiff").getMax());
-        func_vz.setParameter(1, 0.01);
-        func_vz.setParameter(2, 0.2);
-        //func_vz.setParLimits(1, -0.1, 0.1);
-        //func_vz.setParLimits(2, 0, 0.3); 
-        func_vz.setLineColor(2);
-        func_vz.setOptStat(1110);
-        histoDiffGroup.getH1F("vzDiff").fit(func_vz);        
+        HistoGroup histoUTrackDiffGroup = histoGroupMap.get("uTrackDiff");        
+        F1D func_p_uTrack     = fitPeakGaussian(histoUTrackDiffGroup.getH1F("pDiff"), "func_p");
+        F1D func_theta_uTrack = fitPeakGaussian(histoUTrackDiffGroup.getH1F("thetaDiff"), "func_theta");
+        F1D func_phi_uTrack   = fitPeakGaussian(histoUTrackDiffGroup.getH1F("phiDiff"), "func_phi");
+        F1D func_vx_uTrack    = fitPeakGaussian(histoUTrackDiffGroup.getH1F("vxDiff"), "func_vx");
+        F1D func_vy_uTrack    = fitPeakGaussian(histoUTrackDiffGroup.getH1F("vyDiff"), "func_vy");
+        F1D func_vz_uTrack    = fitPeakGaussian(histoUTrackDiffGroup.getH1F("vzDiff"), "func_vz");
         
         String fitFileName = (outputPrefix.isEmpty() ? "" : outputPrefix + "_") + "fit_results.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fitFileName))) {
@@ -259,7 +292,59 @@ public class SingleParticleMC extends BaseAnalysis{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        String fitFileName_uTrack = (outputPrefix.isEmpty() ? "" : outputPrefix + "_") + "fit_results_uTrack.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fitFileName_uTrack))) {
+
+            writer.write("Parameter\tMean\tSigma\n");
+
+            writer.write(String.format("p\t%f\t%f\n",
+                    func_p_uTrack.getParameter(1), func_p_uTrack.getParameter(2)));
+
+            writer.write(String.format("theta\t%f\t%f\n",
+                    func_theta_uTrack.getParameter(1), func_theta_uTrack.getParameter(2)));
+
+            writer.write(String.format("phi\t%f\t%f\n",
+                    func_phi_uTrack.getParameter(1), func_phi_uTrack.getParameter(2)));
+
+            writer.write(String.format("vx\t%f\t%f\n",
+                    func_vx_uTrack.getParameter(1), func_vx_uTrack.getParameter(2)));
+
+            writer.write(String.format("vy\t%f\t%f\n",
+                    func_vy_uTrack.getParameter(1), func_vy_uTrack.getParameter(2)));
+
+            writer.write(String.format("vz\t%f\t%f\n",
+                    func_vz_uTrack.getParameter(1), func_vz_uTrack.getParameter(2)));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    
+    public static F1D fitPeakGaussian(H1F h, String funcName) {
+        int maxBin = h.getMaximumBin();
+
+        int binMin = Math.max(0, maxBin - 8);
+        int binMax = Math.min(h.getDataSize(0) - 1, maxBin + 8);
+
+        double xMin = h.getDataX(binMin);
+        double xMax = h.getDataX(binMax);
+
+        F1D func = new F1D(funcName, "[amp]*gaus(x,[mean],[sigma])", xMin, xMax);
+
+        func.setParameter(0, h.getMax());
+        func.setParameter(1, h.getDataX(maxBin));
+        func.setParameter(2, (xMax - xMin) / 6.0);
+
+        func.setParLimits(2, 0.0, (xMax - xMin));
+
+        func.setLineColor(2);
+        func.setOptStat(1110);
+        
+        h.fit(func);
+
+        return func;  
+    }    
     
     public void setOutputPrefix(String prefix) {
         this.outputPrefix = prefix;
@@ -327,7 +412,7 @@ public class SingleParticleMC extends BaseAnalysis{
 
                 reader.nextEvent(event);
                 
-                analysis.processEvent(event, uTrack);
+                analysis.processEvent(event);
 
                 progress.updateStatus();
                 if(maxEvents>0){
