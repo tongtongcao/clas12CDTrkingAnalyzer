@@ -32,6 +32,15 @@ import org.jlab.groot.data.H2F;
  * @author Tongtong Cao
  */
 public class CompareTracks extends BaseAnalysis{ 
+    
+    private static int trackPass1Sp1 = 0;
+    private static int trackPass1Sp2 = 0;    
+    private static int uTrackPass1Sp1 = 0;
+    private static int uTrackPass1Sp2 = 0;    
+    private static int trackPass2Sp1 = 0;
+    private static int trackPass2Sp2 = 0;    
+    private static int uTrackPass2Sp1 = 0;
+    private static int uTrackPass2Sp2 = 0;    
        
     public CompareTracks(){}
     
@@ -72,6 +81,15 @@ public class CompareTracks extends BaseAnalysis{
         List<Track> tracksPass2_evt2 = localEvent2.getTracks(2, false); 
         List<Track> uTracksPass1_evt2 = localEvent2.getTracks(1, true);              
         List<Track> uTracksPass2_evt2 = localEvent2.getTracks(2, true); 
+        
+        trackPass1Sp1 += tracksPass1_evt1.size();
+        trackPass1Sp2 += tracksPass1_evt2.size();
+        uTrackPass1Sp1 += uTracksPass1_evt1.size();
+        uTrackPass1Sp2 += uTracksPass1_evt2.size();         
+        trackPass2Sp1 += tracksPass2_evt1.size();
+        trackPass2Sp2 += tracksPass2_evt2.size();
+        uTrackPass2Sp1 += uTracksPass2_evt1.size();
+        uTrackPass2Sp2 += uTracksPass2_evt2.size();           
         
         TrackHistoGroup histoGroupTrackPass1 = (TrackHistoGroup) histoGroupMap.get("trackPass1");        
         for(Track trk : tracksPass1_evt1){
@@ -228,6 +246,15 @@ public class CompareTracks extends BaseAnalysis{
             reader1.close(); 
             reader2.close();
             analysis.saveHistos(histoName);
+            
+            System.out.println("Tracks for pass1 in sample1: " + Integer.toString(CompareTracks.trackPass1Sp1));
+            System.out.println("Tracks for pass1 in sample2: " + Integer.toString(CompareTracks.trackPass1Sp2));   
+            System.out.println("uTracks for pass1 in sample1: " + Integer.toString(CompareTracks.uTrackPass1Sp1));
+            System.out.println("uTracks for pass1 in sample2: " + Integer.toString(CompareTracks.uTrackPass1Sp2));   
+            System.out.println("Tracks for pass2 in sample1: " + Integer.toString(CompareTracks.trackPass2Sp1));
+            System.out.println("Tracks for pass2 in sample2: " + Integer.toString(CompareTracks.trackPass2Sp2));   
+            System.out.println("uTracks for pass2 in sample1: " + Integer.toString(CompareTracks.uTrackPass2Sp1));
+            System.out.println("uTracks for pass2 in sample2: " + Integer.toString(CompareTracks.uTrackPass2Sp2));              
         }
         else{
             analysis.readHistos(inputList.get(0)); 

@@ -193,13 +193,14 @@ public class SingleParticleMC extends BaseAnalysis{
         HistoGroup histoDiffGroup = histoGroupMap.get("Diff");
         for(MCParticle mcPart : map_mcPart_trk.keySet()){
             Track trk = map_mcPart_trk.get(mcPart);
-            
-            histoDiffGroup.getH1F("pDiff").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
-            histoDiffGroup.getH1F("thetaDiff").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
-            histoDiffGroup.getH1F("phiDiff").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
-            histoDiffGroup.getH1F("vxDiff").fill(mcPart.vertex().x() - trk.vertex().x());
-            histoDiffGroup.getH1F("vyDiff").fill(mcPart.vertex().y() - trk.vertex().y());
-            histoDiffGroup.getH1F("vzDiff").fill(mcPart.vertex().z() - trk.vertex().z()); 
+            if(trk.getRatioNormalSeedStripClusters() > 0.5){
+                histoDiffGroup.getH1F("pDiff").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
+                histoDiffGroup.getH1F("thetaDiff").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
+                histoDiffGroup.getH1F("phiDiff").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
+                histoDiffGroup.getH1F("vxDiff").fill(mcPart.vertex().x() - trk.vertex().x());
+                histoDiffGroup.getH1F("vyDiff").fill(mcPart.vertex().y() - trk.vertex().y());
+                histoDiffGroup.getH1F("vzDiff").fill(mcPart.vertex().z() - trk.vertex().z()); 
+            }
         }
         
         HistoGroup histoGroupUTrackMapping = histoGroupMap.get("uTrackMapping");         
@@ -238,13 +239,14 @@ public class SingleParticleMC extends BaseAnalysis{
         HistoGroup histoUTrackDiffGroup = histoGroupMap.get("uTrackDiff");
         for(MCParticle mcPart : map_mcPart_utrk.keySet()){
             Track trk = map_mcPart_utrk.get(mcPart);
-            
-            histoUTrackDiffGroup.getH1F("pDiff").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
-            histoUTrackDiffGroup.getH1F("thetaDiff").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
-            histoUTrackDiffGroup.getH1F("phiDiff").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
-            histoUTrackDiffGroup.getH1F("vxDiff").fill(mcPart.vertex().x() - trk.vertex().x());
-            histoUTrackDiffGroup.getH1F("vyDiff").fill(mcPart.vertex().y() - trk.vertex().y());
-            histoUTrackDiffGroup.getH1F("vzDiff").fill(mcPart.vertex().z() - trk.vertex().z()); 
+            if(trk.getRatioNormalSeedStripClusters() > 0.5){
+                histoUTrackDiffGroup.getH1F("pDiff").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
+                histoUTrackDiffGroup.getH1F("thetaDiff").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
+                histoUTrackDiffGroup.getH1F("phiDiff").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
+                histoUTrackDiffGroup.getH1F("vxDiff").fill(mcPart.vertex().x() - trk.vertex().x());
+                histoUTrackDiffGroup.getH1F("vyDiff").fill(mcPart.vertex().y() - trk.vertex().y());
+                histoUTrackDiffGroup.getH1F("vzDiff").fill(mcPart.vertex().z() - trk.vertex().z()); 
+            }
         }        
     }
     
@@ -358,7 +360,7 @@ public class SingleParticleMC extends BaseAnalysis{
         parser.addOption("-n"          ,"-1",   "maximum number of events to process");
         parser.addOption("-energy"     ,"10.6", "beam energy");
         parser.addOption("-pass", "2", "pass 1 or 2");
-        parser.addOption("-uTrack", "0", "if unconstrained track (0/1)");
+        parser.addOption("-uTrack", "0", "if unconstrained track (0/1)");        
         
         parser.addOption("-plot"       ,"1",    "display histograms (0/1)");
         
@@ -366,6 +368,8 @@ public class SingleParticleMC extends BaseAnalysis{
         parser.addOption("-histo"      ,"0",    "read histogram file (0/1)");
         
         parser.parse(args);
+        
+        Constants.BG = true;
         
         String namePrefix  = parser.getOption("-o").stringValue(); 
         int   maxEvents  = parser.getOption("-n").intValue();      
