@@ -146,7 +146,7 @@ public class SingleParticleMC extends BaseAnalysis{
         List<MCParticle> mcParts = localEvent.getMCParticles();
              
         List<Track> tracks = localEvent.getTracks(Constants.PASS, false);  
-        List<Track> utracks = localEvent.getTracks(Constants.PASS, true);  
+        List<Track> utracks = localEvent.getTracks(Constants.PASS, true);         
                         
         HistoGroup histoGroupMCParticle = histoGroupMap.get("MCParticle");
         for(MCParticle mcPart : mcParts){
@@ -187,7 +187,7 @@ public class SingleParticleMC extends BaseAnalysis{
                     cloestTrk = trk;
                 }
             }
-            map_mcPart_trk.put(mcPart, cloestTrk);
+            if(cloestTrk != null) map_mcPart_trk.put(mcPart, cloestTrk);
         }
         
         HistoGroup histoDiffGroup = histoGroupMap.get("Diff");
@@ -233,13 +233,13 @@ public class SingleParticleMC extends BaseAnalysis{
                     cloestTrk = trk;
                 }
             }
-            map_mcPart_utrk.put(mcPart, cloestTrk);
+            if(cloestTrk != null) map_mcPart_utrk.put(mcPart, cloestTrk);
         }
         
         HistoGroup histoUTrackDiffGroup = histoGroupMap.get("uTrackDiff");
         for(MCParticle mcPart : map_mcPart_utrk.keySet()){
             Track trk = map_mcPart_utrk.get(mcPart);
-            if(trk.getRatioNormalSeedStripClusters() > 0.5){
+            if(trk != null && trk.getRatioNormalSeedStripClusters() > 0.5){
                 histoUTrackDiffGroup.getH1F("pDiff").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
                 histoUTrackDiffGroup.getH1F("thetaDiff").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
                 histoUTrackDiffGroup.getH1F("phiDiff").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
