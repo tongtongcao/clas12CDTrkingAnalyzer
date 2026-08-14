@@ -34,7 +34,7 @@ import org.jlab.groot.data.H2F;
  * 
  * @author Tongtong Cao
  */
-public class CompareTracks extends BaseAnalysis{ 
+public class CompareTracksTwoInputs extends BaseAnalysis{ 
     
     private static int trackPass1Sp1 = 0;
     private static int trackPass1Sp2 = 0;        
@@ -49,7 +49,7 @@ public class CompareTracks extends BaseAnalysis{
     
     private boolean mcSingle = false;
        
-    public CompareTracks(){}
+    public CompareTracksTwoInputs(){}
     
     @Override
     public void createHistoGroupMap(){         
@@ -361,8 +361,8 @@ public class CompareTracks extends BaseAnalysis{
             histoGroupTrackPass2ExcludeSameSeed.getHistoVz("evt2").fill(trk.vertex().z()); 
             
             if(mcSingle){
-                if(mcParts1 != null && mcParts1.size() == 1){
-                    MCParticle mcPart = mcParts1.get(0);
+                if(mcParts2 != null && mcParts2.size() == 1){
+                    MCParticle mcPart = mcParts2.get(0);
                     histoTracksPass2ReconTruthDiffExcludeSameSeedGroup.getH1F("p_tracksPass2ReconTruthDiffExcludeSameSeed_evt2").fill((mcPart.mom().mag() - trk.momentum().mag())/mcPart.mom().mag());
                     histoTracksPass2ReconTruthDiffExcludeSameSeedGroup.getH1F("theta_tracksPass2ReconTruthDiffExcludeSameSeed_evt2").fill((mcPart.mom().theta() - trk.momentum().theta())/Math.PI*180.);
                     histoTracksPass2ReconTruthDiffExcludeSameSeedGroup.getH1F("phi_tracksPass2ReconTruthDiffExcludeSameSeed_evt2").fill((mcPart.mom().phi() - trk.momentum().phi())/Math.PI*180.);
@@ -496,7 +496,7 @@ public class CompareTracks extends BaseAnalysis{
         }
         
         Constants.BG = true;         
-        CompareTracks analysis = new CompareTracks();
+        CompareTracksTwoInputs analysis = new CompareTracksTwoInputs();
         analysis.setMCSingle(mcSingle);
         analysis.createHistoGroupMap();        
         
@@ -535,15 +535,15 @@ public class CompareTracks extends BaseAnalysis{
             reader2.close();
             analysis.saveHistos(histoName);
             
-            System.out.println("Tracks for pass1 in sample1: " + Integer.toString(CompareTracks.trackPass1Sp1));
-            System.out.println("Tracks for pass1 in sample2: " + Integer.toString(CompareTracks.trackPass1Sp2));
-            System.out.println("Tracks for pass1 with the same seeds in two samples: " + Integer.toString(CompareTracks.trackPass1_sameSeedPair));  
-            System.out.println("Tracks for pass2 in sample1: " + Integer.toString(CompareTracks.trackPass2Sp1));
-            System.out.println("Tracks for pass2 in sample2: " + Integer.toString(CompareTracks.trackPass2Sp2));   
-            System.out.println("Tracks for pass2 with the same seeds in two samples: " + Integer.toString(CompareTracks.trackPass2_sameSeedPair));             
-            System.out.println("uTracks for pass2 in sample1: " + Integer.toString(CompareTracks.uTrackPass2Sp1));
-            System.out.println("uTracks for pass2 in sample2: " + Integer.toString(CompareTracks.uTrackPass2Sp2));   
-            System.out.println("uTracks for pass2 with the same seeds in two samples: " + Integer.toString(CompareTracks.uTrackPass2_sameSeedPair));               
+            System.out.println("Tracks for pass1 in sample1: " + Integer.toString(CompareTracksTwoInputs.trackPass1Sp1));
+            System.out.println("Tracks for pass1 in sample2: " + Integer.toString(CompareTracksTwoInputs.trackPass1Sp2));
+            System.out.println("Tracks for pass1 with the same seeds in two samples: " + Integer.toString(CompareTracksTwoInputs.trackPass1_sameSeedPair));  
+            System.out.println("Tracks for pass2 in sample1: " + Integer.toString(CompareTracksTwoInputs.trackPass2Sp1));
+            System.out.println("Tracks for pass2 in sample2: " + Integer.toString(CompareTracksTwoInputs.trackPass2Sp2));   
+            System.out.println("Tracks for pass2 with the same seeds in two samples: " + Integer.toString(CompareTracksTwoInputs.trackPass2_sameSeedPair));             
+            System.out.println("uTracks for pass2 in sample1: " + Integer.toString(CompareTracksTwoInputs.uTrackPass2Sp1));
+            System.out.println("uTracks for pass2 in sample2: " + Integer.toString(CompareTracksTwoInputs.uTrackPass2Sp2));   
+            System.out.println("uTracks for pass2 with the same seeds in two samples: " + Integer.toString(CompareTracksTwoInputs.uTrackPass2_sameSeedPair));               
         }
         else{
             analysis.readHistos(inputList.get(0)); 

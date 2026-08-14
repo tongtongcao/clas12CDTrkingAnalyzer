@@ -120,7 +120,7 @@ public class Seed implements Comparable<Seed> {
         this.q = q;        
         this.p = p;
         this.pt = pt;
-        this.phi0 = phi0;
+        this.phi0 =  phi0 <= Math.PI ? phi0 : (phi0 - 2*Math.PI);
         this.tandip = tandip;
         this.z0 = z0;
         this.d0 = d0;
@@ -732,7 +732,27 @@ public class Seed implements Comparable<Seed> {
                
     public double getEfficiencyCrossLevel(){
         return efficiencyCrossLevel;
-    }         
+    } 
+    
+    public int numMatchedClustersWithTrack(Track o){
+        int numMatchedClusters = 0;
+        for(Cluster thisCls : this.clusters){
+            for(Cluster oCls : o.getClusters()){
+                if(oCls.detectorType() == thisCls.detectorType() && oCls.layer() == thisCls.layer() && oCls.id() == thisCls.id()){
+                    numMatchedClusters++;
+                    break;
+                }
+            }
+        }
+        
+        return numMatchedClusters;
+    }    
+    
+    
+    public boolean isSameClusterswithTrack(Track o){
+        if(this.clusters.size() == numMatchedClustersWithTrack(o)) return true;
+        else return false;
+    }     
                       
     @Override
     public int compareTo(Seed o) {
