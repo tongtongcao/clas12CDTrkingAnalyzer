@@ -218,7 +218,7 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
         TrackHistoGroup histoGroupTrackPass1DiffSameSeed = (TrackHistoGroup) histoGroupMap.get("trackPass1DiffSameSeed");  
         for(Track trk1 : tracksPass1_evt1){
             for(Track trk2 : tracksPass1_evt2){
-                if(trk1.isSameClusterswithTrack(trk2)){
+                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2)){
                     histoGroupTrackPass1DiffSameSeed.getHistoNKFItersDiff().fill(trk2.nKFIters() - trk1.nKFIters());
                     histoGroupTrackPass1DiffSameSeed.getHistoChi2overndfDiff().fill(trk2.chi2()/trk2.ndf() - trk1.chi2()/trk1.ndf());
                     histoGroupTrackPass1DiffSameSeed.getHistoNDFDiff().fill(trk2.ndf() - trk1.ndf());
@@ -297,7 +297,7 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
         TrackHistoGroup histoGroupTrackPass2DiffSameSeed = (TrackHistoGroup) histoGroupMap.get("trackPass2DiffSameSeed");  
         for(Track trk1 : tracksPass2_evt1){
             for(Track trk2 : tracksPass2_evt2){
-                if(trk1.isSameClusterswithTrack(trk2)){
+                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2)){
                     histoGroupTrackPass2DiffSameSeed.getHistoNKFItersDiff().fill(trk2.nKFIters() - trk1.nKFIters());
                     histoGroupTrackPass2DiffSameSeed.getHistoChi2overndfDiff().fill(trk2.chi2()/trk2.ndf() - trk1.chi2()/trk1.ndf());
                     histoGroupTrackPass2DiffSameSeed.getHistoNDFDiff().fill(trk2.ndf() - trk1.ndf());
@@ -403,7 +403,7 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
         TrackHistoGroup histoGroupUTrackPass2DiffSameSeed = (TrackHistoGroup) histoGroupMap.get("uTrackPass2DiffSameSeed");  
         for(Track trk1 : uTracksPass2_evt1){
             for(Track trk2 : uTracksPass2_evt2){
-                if(trk1.isSameClusterswithTrack(trk2)){
+                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2)){
                     histoGroupUTrackPass2DiffSameSeed.getHistoNKFItersDiff().fill(trk2.nKFIters() - trk1.nKFIters());
                     histoGroupUTrackPass2DiffSameSeed.getHistoChi2overndfDiff().fill(trk2.chi2()/trk2.ndf() - trk1.chi2()/trk1.ndf());
                     histoGroupUTrackPass2DiffSameSeed.getHistoNDFDiff().fill(trk2.ndf() - trk1.ndf());

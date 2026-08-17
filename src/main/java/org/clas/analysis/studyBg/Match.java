@@ -81,7 +81,7 @@ public class Match {
     public void makeHitMatchMap(List<Hit> hits1, List<Hit> hits2, Map<Hit, Hit> map_hit1_hit2) {  
         for(Hit hit1 : hits1){
             for(Hit hit2 : hits2){
-                if(hit2.isMatchedHit(hit1)){
+                if(hit2.isSameHitOnGeometry(hit1)){
                     map_hit1_hit2.put(hit1, hit2);
                     break;
                 }
@@ -128,7 +128,7 @@ public class Match {
         for(Cluster cls1 : clusters1){
             List<Cluster> matchedClsListWithMatchedHits = new ArrayList();
             for(Cluster cls2 : clusters2){
-                if(cls1.clusterMatchedHits(cls2) > 0 && Math.abs(cls2.centroid() - cls1.centroid()) < CLUSTERCENTROIDDIFFCUT) matchedClsListWithMatchedHits.add(cls2);
+                if(cls1.clusterSameHitsOnGeometry(cls2) > 0 && Math.abs(cls2.centroid() - cls1.centroid()) < CLUSTERCENTROIDDIFFCUT) matchedClsListWithMatchedHits.add(cls2);
             }
             
             if(!matchedClsListWithMatchedHits.isEmpty()){
@@ -137,7 +137,7 @@ public class Match {
                 List<Cluster> matchedClsListWithSameSeedStrip = new ArrayList();
                 for(Cluster cls2 : matchedClsListWithMatchedHits){                
                     Hit seedHit2 = cls2.getSeedHit();
-                    if(seedHit2.isMatchedHit(seedHit1)) matchedClsListWithSameSeedStrip.add(cls2);                      
+                    if(seedHit2.isSameHitOnGeometry(seedHit1)) matchedClsListWithSameSeedStrip.add(cls2);                      
                 }
                 
                 List<Cluster> matchedClsList = new ArrayList();

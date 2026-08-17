@@ -53,7 +53,11 @@ public class CompareSeedTrack extends BaseAnalysis{
         
         TrackHistoGroup histoGroupSeedTrackPass2Diff = new TrackHistoGroup("seedTrackPass2Diff", 3, 5);
         histoGroupSeedTrackPass2Diff.addTrackDiffHistos(1, 0);
-        histoGroupMap.put(histoGroupSeedTrackPass2Diff.getName(), histoGroupSeedTrackPass2Diff);          
+        histoGroupMap.put(histoGroupSeedTrackPass2Diff.getName(), histoGroupSeedTrackPass2Diff);  
+
+        TrackHistoGroup histoGroupTrackPass1Pass2Diff = new TrackHistoGroup("trackPass1Pass2Diff", 3, 5);
+        histoGroupTrackPass1Pass2Diff.addTrackDiffHistos(1, 0);
+        histoGroupMap.put(histoGroupTrackPass1Pass2Diff.getName(), histoGroupTrackPass1Pass2Diff);           
     }
              
     public void processEvent(Event event){        
@@ -152,6 +156,29 @@ public class CompareSeedTrack extends BaseAnalysis{
                     histoGroupSeedTrackPass2Diff.getHistoPtDiff().fill(trk.pt() - seed.pt());   
                     histoGroupSeedTrackPass2Diff.getHistoPhi0Diff().fill(trk.phi0() - seed.phi0()); 
                     histoGroupSeedTrackPass2Diff.getHistoD0Diff().fill(trk.d0() - seed.d0());  
+                }
+            }
+       }
+        
+        TrackHistoGroup histoGroupTrackPass1Pass2Diff = (TrackHistoGroup) histoGroupMap.get("trackPass1Pass2Diff");  
+        for(Track trk1 : tracksPass1){
+            for(Track trk2 : tracksPass2){
+                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2)){
+                    histoGroupTrackPass1Pass2Diff.getHistoNKFItersDiff().fill(trk2.nKFIters() - trk1.nKFIters());
+                    histoGroupTrackPass1Pass2Diff.getHistoChi2overndfDiff().fill(trk2.chi2()/trk2.ndf() - trk1.chi2()/trk1.ndf());
+                    histoGroupTrackPass1Pass2Diff.getHistoNDFDiff().fill(trk2.ndf() - trk1.ndf());                    
+                    histoGroupTrackPass1Pass2Diff.getHistoPDiff().fill(trk2.momentum().mag() - trk1.momentum().mag());
+                    histoGroupTrackPass1Pass2Diff.getHistoThetaDiff().fill(trk2.momentum().theta() - trk1.momentum().theta());
+                    histoGroupTrackPass1Pass2Diff.getHistoPhiDiff().fill(trk2.momentum().phi() - trk1.momentum().phi());            
+                    histoGroupTrackPass1Pass2Diff.getHistoVxDiff().fill(trk2.vertex().x() - trk1.vertex().x());
+                    histoGroupTrackPass1Pass2Diff.getHistoVyDiff().fill(trk2.vertex().y() - trk1.vertex().y());
+                    histoGroupTrackPass1Pass2Diff.getHistoVzDiff().fill(trk2.vertex().z() - trk1.vertex().z());                    
+                    histoGroupTrackPass1Pass2Diff.getHistoQDiff().fill(trk2.q() - trk1.q());  
+                    histoGroupTrackPass1Pass2Diff.getHistoTandipDiff().fill(trk2.tandip() - trk1.tandip());   
+                    histoGroupTrackPass1Pass2Diff.getHistoZ0Diff().fill(trk2.z0() - trk1.z0());   
+                    histoGroupTrackPass1Pass2Diff.getHistoPtDiff().fill(trk2.pt() - trk1.pt());   
+                    histoGroupTrackPass1Pass2Diff.getHistoPhi0Diff().fill(trk2.phi0() - trk1.phi0()); 
+                    histoGroupTrackPass1Pass2Diff.getHistoD0Diff().fill(trk2.d0() - trk1.d0());  
                 }
             }
        }         

@@ -787,11 +787,11 @@ public class Track implements Comparable<Track> {
         return value;
     }
                 
-    public int numMatchedHitsWithTrack(Track o){
+    public int numSameHitsOnGeometry(Track o){
         int numMatchedHits = 0;
         for(Hit thisHit : this.hits){
             for(Hit oHit : o.getHits()){
-                if(thisHit.isMatchedHit(oHit)){
+                if(thisHit.isSameHitOnGeometry(oHit)){
                     numMatchedHits++;
                     break;
                 }
@@ -801,19 +801,24 @@ public class Track implements Comparable<Track> {
         return numMatchedHits;
     }    
     
-    public int numMatchedClustersWithTrack(Track o){
-        int numMatchedClusters = 0;
+    public int numSameSeedClustersOnGeometry(Track o){
+        int numSameSeedClusters = 0;
         for(Cluster thisCls : this.clusters){
             for(Cluster oCls : o.getClusters()){
-                if(oCls.detectorType() == thisCls.detectorType() && oCls.layer() == thisCls.layer() && oCls.id() == thisCls.id()){
-                    numMatchedClusters++;
+                if(thisCls.isSameSeedClusterOnGeometry(oCls)){
+                    numSameSeedClusters++;
                     break;
                 }
             }
         }
         
-        return numMatchedClusters;
+        return numSameSeedClusters;
     }
+    
+    public boolean isSameTrackWithAllSameSeedClustersOnGeometry(Track o){
+        int numSameSeedClusters =  numSameSeedClustersOnGeometry(o);
+        return this.clusters.size() == numSameSeedClusters && o.clusters.size() == numSameSeedClusters;
+    }    
     
     public int numMatchedCrossesWithTrack(Track o){
         int numMatchedCrosses = 0;
@@ -828,11 +833,7 @@ public class Track implements Comparable<Track> {
         
         return numMatchedCrosses;
     }    
-    
-    public boolean isSameClusterswithTrack(Track o){
-        if(this.clusters.size() == numMatchedClustersWithTrack(o)) return true;
-        else return false;
-    }    
+        
     
     public boolean isClusterOverlapping(Track o) {
         for(Cluster c : this.clusters) {

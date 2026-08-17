@@ -70,7 +70,7 @@ public class BMTADC {
         return order == 0;
     }     
     
-    public boolean matchADC(BMTADC adc){
+    public boolean isSameADC(BMTADC adc){
         return this.sector == adc.sector() && this.layer() == adc.layer() && this.component == adc.component() && this.ADC == adc.ADC() && this.integral == adc.integral();
     }    
 }

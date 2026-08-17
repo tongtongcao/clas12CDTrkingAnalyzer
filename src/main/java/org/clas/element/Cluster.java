@@ -261,19 +261,31 @@ public class Cluster implements Comparable<Cluster> {
         return category;
     }
     
-    public int clusterMatchedHits(Cluster otherCls){
+    public int clusterSameHitsOnGeometry(Cluster otherCls){
         if(this.hits == null || otherCls.hits == null) return -999;
-        int matchedHits = 0;
+        int numSameHits = 0;
         for(Hit hitThisCluster : this.hits){
             for(Hit hitOtherCluster : otherCls.hits){
-                if(hitThisCluster.sector() == hitOtherCluster.sector() && hitThisCluster.layer() == hitOtherCluster.layer() && hitThisCluster.strip() == hitOtherCluster.strip()
-                        && hitThisCluster.order() == hitOtherCluster.order() && hitThisCluster.energy() == hitOtherCluster.energy()){
-                    matchedHits++;
+                if(hitThisCluster.isSameHitOnGeometry(hitOtherCluster)){
+                    numSameHits++;
                     break;
                 }
             }
         }
-        return matchedHits;
+        return numSameHits;
+    }
+    
+    public boolean isSameClusterOnGeometry(Cluster otherCls){
+        int numSamedHits = this.clusterSameHitsOnGeometry(otherCls);
+        return numSamedHits == this.getHits().size() && numSamedHits == otherCls.getHits().size();
+    } 
+    
+    public boolean isSameSeedClusterOnGeometry(Cluster otherCls){
+        if(this.getSeedHit() != null && otherCls.getSeedHit() != null){
+            return this.getSeedHit().isSameHitOnGeometry(otherCls.getSeedHit());
+        } else{
+            return false;
+        }
     }
     
     public void setFoundMatchedCluster(boolean foundMatchedCluster){
@@ -315,7 +327,7 @@ public class Cluster implements Comparable<Cluster> {
     public double getDAFWeight(){
         return dafWeight;
     }
-    
+        
     public final void copy(Cluster cls) {
         this.detectorType = cls.detectorType;        
         this.trackingPass = cls.trackingPass;

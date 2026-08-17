@@ -1279,13 +1279,13 @@ public class BgOnValidTracks extends BaseAnalysis{
             for(Cluster cls1 : trk1.getBSTClusters()){
                 if(match.get_map_cls1_cls2_BST().keySet().contains(cls1)){
                     numMatchedBSTClustersClusterLevel++;
-                    numMatchedBSTHitsClusterLevel += cls1.clusterMatchedHits(match.get_map_cls1_cls2_BST().get(cls1));
+                    numMatchedBSTHitsClusterLevel += cls1.clusterSameHitsOnGeometry(match.get_map_cls1_cls2_BST().get(cls1));
                 }
             }
             for(Cluster cls1 : trk1.getBMTClusters()){
                 if(match.get_map_cls1_cls2_BMT().keySet().contains(cls1)){
                     numMatchedBMTClustersClusterLevel++;                    
-                    numMatchedBMTHitsClusterLevel += cls1.clusterMatchedHits(match.get_map_cls1_cls2_BMT().get(cls1));
+                    numMatchedBMTHitsClusterLevel += cls1.clusterSameHitsOnGeometry(match.get_map_cls1_cls2_BMT().get(cls1));
                 }
             }
             for(Cross crs1 : trk1.getBSTCrosses()){
@@ -1316,15 +1316,15 @@ public class BgOnValidTracks extends BaseAnalysis{
                 if(match.get_map_crs1_crs2_BST().keySet().contains(crs1)){
                     numMatchedBSTCrossesCrossLevel++;
                     numMatchedBSTClustersCrossLevel += 2;
-                    numMatchedBSTHitsCrossLevel += crs1.getCluster1().clusterMatchedHits(match.get_map_crs1_crs2_BST().get(crs1).getCluster1());
-                    numMatchedBSTHitsCrossLevel += crs1.getCluster2().clusterMatchedHits(match.get_map_crs1_crs2_BST().get(crs1).getCluster2());
+                    numMatchedBSTHitsCrossLevel += crs1.getCluster1().clusterSameHitsOnGeometry(match.get_map_crs1_crs2_BST().get(crs1).getCluster1());
+                    numMatchedBSTHitsCrossLevel += crs1.getCluster2().clusterSameHitsOnGeometry(match.get_map_crs1_crs2_BST().get(crs1).getCluster2());
                 }
             }
             for(Cross crs1 : trk1.getBMTCrosses()){
                 if(match.get_map_crs1_crs2_BMT().keySet().contains(crs1)){
                     numMatchedBMTCrossesCrossLevel++;
                     numMatchedBMTClustersCrossLevel++;
-                    numMatchedBMTHitsCrossLevel += crs1.getCluster1().clusterMatchedHits(match.get_map_crs1_crs2_BMT().get(crs1).getCluster1());
+                    numMatchedBMTHitsCrossLevel += crs1.getCluster1().clusterSameHitsOnGeometry(match.get_map_crs1_crs2_BMT().get(crs1).getCluster1());
                 }
             }            
             numMatchedHitsCrossLevel = numMatchedBSTHitsCrossLevel + numMatchedBMTHitsCrossLevel;
@@ -1365,8 +1365,8 @@ public class BgOnValidTracks extends BaseAnalysis{
                     if(crossBST1 != null && crossBST2 != null) {
                         numMatchedBSTCrossesSeedLevel++;
                         numMatchedBSTClustersSeedLevel += 2;
-                        numMatchedBSTHitsSeedLevel += crossBST1.getCluster1().clusterMatchedHits(crossBST2.getCluster1());
-                        numMatchedBSTHitsSeedLevel += crossBST1.getCluster2().clusterMatchedHits(crossBST2.getCluster2());
+                        numMatchedBSTHitsSeedLevel += crossBST1.getCluster1().clusterSameHitsOnGeometry(crossBST2.getCluster1());
+                        numMatchedBSTHitsSeedLevel += crossBST1.getCluster2().clusterSameHitsOnGeometry(crossBST2.getCluster2());
                     }
                     
                     Cross crossBMT1 = null;
@@ -1386,7 +1386,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                     if(crossBMT1 != null && crossBMT2 != null) {
                         numMatchedBMTCrossesSeedLevel++;
                         numMatchedBMTClustersSeedLevel++;
-                        numMatchedBMTHitsSeedLevel += crossBMT1.getCluster1().clusterMatchedHits(crossBMT2.getCluster1());
+                        numMatchedBMTHitsSeedLevel += crossBMT1.getCluster1().clusterSameHitsOnGeometry(crossBMT2.getCluster1());
                     }                 
                 }
             }
@@ -1436,13 +1436,13 @@ public class BgOnValidTracks extends BaseAnalysis{
                     if(crossBST1 != null && crossBST2 != null) {
                         numMatchedBSTCrossesTrackLevel++;
                         numMatchedBSTClustersTrackLevel += 2;
-                        numMatchedBSTHitsTrackLevel += crossBST1.getCluster1().clusterMatchedHits(crossBST2.getCluster1());
-                        numMatchedBSTHitsTrackLevel += crossBST1.getCluster2().clusterMatchedHits(crossBST2.getCluster2());
+                        numMatchedBSTHitsTrackLevel += crossBST1.getCluster1().clusterSameHitsOnGeometry(crossBST2.getCluster1());
+                        numMatchedBSTHitsTrackLevel += crossBST1.getCluster2().clusterSameHitsOnGeometry(crossBST2.getCluster2());
                         if(trk2.isValid()) {
                             numMatchedBSTCrossesValidTrackLevel++;
                             numMatchedBSTClustersValidTrackLevel += 2;
-                            numMatchedBSTHitsValidTrackLevel += crossBST1.getCluster1().clusterMatchedHits(crossBST2.getCluster1());
-                            numMatchedBSTHitsValidTrackLevel += crossBST1.getCluster2().clusterMatchedHits(crossBST2.getCluster2());
+                            numMatchedBSTHitsValidTrackLevel += crossBST1.getCluster1().clusterSameHitsOnGeometry(crossBST2.getCluster1());
+                            numMatchedBSTHitsValidTrackLevel += crossBST1.getCluster2().clusterSameHitsOnGeometry(crossBST2.getCluster2());
                         }
                     }
                     
@@ -1463,11 +1463,11 @@ public class BgOnValidTracks extends BaseAnalysis{
                     if(crossBMT1 != null && crossBMT2 != null) {
                         numMatchedBMTCrossesTrackLevel++;
                         numMatchedBMTClustersTrackLevel++;
-                        numMatchedBMTHitsTrackLevel += crossBMT1.getCluster1().clusterMatchedHits(crossBMT2.getCluster1());
+                        numMatchedBMTHitsTrackLevel += crossBMT1.getCluster1().clusterSameHitsOnGeometry(crossBMT2.getCluster1());
                         if(trk2.isValid()) {
                             numMatchedBMTCrossesValidTrackLevel++;
                             numMatchedBMTClustersValidTrackLevel++;
-                            numMatchedBMTHitsValidTrackLevel += crossBMT1.getCluster1().clusterMatchedHits(crossBMT2.getCluster1()); 
+                            numMatchedBMTHitsValidTrackLevel += crossBMT1.getCluster1().clusterSameHitsOnGeometry(crossBMT2.getCluster1()); 
                         }
                     }                 
                 }                                                                

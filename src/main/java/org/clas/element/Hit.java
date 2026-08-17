@@ -107,8 +107,13 @@ public class Hit implements Comparable<Hit> {
         return order == 0;
     } 
     
-    public boolean isMatchedHit(Hit thatHit){
-        return this.sector() == thatHit.sector() && this.layer() == thatHit.layer() && this.strip() == thatHit.strip() && this.energy() == thatHit.energy();        
+    public boolean isSameHitOnGeometry(Hit thatHit){
+        return this.detectorType() == thatHit.detectorType() && this.sector() == thatHit.sector() && this.layer() == thatHit.layer() && this.strip() == thatHit.strip();        
+    }
+    
+    public boolean isSameHitOnAllAttributes(Hit thatHit){
+        return this.detectorType() == thatHit.detectorType() && this.sector() == thatHit.sector() && this.layer() == thatHit.layer() && this.strip() == thatHit.strip() 
+                && this.energy() == thatHit.energy() && this.time() == thatHit.time();        
     }
     
     @Override

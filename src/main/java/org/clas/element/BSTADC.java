@@ -64,7 +64,7 @@ public class BSTADC {
         return order == 0;
     }     
     
-    public boolean matchADC(BSTADC adc){
+    public boolean isSameADC(BSTADC adc){
         return this.sector == adc.sector() && this.layer() == adc.layer() && this.component == adc.component() && this.ADC == adc.ADC();
     }    
 }

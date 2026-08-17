@@ -155,7 +155,7 @@ public class CompareAllSeedsTracks extends BaseAnalysis{
             else{
                 histoGroupOverview.getH1F("ifSameBestTrackbyTwoRoutines").fill(0);
                 
-                int numMatchedClusters = bestTrackByTrackRoutine.numMatchedClustersWithTrack(bestTrackBySeedRoutine);
+                int numMatchedClusters = bestTrackByTrackRoutine.numSameSeedClustersOnGeometry(bestTrackBySeedRoutine);
                             
                 histoGroupOverview.getH2F("ratioMatchedClusters").fill((double)numMatchedClusters/bestTrackBySeedRoutine.getClusters().size(), (double)numMatchedClusters/bestTrackByTrackRoutine.getClusters().size());
                 
@@ -328,7 +328,7 @@ public class CompareAllSeedsTracks extends BaseAnalysis{
             int numSameTracks = 0;
             for(Track trk : trackList){
                 for(Track currentTrk : currentTrackList){
-                    if(currentTrk.isSameClusterswithTrack(trk)) {
+                    if(currentTrk.isSameTrackWithAllSameSeedClustersOnGeometry(trk)) {
                         numSameTracks++;
                         break;
                     }

@@ -346,7 +346,38 @@ public class Cross implements Comparable<Cross> {
                
     public double getEfficiency(){
         return efficiency;
-    } 
+    }
+    
+    public int numSameSeedClustersOnGeometry(Cross o){
+        if(this.getCluster1() != null){
+            if(this.detectorType() == Constants.DETECTORBMT){
+                if(this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1())) return 1;
+                else return 0;
+            }
+            else{
+                boolean statusCls1 = this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1());
+                boolean statusCls2 = this.getCluster2().isSameSeedClusterOnGeometry(o.getCluster2());
+                if(statusCls1 && statusCls2) return 2;
+                else if(!statusCls1 && !statusCls2) return 0;
+                else return 1;
+            }
+        }        
+        else return 0;
+    }
+    
+    public boolean isSameCrossWithAllSameSeedClustersOnGeometry(Cross o){
+        if(this.getCluster1() != null){
+            if(this.detectorType() == Constants.DETECTORBMT){
+                return this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1());
+            }
+            else{
+                boolean statusCls1 = this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1());
+                boolean statusCls2 = this.getCluster2().isSameSeedClusterOnGeometry(o.getCluster2());
+                return statusCls1 && statusCls2;
+            }
+        }        
+        else return false;
+    }    
     
     // Map to sector of BMT 
     private List<Integer> getSectorListMapToBMTSector() {
