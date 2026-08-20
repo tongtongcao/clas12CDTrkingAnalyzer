@@ -464,7 +464,7 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
     }
                             
     public static void main(String[] args){
-        OptionParser parser = new OptionParser("bgEffectsOnValidTracks");
+        OptionParser parser = new OptionParser("Compare tracks between two input files reconstructed from the same raw data");
         parser.setRequiresInputList(false);
         // valid options for event-base analysis
         parser.addOption("-o"          ,"",     "output file name prefix");
