@@ -54,31 +54,31 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
     @Override
     public void createHistoGroupMap(){         
         // tracks for pass1
-        TrackHistoGroup histoGroupTrackPass1 = new TrackHistoGroup("trackPass1", 3, 3);
+        TrackHistoGroup histoGroupTrackPass1 = new TrackHistoGroup("trackPass1", 3, 5);
         histoGroupTrackPass1.addTrackHistos("evt1", 1, 0);
         histoGroupTrackPass1.addTrackHistos("evt2", 2, 0);
         histoGroupMap.put(histoGroupTrackPass1.getName(), histoGroupTrackPass1); 
         
-        TrackHistoGroup histoGroupTrackPass1DiffSameSeed = new TrackHistoGroup("trackPass1DiffSameSeed", 3, 3);
+        TrackHistoGroup histoGroupTrackPass1DiffSameSeed = new TrackHistoGroup("trackPass1DiffSameSeed", 3, 5);
         histoGroupTrackPass1DiffSameSeed.addTrackDiffHistos(1, 0);
         histoGroupMap.put(histoGroupTrackPass1DiffSameSeed.getName(), histoGroupTrackPass1DiffSameSeed); 
         
-        TrackHistoGroup histoGroupTrackPass1ExcludeSameSeed = new TrackHistoGroup("trackPass1ExcludeSameSeed", 3, 3);
+        TrackHistoGroup histoGroupTrackPass1ExcludeSameSeed = new TrackHistoGroup("trackPass1ExcludeSameSeed", 3, 5);
         histoGroupTrackPass1ExcludeSameSeed.addTrackHistos("evt1", 1, 0);
         histoGroupTrackPass1ExcludeSameSeed.addTrackHistos("evt2", 2, 0);
         histoGroupMap.put(histoGroupTrackPass1ExcludeSameSeed.getName(), histoGroupTrackPass1ExcludeSameSeed);         
         
         // tracks for pass2
-        TrackHistoGroup histoGroupTrackPass2 = new TrackHistoGroup("trackPass2", 3, 3);
+        TrackHistoGroup histoGroupTrackPass2 = new TrackHistoGroup("trackPass2", 3, 5);
         histoGroupTrackPass2.addTrackHistos("evt1", 1, 0);
         histoGroupTrackPass2.addTrackHistos("evt2", 2, 0);
         histoGroupMap.put(histoGroupTrackPass2.getName(), histoGroupTrackPass2);  
         
-        TrackHistoGroup histoGroupTrackPass2DiffSameSeed = new TrackHistoGroup("trackPass2DiffSameSeed", 3, 3);
+        TrackHistoGroup histoGroupTrackPass2DiffSameSeed = new TrackHistoGroup("trackPass2DiffSameSeed", 3, 5);
         histoGroupTrackPass2DiffSameSeed.addTrackDiffHistos(1, 0);
         histoGroupMap.put(histoGroupTrackPass2DiffSameSeed.getName(), histoGroupTrackPass2DiffSameSeed);  
         
-        TrackHistoGroup histoGroupTrackPass2ExcludeSameSeed = new TrackHistoGroup("trackPass2ExcludeSameSeed", 3, 3);
+        TrackHistoGroup histoGroupTrackPass2ExcludeSameSeed = new TrackHistoGroup("trackPass2ExcludeSameSeed", 3, 5);
         histoGroupTrackPass2ExcludeSameSeed.addTrackHistos("evt1", 1, 0);
         histoGroupTrackPass2ExcludeSameSeed.addTrackHistos("evt2", 2, 0);
         histoGroupMap.put(histoGroupTrackPass2ExcludeSameSeed.getName(), histoGroupTrackPass2ExcludeSameSeed); 
@@ -147,16 +147,16 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
         histoGroupMap.put(histoTracksPass2ReconTruthDiffExcludeSameSeedGroup.getName(), histoTracksPass2ReconTruthDiffExcludeSameSeedGroup);         
         
         // utracks for pass2
-        TrackHistoGroup histoGroupUTrackPass2 = new TrackHistoGroup("uTrackPass2", 3, 3);
+        TrackHistoGroup histoGroupUTrackPass2 = new TrackHistoGroup("uTrackPass2", 3, 5);
         histoGroupUTrackPass2.addTrackHistos("evt1", 1, 0);
         histoGroupUTrackPass2.addTrackHistos("evt2", 2, 0);
         histoGroupMap.put(histoGroupUTrackPass2.getName(), histoGroupUTrackPass2); 
         
-        TrackHistoGroup histoGroupUTrackPass2DiffSameSeed = new TrackHistoGroup("uTrackPass2DiffSameSeed", 3, 3);
+        TrackHistoGroup histoGroupUTrackPass2DiffSameSeed = new TrackHistoGroup("uTrackPass2DiffSameSeed", 3, 5);
         histoGroupUTrackPass2DiffSameSeed.addTrackDiffHistos(1, 0);
         histoGroupMap.put(histoGroupUTrackPass2DiffSameSeed.getName(), histoGroupUTrackPass2DiffSameSeed);  
         
-        TrackHistoGroup histoGroupUTrackPass2ExcludeSameSeed = new TrackHistoGroup("uTrackPass2ExcludeSameSeed", 3, 3);
+        TrackHistoGroup histoGroupUTrackPass2ExcludeSameSeed = new TrackHistoGroup("uTrackPass2ExcludeSameSeed", 3, 5);
         histoGroupUTrackPass2ExcludeSameSeed.addTrackHistos("evt1", 1, 0);
         histoGroupUTrackPass2ExcludeSameSeed.addTrackHistos("evt2", 2, 0);
         histoGroupMap.put(histoGroupUTrackPass2ExcludeSameSeed.getName(), histoGroupUTrackPass2ExcludeSameSeed);                                                                                         
@@ -201,6 +201,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass1.getHistoVx("evt1").fill(trk.vertex().x());
             histoGroupTrackPass1.getHistoVy("evt1").fill(trk.vertex().y());
             histoGroupTrackPass1.getHistoVz("evt1").fill(trk.vertex().z());
+            histoGroupTrackPass1.getHistoQ("evt1").fill(trk.q());
+            histoGroupTrackPass1.getHistoTandip("evt1").fill(trk.tandip());
+            histoGroupTrackPass1.getHistoZ0("evt1").fill(trk.z0());
+            histoGroupTrackPass1.getHistoPt("evt1").fill(trk.pt());
+            histoGroupTrackPass1.getHistoPhi0("evt1").fill(trk.phi0());
+            histoGroupTrackPass1.getHistoD0("evt1").fill(trk.d0());            
         }        
         for(Track trk : tracksPass1_evt2){
             histoGroupTrackPass1.getHistoNKFIters("evt2").fill(trk.nKFIters());
@@ -211,7 +217,13 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass1.getHistoPhi("evt2").fill(trk.momentum().phi());
             histoGroupTrackPass1.getHistoVx("evt2").fill(trk.vertex().x());
             histoGroupTrackPass1.getHistoVy("evt2").fill(trk.vertex().y());
-            histoGroupTrackPass1.getHistoVz("evt2").fill(trk.vertex().z());            
+            histoGroupTrackPass1.getHistoVz("evt2").fill(trk.vertex().z());
+            histoGroupTrackPass1.getHistoQ("evt2").fill(trk.q());
+            histoGroupTrackPass1.getHistoTandip("evt2").fill(trk.tandip());
+            histoGroupTrackPass1.getHistoZ0("evt2").fill(trk.z0());
+            histoGroupTrackPass1.getHistoPt("evt2").fill(trk.pt());
+            histoGroupTrackPass1.getHistoPhi0("evt2").fill(trk.phi0());
+            histoGroupTrackPass1.getHistoD0("evt2").fill(trk.d0());              
         }
         
         Map<Track, Track> map_trackPass1PairSameSeed = new HashMap();
@@ -228,6 +240,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
                     histoGroupTrackPass1DiffSameSeed.getHistoVxDiff().fill(trk2.vertex().x() - trk1.vertex().x());
                     histoGroupTrackPass1DiffSameSeed.getHistoVyDiff().fill(trk2.vertex().y() - trk1.vertex().y());
                     histoGroupTrackPass1DiffSameSeed.getHistoVzDiff().fill(trk2.vertex().z() - trk1.vertex().z());
+                    histoGroupTrackPass1DiffSameSeed.getHistoQDiff().fill(trk2.q() - trk1.q());  
+                    histoGroupTrackPass1DiffSameSeed.getHistoTandipDiff().fill(trk2.tandip() - trk1.tandip());   
+                    histoGroupTrackPass1DiffSameSeed.getHistoZ0Diff().fill(trk2.z0() - trk1.z0());   
+                    histoGroupTrackPass1DiffSameSeed.getHistoPtDiff().fill(trk2.pt() - trk1.pt());   
+                    histoGroupTrackPass1DiffSameSeed.getHistoPhi0Diff().fill(trk2.phi0() - trk1.phi0()); 
+                    histoGroupTrackPass1DiffSameSeed.getHistoD0Diff().fill(trk2.d0() - trk1.d0());                      
                     
                     map_trackPass1PairSameSeed.put(trk1, trk2);
                     trackPass1_sameSeedPair++;
@@ -255,6 +273,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass1ExcludeSameSeed.getHistoVx("evt1").fill(trk.vertex().x());
             histoGroupTrackPass1ExcludeSameSeed.getHistoVy("evt1").fill(trk.vertex().y());
             histoGroupTrackPass1ExcludeSameSeed.getHistoVz("evt1").fill(trk.vertex().z());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoQ("evt1").fill(trk.q());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoTandip("evt1").fill(trk.tandip());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoZ0("evt1").fill(trk.z0());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoPt("evt1").fill(trk.pt());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoPhi0("evt1").fill(trk.phi0());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoD0("evt1").fill(trk.d0());            
         }        
         for(Track trk : tracksPass1_excludeSameSeedTracks_evt2){
             histoGroupTrackPass1ExcludeSameSeed.getHistoNKFIters("evt2").fill(trk.nKFIters());
@@ -265,7 +289,13 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass1ExcludeSameSeed.getHistoPhi("evt2").fill(trk.momentum().phi());
             histoGroupTrackPass1ExcludeSameSeed.getHistoVx("evt2").fill(trk.vertex().x());
             histoGroupTrackPass1ExcludeSameSeed.getHistoVy("evt2").fill(trk.vertex().y());
-            histoGroupTrackPass1ExcludeSameSeed.getHistoVz("evt2").fill(trk.vertex().z());            
+            histoGroupTrackPass1ExcludeSameSeed.getHistoVz("evt2").fill(trk.vertex().z());  
+            histoGroupTrackPass1ExcludeSameSeed.getHistoQ("evt2").fill(trk.q());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoTandip("evt2").fill(trk.tandip());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoZ0("evt2").fill(trk.z0());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoPt("evt2").fill(trk.pt());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoPhi0("evt2").fill(trk.phi0());
+            histoGroupTrackPass1ExcludeSameSeed.getHistoD0("evt2").fill(trk.d0());               
         }        
         
         // tracks for pass2                
@@ -280,6 +310,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass2.getHistoVx("evt1").fill(trk.vertex().x());
             histoGroupTrackPass2.getHistoVy("evt1").fill(trk.vertex().y());
             histoGroupTrackPass2.getHistoVz("evt1").fill(trk.vertex().z());
+            histoGroupTrackPass2.getHistoQ("evt1").fill(trk.q());
+            histoGroupTrackPass2.getHistoTandip("evt1").fill(trk.tandip());
+            histoGroupTrackPass2.getHistoZ0("evt1").fill(trk.z0());
+            histoGroupTrackPass2.getHistoPt("evt1").fill(trk.pt());
+            histoGroupTrackPass2.getHistoPhi0("evt1").fill(trk.phi0());
+            histoGroupTrackPass2.getHistoD0("evt1").fill(trk.d0());            
         }        
         for(Track trk : tracksPass2_evt2){
             histoGroupTrackPass2.getHistoNKFIters("evt2").fill(trk.nKFIters());
@@ -290,7 +326,13 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass2.getHistoPhi("evt2").fill(trk.momentum().phi());
             histoGroupTrackPass2.getHistoVx("evt2").fill(trk.vertex().x());
             histoGroupTrackPass2.getHistoVy("evt2").fill(trk.vertex().y());
-            histoGroupTrackPass2.getHistoVz("evt2").fill(trk.vertex().z());            
+            histoGroupTrackPass2.getHistoVz("evt2").fill(trk.vertex().z());  
+            histoGroupTrackPass2.getHistoQ("evt2").fill(trk.q());
+            histoGroupTrackPass2.getHistoTandip("evt2").fill(trk.tandip());
+            histoGroupTrackPass2.getHistoZ0("evt2").fill(trk.z0());
+            histoGroupTrackPass2.getHistoPt("evt2").fill(trk.pt());
+            histoGroupTrackPass2.getHistoPhi0("evt2").fill(trk.phi0());
+            histoGroupTrackPass2.getHistoD0("evt2").fill(trk.d0());            
         }
         
         Map<Track, Track> map_trackPass2PairSameSeed = new HashMap();
@@ -307,6 +349,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
                     histoGroupTrackPass2DiffSameSeed.getHistoVxDiff().fill(trk2.vertex().x() - trk1.vertex().x());
                     histoGroupTrackPass2DiffSameSeed.getHistoVyDiff().fill(trk2.vertex().y() - trk1.vertex().y());
                     histoGroupTrackPass2DiffSameSeed.getHistoVzDiff().fill(trk2.vertex().z() - trk1.vertex().z());
+                    histoGroupTrackPass2DiffSameSeed.getHistoQDiff().fill(trk2.q() - trk1.q());  
+                    histoGroupTrackPass2DiffSameSeed.getHistoTandipDiff().fill(trk2.tandip() - trk1.tandip());   
+                    histoGroupTrackPass2DiffSameSeed.getHistoZ0Diff().fill(trk2.z0() - trk1.z0());   
+                    histoGroupTrackPass2DiffSameSeed.getHistoPtDiff().fill(trk2.pt() - trk1.pt());   
+                    histoGroupTrackPass2DiffSameSeed.getHistoPhi0Diff().fill(trk2.phi0() - trk1.phi0()); 
+                    histoGroupTrackPass2DiffSameSeed.getHistoD0Diff().fill(trk2.d0() - trk1.d0());                       
                     
                     map_trackPass2PairSameSeed.put(trk1, trk2);
                     trackPass2_sameSeedPair++;
@@ -335,6 +383,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass2ExcludeSameSeed.getHistoVx("evt1").fill(trk.vertex().x());
             histoGroupTrackPass2ExcludeSameSeed.getHistoVy("evt1").fill(trk.vertex().y());
             histoGroupTrackPass2ExcludeSameSeed.getHistoVz("evt1").fill(trk.vertex().z());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoQ("evt1").fill(trk.q());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoTandip("evt1").fill(trk.tandip());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoZ0("evt1").fill(trk.z0());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoPt("evt1").fill(trk.pt());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoPhi0("evt1").fill(trk.phi0());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoD0("evt1").fill(trk.d0());               
             
             if(mcSingle){
                 if(mcParts1 != null && mcParts1.size() == 1){
@@ -359,6 +413,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupTrackPass2ExcludeSameSeed.getHistoVx("evt2").fill(trk.vertex().x());
             histoGroupTrackPass2ExcludeSameSeed.getHistoVy("evt2").fill(trk.vertex().y());
             histoGroupTrackPass2ExcludeSameSeed.getHistoVz("evt2").fill(trk.vertex().z()); 
+            histoGroupTrackPass2ExcludeSameSeed.getHistoQ("evt2").fill(trk.q());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoTandip("evt2").fill(trk.tandip());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoZ0("evt2").fill(trk.z0());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoPt("evt2").fill(trk.pt());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoPhi0("evt2").fill(trk.phi0());
+            histoGroupTrackPass2ExcludeSameSeed.getHistoD0("evt2").fill(trk.d0());              
             
             if(mcSingle){
                 if(mcParts2 != null && mcParts2.size() == 1){
@@ -386,6 +446,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupUTrackPass2.getHistoVx("evt1").fill(trk.vertex().x());
             histoGroupUTrackPass2.getHistoVy("evt1").fill(trk.vertex().y());
             histoGroupUTrackPass2.getHistoVz("evt1").fill(trk.vertex().z());
+            histoGroupUTrackPass2.getHistoQ("evt1").fill(trk.q());
+            histoGroupUTrackPass2.getHistoTandip("evt1").fill(trk.tandip());
+            histoGroupUTrackPass2.getHistoZ0("evt1").fill(trk.z0());
+            histoGroupUTrackPass2.getHistoPt("evt1").fill(trk.pt());
+            histoGroupUTrackPass2.getHistoPhi0("evt1").fill(trk.phi0());
+            histoGroupUTrackPass2.getHistoD0("evt1").fill(trk.d0());            
         }        
         for(Track trk : uTracksPass2_evt2){
             histoGroupUTrackPass2.getHistoNKFIters("evt2").fill(trk.nKFIters());
@@ -396,7 +462,13 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupUTrackPass2.getHistoPhi("evt2").fill(trk.momentum().phi());
             histoGroupUTrackPass2.getHistoVx("evt2").fill(trk.vertex().x());
             histoGroupUTrackPass2.getHistoVy("evt2").fill(trk.vertex().y());
-            histoGroupUTrackPass2.getHistoVz("evt2").fill(trk.vertex().z());            
+            histoGroupUTrackPass2.getHistoVz("evt2").fill(trk.vertex().z());
+            histoGroupUTrackPass2.getHistoQ("evt2").fill(trk.q());
+            histoGroupUTrackPass2.getHistoTandip("evt2").fill(trk.tandip());
+            histoGroupUTrackPass2.getHistoZ0("evt2").fill(trk.z0());
+            histoGroupUTrackPass2.getHistoPt("evt2").fill(trk.pt());
+            histoGroupUTrackPass2.getHistoPhi0("evt2").fill(trk.phi0());
+            histoGroupUTrackPass2.getHistoD0("evt2").fill(trk.d0());              
         } 
         
         Map<Track, Track> map_uTrackPass2PairSameSeed = new HashMap();
@@ -413,6 +485,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
                     histoGroupUTrackPass2DiffSameSeed.getHistoVxDiff().fill(trk2.vertex().x() - trk1.vertex().x());
                     histoGroupUTrackPass2DiffSameSeed.getHistoVyDiff().fill(trk2.vertex().y() - trk1.vertex().y());
                     histoGroupUTrackPass2DiffSameSeed.getHistoVzDiff().fill(trk2.vertex().z() - trk1.vertex().z());
+                    histoGroupUTrackPass2DiffSameSeed.getHistoQDiff().fill(trk2.q() - trk1.q());  
+                    histoGroupUTrackPass2DiffSameSeed.getHistoTandipDiff().fill(trk2.tandip() - trk1.tandip());   
+                    histoGroupUTrackPass2DiffSameSeed.getHistoZ0Diff().fill(trk2.z0() - trk1.z0());   
+                    histoGroupUTrackPass2DiffSameSeed.getHistoPtDiff().fill(trk2.pt() - trk1.pt());   
+                    histoGroupUTrackPass2DiffSameSeed.getHistoPhi0Diff().fill(trk2.phi0() - trk1.phi0()); 
+                    histoGroupUTrackPass2DiffSameSeed.getHistoD0Diff().fill(trk2.d0() - trk1.d0());                       
                     
                     map_uTrackPass2PairSameSeed.put(trk1, trk2);
                     uTrackPass2_sameSeedPair++;
@@ -440,6 +518,12 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupUTrackPass2ExcludeSameSeed.getHistoVx("evt1").fill(trk.vertex().x());
             histoGroupUTrackPass2ExcludeSameSeed.getHistoVy("evt1").fill(trk.vertex().y());
             histoGroupUTrackPass2ExcludeSameSeed.getHistoVz("evt1").fill(trk.vertex().z());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoQ("evt1").fill(trk.q());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoTandip("evt1").fill(trk.tandip());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoZ0("evt1").fill(trk.z0());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoPt("evt1").fill(trk.pt());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoPhi0("evt1").fill(trk.phi0());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoD0("evt1").fill(trk.d0());             
         }        
         for(Track trk : uTracksPass2_excludeSameSeedTracks_evt2){
             histoGroupUTrackPass2ExcludeSameSeed.getHistoNKFIters("evt2").fill(trk.nKFIters());
@@ -450,7 +534,13 @@ public class CompareTracksTwoInputs extends BaseAnalysis{
             histoGroupUTrackPass2ExcludeSameSeed.getHistoPhi("evt2").fill(trk.momentum().phi());
             histoGroupUTrackPass2ExcludeSameSeed.getHistoVx("evt2").fill(trk.vertex().x());
             histoGroupUTrackPass2ExcludeSameSeed.getHistoVy("evt2").fill(trk.vertex().y());
-            histoGroupUTrackPass2ExcludeSameSeed.getHistoVz("evt2").fill(trk.vertex().z());            
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoVz("evt2").fill(trk.vertex().z());   
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoQ("evt2").fill(trk.q());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoTandip("evt2").fill(trk.tandip());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoZ0("evt2").fill(trk.z0());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoPt("evt2").fill(trk.pt());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoPhi0("evt2").fill(trk.phi0());
+            histoGroupUTrackPass2ExcludeSameSeed.getHistoD0("evt2").fill(trk.d0());               
         }        
         
     }
