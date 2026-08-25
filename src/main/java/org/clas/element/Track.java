@@ -35,6 +35,9 @@ public class Track implements Comparable<Track> {
     private double yb;
     private int status;
     
+    private double chi2pid = 0;
+    private double beta = -1;
+    
     private Vector3 vertex = new Vector3(0.0,0.0,0.0);
     private Vector3 momentum = new Vector3(0.0,0.0,0.0);
     
@@ -197,6 +200,10 @@ public class Track implements Comparable<Track> {
         return ndf;
     }
     
+    public void pid(int pid) {
+        this.pid = pid;
+    }    
+    
     public int pid(){
         return pid;
     }
@@ -225,6 +232,22 @@ public class Track implements Comparable<Track> {
         return momentum;
     }
     
+    public void chi2pid(double chi2pid) {
+        this.chi2pid = chi2pid;
+    }
+    
+    public double chi2pid() {
+        return this.chi2pid;
+    }       
+    
+    public void beta(double beta) {
+        this.beta = beta;
+    }
+    
+    public double beta() {
+        return this.beta;
+    }     
+         
     public void crossIds(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9){
         this.crossIds[0] = i1;
         this.crossIds[1] = i2;
@@ -783,7 +806,9 @@ public class Track implements Comparable<Track> {
     
     public boolean isValid() {
         boolean value = false;
-        if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFMAX) value=true;
+        if(Math.abs(this.chi2pid) < Constants.CHI2PID 
+                && this.vertex().z()>Constants.ZMIN && this.vertex().z()<Constants.ZMAX 
+                && this.p()>Constants.PMIN) value=true;
         return value;
     }
                 

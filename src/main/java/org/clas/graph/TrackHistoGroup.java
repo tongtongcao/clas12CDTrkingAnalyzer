@@ -29,6 +29,7 @@ public class TrackHistoGroup extends HistoGroup{
     private LinkedHashMap<String,H1F> h1_pt_map;
     private LinkedHashMap<String,H1F> h1_phi0_map;
     private LinkedHashMap<String,H1F> h1_d0_map;
+    private LinkedHashMap<String,H1F> h1_chi2pid_map;
     
     private H1F h1_nKFIters_diff;
     private H1F h1_chi2overndf_diff;
@@ -45,6 +46,7 @@ public class TrackHistoGroup extends HistoGroup{
     private H1F h1_pt_diff;
     private H1F h1_phi0_diff;
     private H1F h1_d0_diff;
+    private H1F h1_chi2pid_diff;
     
         
     public TrackHistoGroup(String str) {
@@ -64,6 +66,7 @@ public class TrackHistoGroup extends HistoGroup{
         h1_pt_map = new LinkedHashMap<String,H1F>();
         h1_phi0_map = new LinkedHashMap<String,H1F>();
         h1_d0_map = new LinkedHashMap<String,H1F>();
+        h1_chi2pid_map = new LinkedHashMap<String,H1F>();
     }
     
     public TrackHistoGroup(String str, int ncols, int nrows) {
@@ -83,6 +86,7 @@ public class TrackHistoGroup extends HistoGroup{
         h1_pt_map = new LinkedHashMap<String,H1F>();
         h1_phi0_map = new LinkedHashMap<String,H1F>();
         h1_d0_map = new LinkedHashMap<String,H1F>();        
+        h1_chi2pid_map = new LinkedHashMap<String,H1F>();  
     } 
     
     public void addTrackHistos(int color, int startOrder){ 
@@ -134,7 +138,7 @@ public class TrackHistoGroup extends HistoGroup{
         h1_tandip.setTitleX("tandip");
         h1_tandip.setTitleY("Counts");
         h1_tandip.setLineColor(color);          
-        H1F h1_z0 = new H1F("tandip"+postflix, "tandip", 100, -20, 20);
+        H1F h1_z0 = new H1F("z0"+postflix, "z0", 100, -20, 20);
         h1_z0.setTitleX("z0 (cm)");
         h1_z0.setTitleY("Counts");
         h1_z0.setLineColor(color);  
@@ -149,7 +153,11 @@ public class TrackHistoGroup extends HistoGroup{
         H1F h1_d0 = new H1F("d0"+postflix, "d0", 100, -1, 1);
         h1_d0.setTitleX("d0 (cm)");
         h1_d0.setTitleY("Counts");
-        h1_d0.setLineColor(color);         
+        h1_d0.setLineColor(color);    
+        H1F h1_chi2pid = new H1F("chi2pid"+postflix, "chi2pid", 100, -10, 10);
+        h1_chi2pid.setTitleX("chi2pid");
+        h1_chi2pid.setTitleY("Counts");
+        h1_chi2pid.setLineColor(color);         
                 
         addDataSet(h1_nKFIters, startOrder);
         addDataSet(h1_chi2overndf, startOrder+1);
@@ -166,6 +174,7 @@ public class TrackHistoGroup extends HistoGroup{
         addDataSet(h1_pt, startOrder+12); 
         addDataSet(h1_phi0, startOrder+13);
         addDataSet(h1_d0, startOrder+14); 
+        addDataSet(h1_chi2pid, startOrder+15); 
         
         h1_nKFIters_map.put(postflix, h1_nKFIters);
         h1_chi2overndf_map.put(postflix, h1_chi2overndf);
@@ -181,7 +190,8 @@ public class TrackHistoGroup extends HistoGroup{
         h1_z0_map.put(postflix, h1_z0);
         h1_pt_map.put(postflix, h1_pt);
         h1_phi0_map.put(postflix, h1_phi0);
-        h1_d0_map.put(postflix, h1_d0);        
+        h1_d0_map.put(postflix, h1_d0);  
+        h1_chi2pid_map.put(postflix, h1_chi2pid); 
     }
     
     public void addTrackDiffHistos(int color, int startOrder){
@@ -244,7 +254,11 @@ public class TrackHistoGroup extends HistoGroup{
         h1_d0_diff = new H1F("d0Diff", "Diff. of d0", 100, -0.2, 0.2);
         h1_d0_diff.setTitleX("Diff. of d0 (rad)");
         h1_d0_diff.setTitleY("Counts");
-        h1_d0_diff.setLineColor(color);        
+        h1_d0_diff.setLineColor(color); 
+        h1_chi2pid_diff = new H1F("chi2pidDiff", "Diff. of chi2pid", 100, -3, 3);
+        h1_chi2pid_diff.setTitleX("Diff. of chi2pid");
+        h1_chi2pid_diff.setTitleY("Counts");
+        h1_chi2pid_diff.setLineColor(color);              
         
         addDataSet(h1_nKFIters_diff, startOrder);
         addDataSet(h1_chi2overndf_diff, startOrder+1);
@@ -260,7 +274,8 @@ public class TrackHistoGroup extends HistoGroup{
         addDataSet(h1_z0_diff, startOrder+11);   
         addDataSet(h1_pt_diff, startOrder+12);   
         addDataSet(h1_phi0_diff, startOrder+13);   
-        addDataSet(h1_d0_diff, startOrder+14);           
+        addDataSet(h1_d0_diff, startOrder+14);  
+        addDataSet(h1_chi2pid_diff, startOrder+15);  
     }
     
     public H1F getHistoNKFIters(){
@@ -382,7 +397,15 @@ public class TrackHistoGroup extends HistoGroup{
 
     public H1F getHistoD0(String postflix){
         return h1_d0_map.get(postflix);
-    }    
+    } 
+    
+    public H1F getHistoChi2pid(){
+        return getHistoChi2pid("");
+    }
+
+    public H1F getHistoChi2pid(String postflix){
+        return h1_chi2pid_map.get(postflix);
+    }     
     
     public H1F getHistoNKFItersDiff(){
         return h1_nKFIters_diff;
@@ -442,5 +465,9 @@ public class TrackHistoGroup extends HistoGroup{
 
     public H1F getHistoD0Diff(){
         return h1_d0_diff;
-    }                  
+    } 
+    
+    public H1F getHistoChi2pidDiff(){
+        return h1_chi2pid_diff;
+    }    
 }

@@ -44,13 +44,23 @@ public class Banks {
     private Bank seedClustersBank;
     private Bank recSeedClustersBank;
 
-    // Track banks
+    // Tracking banks
     private Bank trackBank;
     private Bank uTrackBank;
     private Bank recTrackBank;
-    private Bank recUTrackBank;        
+    private Bank recUTrackBank;    
+
+    // Track banks
+    private Bank cvHBTrackBank;
+    private Bank aiHBTrackBank;
+    private Bank cvTBTrackBank;
+    private Bank aiTBTrackBank;    
     
-    
+    // Particle banks
+    private Bank cvHBParticleBank;
+    private Bank aiHBParticleBank;
+    private Bank cvTBParticleBank;
+    private Bank aiTBParticleBank;            
 
     public Banks(SchemaFactory schema) {
         if(schema.hasSchema("RUN::config"))
@@ -109,7 +119,7 @@ public class Banks {
         if(schema.hasSchema("CVTRec::SeedClusters"))
             this.recSeedClustersBank    = new Bank(schema.getSchema("CVTRec::SeedClusters")); 
         
-        // Track banks
+        // Tracking banks
         if(schema.hasSchema("CVT::Tracks"))
             this.trackBank    = new Bank(schema.getSchema("CVT::Tracks"));   
         if(schema.hasSchema("CVT::UTracks"))
@@ -117,7 +127,27 @@ public class Banks {
         if(schema.hasSchema("CVTRec::Tracks"))
             this.recTrackBank    = new Bank(schema.getSchema("CVTRec::Tracks"));   
         if(schema.hasSchema("CVTRec::UTracks"))
-            this.recUTrackBank    = new Bank(schema.getSchema("CVTRec::UTracks"));                           
+            this.recUTrackBank    = new Bank(schema.getSchema("CVTRec::UTracks")); 
+        
+        // Track banks
+        if(schema.hasSchema("RECHB::Track"))
+            this.cvHBTrackBank      = new Bank(schema.getSchema("RECHB::Track"));        
+        if(schema.hasSchema("RECHBAI::Track"))
+            this.aiHBTrackBank      = new Bank(schema.getSchema("RECHBAI::Track"));                
+        if(schema.hasSchema("REC::Track"))
+            this.cvTBTrackBank      = new Bank(schema.getSchema("REC::Track"));        
+        if(schema.hasSchema("RECAI::Track"))
+            this.aiTBTrackBank      = new Bank(schema.getSchema("RECAI::Track"));        
+        
+        // Particle banks
+        if(schema.hasSchema("RECHB::Particle"))
+            this.cvHBParticleBank   = new Bank(schema.getSchema("RECHB::Particle"));
+        if(schema.hasSchema("RECHBAI::Particle"))
+            this.aiHBParticleBank   = new Bank(schema.getSchema("RECHBAI::Particle"));        
+        if(schema.hasSchema("REC::Particle"))
+            this.cvTBParticleBank   = new Bank(schema.getSchema("REC::Particle"));
+        if(schema.hasSchema("RECAI::Particle"))
+            this.aiTBParticleBank   = new Bank(schema.getSchema("RECAI::Particle"));
     }
 
     public Bank getRunConfig() {
@@ -206,6 +236,53 @@ public class Banks {
             else return null;
         }
         else return null;	
+    }                            
+            
+    public Bank getCVRecTrackBank(int trackingPass) {
+        if(trackingPass == Constants.TRACKINGPASS1){           
+            if(cvHBTrackBank != null) return cvHBTrackBank;
+            else return null;
+        }
+        else if(trackingPass == Constants.TRACKINGPASS2){
+            if(cvTBTrackBank != null) return cvTBTrackBank;
+            else return null;
+        }
+        else return null;	
     }
-
+    
+    public Bank getAIRecTrackBank(int trackingPass) {
+        if(trackingPass == Constants.TRACKINGPASS1){
+            if(aiHBTrackBank != null) return aiHBTrackBank;
+            else return null;
+        }
+        else if(trackingPass == Constants.TRACKINGPASS2){
+            if(aiTBTrackBank != null) return aiTBTrackBank;
+            else return null;
+        }
+        else return null;	
+    }    
+       
+    public Bank getCVRecParticleBank(int trackingPass) {
+        if(trackingPass == Constants.TRACKINGPASS1){
+            if(cvHBParticleBank != null) return cvHBParticleBank;
+            else return null;
+        }
+        else if(trackingPass == Constants.TRACKINGPASS2){
+            if(cvTBParticleBank != null) return cvTBParticleBank;
+            else return null;
+        }
+        else return null;
+    } 
+    
+    public Bank getAIRecParticleBank(int trackingPass) {
+        if(trackingPass == Constants.TRACKINGPASS1){
+            if(aiHBParticleBank != null) return aiHBParticleBank;
+            else return null;
+        }
+        else if(trackingPass == Constants.TRACKINGPASS2){
+            if(aiTBParticleBank != null) return aiTBParticleBank;
+            else return null;
+        }
+        else return null;
+    }     
 }
