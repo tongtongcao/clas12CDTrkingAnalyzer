@@ -358,6 +358,10 @@ public class Reader {
                     cls.dafWeight(clusterBank.getFloat("DAFWeight", loop));
                 }
                 
+                if (clusterBank.getSchema().hasEntry("centroidValue")) {
+                    cls.centroidValue(clusterBank.getFloat("centroidValue", loop));
+                }
+                
                 clusters.add(cls); 
             }
         }        

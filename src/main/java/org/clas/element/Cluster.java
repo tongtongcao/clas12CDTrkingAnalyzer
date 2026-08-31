@@ -24,6 +24,7 @@ public class Cluster implements Comparable<Cluster> {
     private double seedE;
     private int seedStrip;
     private double centroid;
+    private double centroidValue;
     private double centroidError;
     private double centroidResidual;
     private double seedResidual;    
@@ -139,12 +140,20 @@ public class Cluster implements Comparable<Cluster> {
 
     public double centroid(){
         return centroid;
-    } 
+    }
+    
+    public void centroidValue(double centroidValue){
+        this.centroidValue = centroidValue;
+    }     
+    
+    public double centroidValue(){
+        return centroidValue;
+    }     
     
     public double centroidError(){
         return centroidError;
     }
-
+        
     public double centroidResidual(){
         return centroidResidual;
     }
