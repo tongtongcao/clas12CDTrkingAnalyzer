@@ -106,13 +106,16 @@ public class ClustersPass2TracksExtractor{
                             for(int i = 0; i < 6; i++){
                                 String clsInfo;                               
                                 if(bstClusters[i] != null){
-                                    clsInfo = String.format("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d", 
+                                    clsInfo = String.format("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%f,%d", 
                                             bstClusters[i].originPoint().x(), bstClusters[i].originPoint().y(), bstClusters[i].originPoint().z(),
-                                            bstClusters[i].endPoint().x(), bstClusters[i].endPoint().y(), bstClusters[i].endPoint().z(), 1);
+                                            bstClusters[i].endPoint().x(), bstClusters[i].endPoint().y(), bstClusters[i].endPoint().z(), i+1, bstClusters[i].centroid(),
+                                            1);
                                 } else {
-                                    clsInfo = String.format("%d,%d,%d,%d,%d,%d,%d", 
+                                    clsInfo = String.format("%d,%d,%d,%d,%d,%d,%d,%d,%d", 
                                             0, 0, 0,
-                                            0, 0, 0, 0);
+                                            0, 0, 0, 
+                                            0, 0,
+                                            0);
                                 }                                
                                 writer.write(clsInfo + ",");                                                                 
                             }
@@ -120,20 +123,23 @@ public class ClustersPass2TracksExtractor{
                             for(int i = 0; i < 6; i++){
                                 String clsInfo;
                                 if(bmtClusters[i] != null) {
-                                    clsInfo = String.format("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d", 
+                                    clsInfo = String.format("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%f,%d", 
                                             bmtClusters[i].originPoint().x(), bmtClusters[i].originPoint().y(), bmtClusters[i].originPoint().z(),
-                                            bmtClusters[i].endPoint().x(), bmtClusters[i].endPoint().y(), bmtClusters[i].endPoint().z(), bmtClusters[i].centroidValue(), 1);
+                                            bmtClusters[i].endPoint().x(), bmtClusters[i].endPoint().y(), bmtClusters[i].endPoint().z(), i+7, bmtClusters[i].centroid(),
+                                            1);
                                 } else {
-                                    clsInfo = String.format("%d,%d,%d,%d,%d,%d,%d,%d", 
+                                    clsInfo = String.format("%d,%d,%d,%d,%d,%d,%d,%d,%d", 
                                             0, 0, 0,
-                                            0, 0, 0, 0, 0);
+                                            0, 0, 0, 
+                                            0, 0,
+                                            0);                                                                
                                 }
                                 
                                 writer.write(clsInfo + ",");                                                                
                             }                                                        
                             
                             String trackParameters = String.format("%.4f,%.4f,%.4f,%.4f,%.4f", 
-                                     trk.d0(), trk.phi0(), trk.pt(), trk.z0(), trk.tandip());
+                                     trk.d0(), trk.phi0(), trk.q()/trk.pt(), trk.z0(), trk.tandip());
                             writer.write(trackParameters + "\n");
 
                             counter++;

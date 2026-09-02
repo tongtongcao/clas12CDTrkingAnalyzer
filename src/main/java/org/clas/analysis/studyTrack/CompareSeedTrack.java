@@ -143,7 +143,7 @@ public class CompareSeedTrack extends BaseAnalysis{
         TrackHistoGroup histoGroupSeedTrackPass2Diff = (TrackHistoGroup) histoGroupMap.get("seedTrackPass2Diff");  
         for(Seed seed : seeds){
             for(Track trk : tracksPass2){
-                if(seed.isSameClusterswithTrack(trk)){
+                if(seed.isSameClusterswithTrack(trk) && trk.isValid()){
                     histoGroupSeedTrackPass2Diff.getHistoPDiff().fill(trk.momentum().mag() - seed.momentum().mag());
                     histoGroupSeedTrackPass2Diff.getHistoThetaDiff().fill(trk.momentum().theta() - seed.momentum().theta());
                     histoGroupSeedTrackPass2Diff.getHistoPhiDiff().fill(trk.momentum().phi() - seed.momentum().phi());            
@@ -163,7 +163,7 @@ public class CompareSeedTrack extends BaseAnalysis{
         TrackHistoGroup histoGroupTrackPass1Pass2Diff = (TrackHistoGroup) histoGroupMap.get("trackPass1Pass2Diff");  
         for(Track trk1 : tracksPass1){
             for(Track trk2 : tracksPass2){
-                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2)){
+                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2) && trk2.isValid()){
                     histoGroupTrackPass1Pass2Diff.getHistoNKFItersDiff().fill(trk2.nKFIters() - trk1.nKFIters());
                     histoGroupTrackPass1Pass2Diff.getHistoChi2overndfDiff().fill(trk2.chi2()/trk2.ndf() - trk1.chi2()/trk1.ndf());
                     histoGroupTrackPass1Pass2Diff.getHistoNDFDiff().fill(trk2.ndf() - trk1.ndf());                    
