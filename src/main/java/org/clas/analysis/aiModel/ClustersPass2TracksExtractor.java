@@ -19,6 +19,7 @@ import org.jlab.utils.benchmark.ProgressPrintout;
 import org.clas.element.RunConfig;
 import org.clas.element.Track;
 import org.clas.element.Cluster;
+import org.clas.element.Cross;
 import org.clas.element.Hit;
 import org.clas.reader.Reader;
 import org.clas.reader.Banks;
@@ -82,16 +83,16 @@ public class ClustersPass2TracksExtractor{
                     LocalEvent localEvent = new LocalEvent(localReader, event);
                     for(Track trk : localEvent.getRecTracks()){  
                         if(trk.isValid()){
-                            Cluster[] bstClusters = new Cluster[6];
+                            Cross[] bstCrosses = new Cross[3];
                             Cluster[] bmtClusters = new Cluster[6];
                             
-                            List<Cluster> clustersBST = trk.getBSTClusters();
+                            List<Cross> crossesBST = trk.getBSTCrosses();
                             List<Cluster> clustersBMT = trk.getBMTClusters();
-                            for (Cluster cls : clustersBST) {
-                                int layer = cls.layer();
+                            for (Cross crs : crossesBST) {
+                                int region = crs.region();
 
-                                if (layer >= 1 && layer <= 6) {
-                                    bstClusters[layer - 1] = cls;
+                                if (region >= 1 && region <= 3) {
+                                    bstCrosses[region - 1] = crs;
                                 }
                             }
 
@@ -103,22 +104,16 @@ public class ClustersPass2TracksExtractor{
                                 }
                             }
                             
-                            for(int i = 0; i < 6; i++){
-                                String clsInfo;                               
-                                if(bstClusters[i] != null){
-                                    double x = (bstClusters[i].originPoint().x() + bstClusters[i].endPoint().x()) / 2;
-                                    double y = (bstClusters[i].originPoint().y() + bstClusters[i].endPoint().y()) / 2;
-                                    double z = (bstClusters[i].originPoint().z() + bstClusters[i].endPoint().z()) / 2;
-                                    clsInfo = String.format("%.4f,%.4f,%.4f,%d,%f,%d", 
-                                            x, y, z, i+1, bstClusters[i].centroid(),
-                                            1);
+                            for(int i = 0; i < 3; i++){
+                                String crsInfo;                               
+                                if(bstCrosses[i] != null){
+                                    crsInfo = String.format("%.4f,%.4f,%.4f,%d,%d", 
+                                            bstCrosses[i].point().x(), bstCrosses[i].point().y(), bstCrosses[i].point().z(), i+1,1);
                                 } else {
-                                    clsInfo = String.format("%d,%d,%d,%d,%d,%d", 
-                                            0, 0, 0,
-                                            0, 0,
-                                            0);
+                                    crsInfo = String.format("%d,%d,%d,%d,%d", 
+                                            0, 0, 0,0, 0);
                                 }                                
-                                writer.write(clsInfo + ",");                                                                 
+                                writer.write(crsInfo + ",");                                                                 
                             }
                             
                             for(int i = 0; i < 6; i++){
@@ -129,27 +124,22 @@ public class ClustersPass2TracksExtractor{
                                     
                                     if(bmtClusters[i].bmtType() == Constants.BMTC){
                                         double z = (bmtClusters[i].originPoint().z() + bmtClusters[i].endPoint().z()) / 2;
-                                        clsInfo = String.format("%.4f,%.4f,%d,%f,%d", 
-                                            r, z, i+7, bmtClusters[i].centroid(),
-                                            1);
+                                        clsInfo = String.format("%.4f,%.4f,%d,%d", 
+                                            r, z, i+3, 1);
                                     }
                                     else{
                                         double phi = (Math.atan2(bmtClusters[i].originPoint().x(), bmtClusters[i].originPoint().y()) + 
                                                 Math.atan2(bmtClusters[i].endPoint().x(), bmtClusters[i].endPoint().y())) / 2;
-                                        clsInfo = String.format("%.4f,%.4f,%d,%f,%d", 
-                                            r, phi, i+7, bmtClusters[i].centroid(),
-                                            1);
+                                        clsInfo = String.format("%.4f,%.4f,%d,%d", 
+                                            r, phi, i+3, 1);
                                     }
                                 }
                                 else {
-                                    clsInfo = String.format("%d,%d,%d,%d,%d", 
-                                            0, 0, 0,
-                                            0, 
-                                            0);                                                                
+                                    clsInfo = String.format("%d,%d,%d,%d", 
+                                            0, 0, 0, 0);                                                                
                                 }
                                 
-                                writer.write(clsInfo + ",");  
-                                    
+                                writer.write(clsInfo + ",");                                      
                             }                        
                             
                             String trackParameters = String.format("%.4f,%.4f,%.4f,%.4f,%.4f", 
