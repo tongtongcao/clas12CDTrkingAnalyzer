@@ -12,6 +12,7 @@ import org.clas.utilities.Constants;
 
 public class Hit implements Comparable<Hit> {    
     private int detectorType = Constants.DETECTORBST;
+    private int bmtType = Constants.BMTNO;
     private int trackingPass = Constants.TRACKINGPASS2;
     
     private int id;
@@ -25,7 +26,7 @@ public class Hit implements Comparable<Hit> {
     private int clusterID;
     private int trkID;
     private int status;
-    private int order = -1;
+    private int order = -1;    
               
     public Hit(int detectorType, int trackingPass, int id, int sector, int layer, int strip, double energy, double time, double fitResidual, int trkingStat, int clusterID, int trkID, int status){
         this.detectorType = detectorType;
@@ -41,10 +42,24 @@ public class Hit implements Comparable<Hit> {
         this.clusterID = clusterID;
         this.trkID = trkID;                
         this.status = status;
+        
+        if(detectorType == Constants.DETECTORBMT){
+            if(layer == 1 || layer == 4 || layer == 6){
+                bmtType = Constants.BMTC;
+            }
+            else if(layer == 2 || layer == 3 || layer == 5){
+                bmtType = Constants.BMTZ;
+            }
+            else bmtType = Constants.BMTNO;
+        }
     }
     
     public int detectorType(){
         return detectorType;
+    }    
+    
+    public int bmtType(){
+        return bmtType;
     }    
     
     public int trackingPass(){

@@ -14,6 +14,7 @@ import org.clas.utilities.Constants;
 
 public class Cluster implements Comparable<Cluster> {
     private int detectorType = Constants.DETECTORBST;
+    private int bmtType = Constants.BMTNO;
     private int trackingPass = Constants.TRACKINGPASS2; 
     private int id;
     private int sector;
@@ -58,7 +59,7 @@ public class Cluster implements Comparable<Cluster> {
     private double efficiency = 0; // # of truth hits / # of total truth hits on matched cluster in pure sample
     
     private double dafWeight = -1;
-    
+        
     public Cluster(Cluster cls){
         this.copy(cls);
     }
@@ -88,8 +89,18 @@ public class Cluster implements Comparable<Cluster> {
         paraDir = new Vector3D(lx, ly, lz);
         perpDir = new Vector3D(sx, sy, sz);
         normDir = new Vector3D(nx, ny, nz);
+        
+        if(detectorType == Constants.DETECTORBMT){
+            if(layer == 1 || layer == 4 || layer == 6){
+                bmtType = Constants.BMTC;
+            }
+            else if(layer == 2 || layer == 3 || layer == 5){
+                bmtType = Constants.BMTZ;
+            }
+            else bmtType = Constants.BMTNO;
+        }
     }
-
+    
     public void hitIds(int i1, int i2, int i3, int i4, int i5){
         this.hitIds[0] = i1;
         this.hitIds[1] = i2;
@@ -100,7 +111,11 @@ public class Cluster implements Comparable<Cluster> {
     
     public int detectorType(){
         return detectorType;
-    }      
+    }
+    
+    public int bmtType(){
+        return bmtType;
+    }    
    
     public int trackingPass(){
         return trackingPass;

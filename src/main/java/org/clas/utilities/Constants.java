@@ -24,6 +24,11 @@ public class Constants {
     // Detector type
     public static final int DETECTORBMT = 1;
     public static final int DETECTORBST = 2;
+    
+    // BMT type
+    public static final int BMTC = 1;
+    public static final int BMTZ = 2;
+    public static final int BMTNO = 3;
                 
     // Tracking pass
     public static final int TRACKINGPASS1 = 1;
