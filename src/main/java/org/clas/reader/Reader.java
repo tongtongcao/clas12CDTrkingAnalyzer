@@ -115,14 +115,14 @@ public class Reader {
                 Bank trackBank;
                 Bank particleBank;
 
-                if(trackAIBank != null && trackAIBank.getRows() > 0) {
-                    trackBank = trackAIBank;
-                    particleBank = particleAIBank;
-                }
-                else {
-                    trackBank = trackCVBank;
-                    particleBank = particleCVBank;
-                }        
+                //if(trackAIBank != null && trackAIBank.getRows() > 0) {
+                    //trackBank = trackAIBank;
+                    //particleBank = particleAIBank;
+                //}
+                //else {
+                trackBank = trackCVBank;
+                particleBank = particleCVBank;
+                //}        
 
                 if(trackBank!=null && particleBank!=null) {
                     for(int loop = 0; loop < trackBank.getRows(); loop++){
