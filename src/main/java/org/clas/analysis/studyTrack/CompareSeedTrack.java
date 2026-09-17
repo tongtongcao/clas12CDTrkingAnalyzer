@@ -57,7 +57,37 @@ public class CompareSeedTrack extends BaseAnalysis{
 
         TrackHistoGroup histoGroupTrackPass1Pass2Diff = new TrackHistoGroup("trackPass1Pass2Diff", 3, 5);
         histoGroupTrackPass1Pass2Diff.addTrackDiffHistos(1, 0);
-        histoGroupMap.put(histoGroupTrackPass1Pass2Diff.getName(), histoGroupTrackPass1Pass2Diff);           
+        histoGroupMap.put(histoGroupTrackPass1Pass2Diff.getName(), histoGroupTrackPass1Pass2Diff);  
+        
+        TrackHistoGroup histoGroupSeedTrackPass2Diff2D = new TrackHistoGroup("seedTrackPass2Diff2D", 3, 2);
+        H2F h2_diffZ0VsP = new H2F("diffZ0VsP", "#Deltaz0 vs p", 100, 0, 2, 100, -2, 4);
+        h2_diffZ0VsP.setTitleX("p (GeV/c)");
+        h2_diffZ0VsP.setTitleY("#Deltaz0 (cm)"); 
+        histoGroupSeedTrackPass2Diff2D.addDataSet(h2_diffZ0VsP, 0);
+        H2F h2_diffZ0VsTheta = new H2F("diffZ0VsTheta", "#Deltaz0 vs #theta", 100, 0.3, 2.5, 100, -2, 4);
+        h2_diffZ0VsTheta.setTitleX("#theta (rad)");
+        h2_diffZ0VsTheta.setTitleY("#Deltaz0 (cm)"); 
+        histoGroupSeedTrackPass2Diff2D.addDataSet(h2_diffZ0VsTheta, 1);
+        
+        H2F h2_diffZ0VsVz = new H2F("diffZ0VsVz", "#Deltaz0 vs vz", 100, -10, 2, 100, -2, 4);
+        h2_diffZ0VsVz.setTitleX("vz (cm)");
+        h2_diffZ0VsVz.setTitleY("#Deltaz0 (cm)"); 
+        histoGroupSeedTrackPass2Diff2D.addDataSet(h2_diffZ0VsVz, 2);        
+        
+        H2F h2_diffTandipVsP = new H2F("diffTandipVsP", "#Deltatandip vs p", 100, 0, 2, 100, -0.5, 0.5);
+        h2_diffTandipVsP.setTitleX("p (GeV/c)");
+        h2_diffTandipVsP.setTitleY("tandip"); 
+        histoGroupSeedTrackPass2Diff2D.addDataSet(h2_diffTandipVsP, 3);
+        H2F h2_diffTandipVsTheta = new H2F("diffTandipVsTheta", "#Deltatandip vs #theta", 100, 0.3, 2.5, 100, -0.5, 0.5);
+        h2_diffTandipVsTheta.setTitleX("#theta (rad)");
+        h2_diffTandipVsTheta.setTitleY("tandip"); 
+        histoGroupSeedTrackPass2Diff2D.addDataSet(h2_diffTandipVsTheta, 4);
+        
+        H2F h2_diffTandipVsVz = new H2F("diffTandipVsVz", "#Deltatandip vs vz", 100, -10, 2, 100, -0.5, 0.5);
+        h2_diffTandipVsVz.setTitleX("vz (cm)");
+        h2_diffTandipVsVz.setTitleY("tandip"); 
+        histoGroupSeedTrackPass2Diff2D.addDataSet(h2_diffTandipVsVz, 5);        
+        histoGroupMap.put(histoGroupSeedTrackPass2Diff2D.getName(), histoGroupSeedTrackPass2Diff2D);         
     }
              
     public void processEvent(Event event){        
@@ -140,7 +170,9 @@ public class CompareSeedTrack extends BaseAnalysis{
             }
         }
         
-        TrackHistoGroup histoGroupSeedTrackPass2Diff = (TrackHistoGroup) histoGroupMap.get("seedTrackPass2Diff");  
+        TrackHistoGroup histoGroupSeedTrackPass2Diff = (TrackHistoGroup) histoGroupMap.get("seedTrackPass2Diff"); 
+        HistoGroup histoGroupSeedTrackPass2Diff2D = histoGroupMap.get("seedTrackPass2Diff2D");
+        
         for(Seed seed : seeds){
             for(Track trk : tracksPass2){
                 if(seed.isSameClusterswithTrack(trk) && trk.isValid()){
@@ -156,6 +188,15 @@ public class CompareSeedTrack extends BaseAnalysis{
                     histoGroupSeedTrackPass2Diff.getHistoPtDiff().fill(trk.pt() - seed.pt());   
                     histoGroupSeedTrackPass2Diff.getHistoPhi0Diff().fill(trk.phi0() - seed.phi0()); 
                     histoGroupSeedTrackPass2Diff.getHistoD0Diff().fill(trk.d0() - seed.d0());  
+                    
+                    histoGroupSeedTrackPass2Diff2D.getH2F("diffZ0VsP").fill(trk.p(), trk.z0() - seed.z0());
+                    histoGroupSeedTrackPass2Diff2D.getH2F("diffZ0VsTheta").fill(trk.momentum().theta(), trk.z0() - seed.z0());
+                    histoGroupSeedTrackPass2Diff2D.getH2F("diffZ0VsVz").fill(trk.vertex().z(), trk.z0() - seed.z0());                    
+                    
+                    histoGroupSeedTrackPass2Diff2D.getH2F("diffTandipVsP").fill(trk.p(), trk.tandip() - seed.tandip());
+                    histoGroupSeedTrackPass2Diff2D.getH2F("diffTandipVsTheta").fill(trk.momentum().theta(), trk.tandip() - seed.tandip()); 
+                    histoGroupSeedTrackPass2Diff2D.getH2F("diffTandipVsVz").fill(trk.vertex().z(), trk.tandip() - seed.tandip());  
+                    
                 }
             }
        }
