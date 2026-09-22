@@ -2,6 +2,7 @@ package org.clas.element;
 
 import java.util.List;
 import java.util.ArrayList;
+import org.jlab.geom.prim.Point3D;
 
 import org.clas.utilities.Constants;
 
@@ -26,8 +27,11 @@ public class Hit implements Comparable<Hit> {
     private int clusterID;
     private int trkID;
     private int status;
-    private int order = -1;    
-              
+    private int order = -1;  
+    
+    Point3D originPoint = null;
+    Point3D endPoint = null;
+    
     public Hit(int detectorType, int trackingPass, int id, int sector, int layer, int strip, double energy, double time, double fitResidual, int trkingStat, int clusterID, int trkID, int status){
         this.detectorType = detectorType;
         this.trackingPass = trackingPass;
@@ -117,6 +121,22 @@ public class Hit implements Comparable<Hit> {
     public int order(){
         return order;
     }
+    
+    public void setOriginPoint(Point3D originPoint){
+        this.originPoint = originPoint;
+    }
+    
+    public Point3D getOriginPoint(){
+        return originPoint;
+    }  
+    
+    public void setEndPoint(Point3D endPoint){
+        this.endPoint = endPoint;
+    }
+    
+    public Point3D getEndPoint(){
+        return endPoint;
+    }     
     
     public boolean isNormalHit(){
         return order == 0;

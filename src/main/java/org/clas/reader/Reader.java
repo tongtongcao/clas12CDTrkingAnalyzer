@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
+import org.jlab.geom.prim.Point3D;
 
 import org.clas.element.RunConfig;
 import org.clas.element.MCParticle;
@@ -395,6 +396,18 @@ public class Reader {
                         hitBank.getInt("trkID", loop),
                         hitBank.getByte("status", loop)
                         );
+                
+                if (hitBank.getSchema().hasEntry("xo")) {
+                   double xo = hitBank.getFloat("xo", loop);
+                   double yo = hitBank.getFloat("yo", loop);
+                   double zo = hitBank.getFloat("zo", loop);
+                   double xe = hitBank.getFloat("xe", loop);
+                   double ye = hitBank.getFloat("ye", loop);
+                   double ze = hitBank.getFloat("ze", loop);
+                   
+                   hit.setOriginPoint(new Point3D(xo, yo, zo));
+                   hit.setEndPoint(new Point3D(xo, yo, zo));
+                }
                 
                 hits.add(hit);
             }

@@ -82,7 +82,7 @@ public class ClustersPass2TracksExtractor{
 
                     LocalEvent localEvent = new LocalEvent(localReader, event);
                     for(Track trk : localEvent.getRecTracks()){  
-                        if(trk.isValid()){
+                        if(trk.isValidTightCuts()){
                             Cross[] bstCrosses = new Cross[3];
                             Cluster[] bmtClusters = new Cluster[6];
                             
