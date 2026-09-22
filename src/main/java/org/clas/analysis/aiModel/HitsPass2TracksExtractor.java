@@ -74,11 +74,12 @@ public class HitsPass2TracksExtractor{
         // valid options for event-base analysis
         parser.addOption("-o", "", "output file name prefix");
         parser.addOption("-n", "-1", "maximum number of events to process");
-        
+        parser.addOption("-m", "1000000", "maximum output entries");
         parser.parse(args);
 
         String namePrefix = parser.getOption("-o").stringValue();
-        int maxEvents = parser.getOption("-n").intValue();   
+        int maxEvents = parser.getOption("-n").intValue();
+        int maxOutputEntries = parser.getOption("-m").intValue();
 
         List<String> inputList = parser.getInputList();
         if (inputList.isEmpty() == true) {
@@ -94,10 +95,12 @@ public class HitsPass2TracksExtractor{
         
                 // Prepare FileWriters for all 6 sectors
         Map<Integer, FileWriter> sectionWriters = new HashMap<>();
+        Map<Integer, Integer> sectionCounters = new HashMap();
         for (int section = 1; section <= 3; section++) {
             String sectionOutputName = outputName.replace(".csv", "_section" + section + ".csv");
             FileWriter writer = new FileWriter(sectionOutputName);
-            sectionWriters.put(section, writer);            
+            sectionWriters.put(section, writer);  
+            sectionCounters.put(section, 0);
         }        
 
         ProgressPrintout progress = new ProgressPrintout();
@@ -228,12 +231,17 @@ public class HitsPass2TracksExtractor{
                         sectionWriters.get(section).write(info);
                         flag = true;
                     } 
-                    if(flag) sectionWriters.get(section).write("\n");                                                
+                    if(flag) {                        
+                        sectionWriters.get(section).write("\n");
+                        
+                        int counterSection = sectionCounters.get(section) + 1;
+                        sectionCounters.put(section, counterSection);
+                    }                                                
                 }
 
                 progress.updateStatus();
                 
-                if(maxEvents > 0 && counter >= maxEvents) break;
+                if((maxEvents > 0 && counter >= maxEvents) || (maxOutputEntries > 0 && sectionCounters.containsValue(maxOutputEntries))) break;
             }
 
             progress.showStatus();
