@@ -13,18 +13,17 @@ public class Constants {
     public static int PASS = 2;
     
     // Valid cuts 
-    public static double CHI2PID = 3;
     public static double CHI2OVERNDFLOOSE = 20;
-    public static double ZMINLOOSE = -7;
-    public static double ZMAXLOOSE = 2;
-    public static double PMINLOOSE = 0.2;
-    public static double THETAMINLOOSE = 30./180.*Math.PI;
+    public static double CHI2OVERNDFTIGHT = 10; 
     
-    public static double CHI2OVERNDFTIGHT = 10;
-    public static double ZMINTIGHT = -7;
-    public static double ZMAXTIGHT = 1;
-    public static double PMINTIGHT = 0.3;
-    public static double THETAMINTIGHT = 33./180.*Math.PI;    
+    
+    public static double CHI2PID = 3;
+    public static double ZMIN = -7;
+    public static double ZMAX = 2;
+    public static double PMIN = 0.2;
+    public static double THETAMIN= 30./180.*Math.PI;
+    
+
            
     public static double BEAMENERGY = 10.6;
     public static int    TARGETPID = 2212;

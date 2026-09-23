@@ -30,8 +30,7 @@ import org.clas.utilities.Constants;
 import org.jlab.geom.prim.Point3D;
 
 /**
- * For each valid pass2 track, store all clusters in the track, and track parameters
- * Samples are used to train a model for estimation of track state with inputs of all clusters
+ * Split hits into 3 sections, hits on valid tracks are labeled as signal, while other hits are labeled as noise
  * @author Tongtong
  */
 
@@ -121,7 +120,7 @@ public class HitsPass2TracksExtractor{
                 List<Hit> bstHitsOnTracksPass2 = new ArrayList();
                 List<Hit> bmtHitsOnTracksPass2 = new ArrayList();
                 for(Track trk : localEvent.getRecTracks()){  
-                    if(trk.isValidLooseCuts(false)){
+                    if(trk.isValid(true,false)){
                         bstHitsOnTracksPass2.addAll(trk.getBSTHits());
                         bmtHitsOnTracksPass2.addAll(trk.getBMTHits());
                     }

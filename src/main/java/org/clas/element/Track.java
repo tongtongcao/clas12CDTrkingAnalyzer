@@ -805,44 +805,32 @@ public class Track implements Comparable<Track> {
     } 
     
     public boolean isValid() {
-        return isValidTightCuts(false);
+        return isValid(false, false);
     }
     
     public boolean isValid(boolean chi2pidCut) {
-        return isValidTightCuts(chi2pidCut);
+        return isValid(false, chi2pidCut);
     }    
+      
     
-    public boolean isValidTightCuts() {
-        return isValidTightCuts(false);
-    }    
-    
-    public boolean isValidTightCuts(boolean chi2pidCut) {
+    public boolean isValid(boolean looseChi2OverNDF, boolean chi2pidCut) {
         boolean value = false;
-        if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFTIGHT
-            && this.vertex().z()>Constants.ZMINTIGHT && this.vertex().z()<Constants.ZMAXTIGHT 
-            && this.p()>Constants.PMINTIGHT
-            && this.momentum().theta() > Constants.THETAMINTIGHT) value=true;
+        if(this.vertex().z()>Constants.ZMIN && this.vertex().z()<Constants.ZMAX
+            && this.p()>Constants.PMIN
+            && this.momentum().theta() > Constants.THETAMIN){
+            if(looseChi2OverNDF){
+                if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFLOOSE) value=true;
+            }
+            else{
+                if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFTIGHT) value=true;
+            }                     
+        }
         
         if(chi2pidCut && Math.abs(this.chi2pid) > Constants.CHI2PID) value = false;
         
         return value;
     }
-    
-    public boolean isValidLooseCuts(){
-        return isValidLooseCuts(false);
-    }
-    
-    public boolean isValidLooseCuts(boolean chi2pidCut) {
-        boolean value = false;
-        if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFLOOSE
-            && this.vertex().z()>Constants.ZMINLOOSE && this.vertex().z()<Constants.ZMAXLOOSE
-            && this.p()>Constants.PMINLOOSE
-            && this.momentum().theta() > Constants.THETAMINLOOSE) value=true;
-        
-        if(chi2pidCut && Math.abs(this.chi2pid) > Constants.CHI2PID) value = false;
-        
-        return value;
-    }    
+       
                 
     public int numSameHitsOnGeometry(Track o){
         int numMatchedHits = 0;

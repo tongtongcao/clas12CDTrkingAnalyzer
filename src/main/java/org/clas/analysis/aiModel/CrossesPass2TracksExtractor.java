@@ -33,7 +33,7 @@ import org.jlab.geom.prim.Point3D;
  * @author Tongtong
  */
 
-public class ClustersPass2TracksExtractor{   
+public class CrossesPass2TracksExtractor{   
     private static final Logger LOGGER = Logger.getLogger(Reader.class.getName()); 
        
     public static void main(String[] args) throws IOException {
@@ -82,7 +82,7 @@ public class ClustersPass2TracksExtractor{
 
                     LocalEvent localEvent = new LocalEvent(localReader, event);
                     for(Track trk : localEvent.getRecTracks()){  
-                        if(trk.isValidTightCuts()){
+                        if(trk.isValid()){
                             Cross[] bstCrosses = new Cross[3];
                             Cluster[] bmtClusters = new Cluster[6];
                             
