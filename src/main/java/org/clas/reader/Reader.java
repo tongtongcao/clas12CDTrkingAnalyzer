@@ -301,11 +301,7 @@ public class Reader {
         }        
         
         return crosses;
-    }
-      
-    public List<Cluster> readClusters(Event event) {
-        return readClusters(event, Constants.DETECTORBST, Constants.TRACKINGPASS2);
-    }
+    }      
     
     public List<Cluster> readClusters(Event event, int detectorType, int trackingPass) {
         Bank clusterBank = banks.getClusterBank(detectorType, trackingPass);

@@ -45,17 +45,17 @@ public class HitsPass2TracksExtractor{
         if (layer >= 1 && layer <= 2) {
             if (sector >= 1 && sector <= 4) sectionList.add(1);
             if (sector >= 4 && sector <= 8) sectionList.add(2);
-            if (sector >= 8 && sector <= 10) sectionList.add(3);
+            if ((sector >= 8 && sector <= 10) || sector == 1) sectionList.add(3);
         }
         else if (layer >= 3 && layer <= 4) {
             if (sector >= 1 && sector <= 6) sectionList.add(1);
             if (sector >= 6 && sector <= 10) sectionList.add(2);
-            if (sector >= 10 && sector <= 14) sectionList.add(3);
+            if ((sector >= 10 && sector <= 14) || sector == 1) sectionList.add(3);
         }
         else if (layer >= 5 && layer <= 6) {
             if (sector >= 1 && sector <= 7) sectionList.add(1);
             if (sector >= 7 && sector <= 13) sectionList.add(2);
-            if (sector >= 14 && sector <= 18) sectionList.add(3);
+            if ((sector >= 14 && sector <= 18) || sector == 1) sectionList.add(3);
         }
         else {
             if (sector == 1) sectionList.add(1);
@@ -194,38 +194,42 @@ public class HitsPass2TracksExtractor{
                 for(int section = 1; section <= 3; section++){
                     boolean flag = false;
                     for(Hit hit : map_section_bstHitsOnTracks.get(section)){
-                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
+                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
                                         hit.strip(), hit.getOriginPoint().x(), hit.getEndPoint().x(),
                                         hit.getOriginPoint().y(), hit.getEndPoint().y(),
                                         hit.getOriginPoint().z(), hit.getEndPoint().z(),
+                                        hit.time(), hit.energy(),
                                         hit.sector(), hit.layer(), 1);
                         sectionWriters.get(section).write(info);
                         flag = true;
                     }
 
                     for(Hit hit : map_section_bstHitsNotOnTracks.get(section)){
-                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
+                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
                                         hit.strip(), hit.getOriginPoint().x(), hit.getEndPoint().x(),
                                         hit.getOriginPoint().y(), hit.getEndPoint().y(),
                                         hit.getOriginPoint().z(), hit.getEndPoint().z(),
+                                        hit.time(), hit.energy(),
                                         hit.sector(), hit.layer(), 0);
                         sectionWriters.get(section).write(info);
                         flag = true;
                     } 
                     for(Hit hit : map_section_bmtHitsOnTracks.get(section)){
-                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
+                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
                                         hit.strip(), hit.getOriginPoint().x(), hit.getEndPoint().x(),
                                         hit.getOriginPoint().y(), hit.getEndPoint().y(),
                                         hit.getOriginPoint().z(), hit.getEndPoint().z(),
+                                        hit.time(), hit.energy(),
                                         hit.sector(), hit.layer()+6, 1);
                         sectionWriters.get(section).write(info);
                         flag = true;
                     }                        
                     for(Hit hit : map_section_bmtHitsNotOnTracks.get(section)){
-                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
+                        String info = String.format("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d\n", 
                                         hit.strip(), hit.getOriginPoint().x(), hit.getEndPoint().x(),
                                         hit.getOriginPoint().y(), hit.getEndPoint().y(),
                                         hit.getOriginPoint().z(), hit.getEndPoint().z(),
+                                        hit.time(), hit.energy(),
                                         hit.sector(), hit.layer()+6, 0);
                         sectionWriters.get(section).write(info);
                         flag = true;
