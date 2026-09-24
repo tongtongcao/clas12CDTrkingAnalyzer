@@ -68,7 +68,7 @@ public class HitsPass2TracksExtractor{
        
     public static void main(String[] args) throws IOException {
         
-        OptionParser parser = new OptionParser("extractEvents");
+        OptionParser parser = new OptionParser("Construct training samples for AI denoising");
         parser.setRequiresInputList(false);
         // valid options for event-base analysis
         parser.addOption("-o", "", "output file name prefix");
