@@ -59,7 +59,7 @@ public class CrossesPass2TracksExtractor{
             System.exit(0);
         }
         
-        String outputName = "clustersTracks.csv";
+        String outputName = "crossesTracks.csv";
         if (!namePrefix.isEmpty()) {
             outputName = namePrefix + "_" + outputName;
         }
