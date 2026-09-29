@@ -12,6 +12,9 @@ public class Constants {
     public static boolean BG = false;
     public static int PASS = 2;
     
+    public static int[] BSTSECTORS = {10, 10, 14, 14, 18, 18}; // for 6 layers
+    public static int[] BMTSTRIPS = {896, 640, 640, 1024, 768, 1152}; // for 6 layers
+    
     // Valid cuts 
     public static double CHI2OVERNDFLOOSE = 20;
     public static double CHI2OVERNDFTIGHT = 10; 

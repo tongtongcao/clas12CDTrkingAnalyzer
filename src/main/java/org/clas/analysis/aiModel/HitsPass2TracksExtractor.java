@@ -28,6 +28,7 @@ import org.clas.reader.Banks;
 import org.clas.reader.LocalEvent;
 import org.clas.utilities.Constants;
 import org.jlab.geom.prim.Point3D;
+import org.clas.utilities.CommonFunctions;
 
 /**
  * Split hits into 3 sections, hits on valid tracks are labeled as signal, while other hits are labeled as noise
@@ -36,36 +37,7 @@ import org.jlab.geom.prim.Point3D;
 
 public class HitsPass2TracksExtractor{   
     private static final Logger LOGGER = Logger.getLogger(Reader.class.getName()); 
-    
-    // Set sections based on layer and sector of hits
-    // Some SVT hits are shared by sections1&2 or sections2&3
-    private static List<Integer> getSectionList(int layer, int sector) {
-        List<Integer> sectionList = new ArrayList<>();
-
-        if (layer >= 1 && layer <= 2) {
-            if (sector >= 1 && sector <= 4) sectionList.add(1);
-            if (sector >= 4 && sector <= 8) sectionList.add(2);
-            if ((sector >= 8 && sector <= 10) || sector == 1) sectionList.add(3);
-        }
-        else if (layer >= 3 && layer <= 4) {
-            if (sector >= 1 && sector <= 6) sectionList.add(1);
-            if (sector >= 6 && sector <= 10) sectionList.add(2);
-            if ((sector >= 10 && sector <= 14) || sector == 1) sectionList.add(3);
-        }
-        else if (layer >= 5 && layer <= 6) {
-            if (sector >= 1 && sector <= 7) sectionList.add(1);
-            if (sector >= 7 && sector <= 13) sectionList.add(2);
-            if ((sector >= 14 && sector <= 18) || sector == 1) sectionList.add(3);
-        }
-        else {
-            if (sector == 1) sectionList.add(1);
-            if (sector == 2) sectionList.add(2);
-            if (sector == 3) sectionList.add(3);
-        }
-
-        return sectionList;
-    }    
-       
+               
     public static void main(String[] args) throws IOException {
         
         OptionParser parser = new OptionParser("Construct training samples for AI denoising");
@@ -170,14 +142,14 @@ public class HitsPass2TracksExtractor{
                 }
 
                 for(Hit hit : bstHitsOnTracks){
-                    List<Integer> sectionList = getSectionList(hit.layer(), hit.sector());
+                    List<Integer> sectionList = CommonFunctions.getSectionList(hit.layer(), hit.sector());
                     for(int section : sectionList){
                         map_section_bstHitsOnTracks.get(section).add(hit);
                     }
                 }
 
                 for(Hit hit : bstHitsNotOnTracks){
-                    List<Integer> sectionList = getSectionList(hit.layer(), hit.sector());
+                    List<Integer> sectionList = CommonFunctions.getSectionList(hit.layer(), hit.sector());
                     for(int section : sectionList){
                         map_section_bstHitsNotOnTracks.get(section).add(hit);
                     }

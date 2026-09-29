@@ -111,7 +111,7 @@ public class CrossesPass2TracksExtractor{
                                             bstCrosses[i].point().x(), bstCrosses[i].point().y(), bstCrosses[i].point().z(), i+1,1);
                                 } else {
                                     crsInfo = String.format("%d,%d,%d,%d,%d", 
-                                            0, 0, 0,0, 0);
+                                            0, 0, 0,i+1, 0);
                                 }                                
                                 writer.write(crsInfo + ",");                                                                 
                             }
@@ -125,18 +125,18 @@ public class CrossesPass2TracksExtractor{
                                     if(bmtClusters[i].bmtType() == Constants.BMTC){
                                         double z = (bmtClusters[i].originPoint().z() + bmtClusters[i].endPoint().z()) / 2;
                                         clsInfo = String.format("%.4f,%.4f,%d,%d", 
-                                            r, z, i+3, 1);
+                                            r, z, i+4, 1);
                                     }
                                     else{
                                         double phi = (Math.atan2(bmtClusters[i].originPoint().x(), bmtClusters[i].originPoint().y()) + 
                                                 Math.atan2(bmtClusters[i].endPoint().x(), bmtClusters[i].endPoint().y())) / 2;
                                         clsInfo = String.format("%.4f,%.4f,%d,%d", 
-                                            r, phi, i+3, 1);
+                                            r, phi, i+4, 1);
                                     }
                                 }
                                 else {
                                     clsInfo = String.format("%d,%d,%d,%d", 
-                                            0, 0, 0, 0);                                                                
+                                            0, 0, i+4, 0);                                                                
                                 }
                                 
                                 writer.write(clsInfo + ",");                                      
