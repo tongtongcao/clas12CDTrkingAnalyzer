@@ -35,9 +35,14 @@ import org.jlab.groot.data.H2F;
  * 
  * @author Tongtong Cao
  */
-public class ExploreCutsonTrackCandidates extends BaseAnalysis{ 
+public class ExploreCutsonTrackCandidates extends BaseAnalysis{
     
-       
+    private double zMin = -7;
+    private double zMax = -1;
+    private double pMin = 0.3;
+    private double thetaMin = 35; // degree
+    private double chi2OverNDFMax = 10;
+               
     public ExploreCutsonTrackCandidates(){}
     
     @Override
@@ -132,7 +137,7 @@ public class ExploreCutsonTrackCandidates extends BaseAnalysis{
         h1_maxZDiff.setTitleX("max of z diff among crosses on tracks (cm)");
         h1_maxZDiff.setTitleY("counts");         
         histoGroupZ.addDataSet(h1_maxZDiff, 5);
-        histoGroupMap.put(histoGroupZ.getName(), histoGroupZ);          
+        histoGroupMap.put(histoGroupZ.getName(), histoGroupZ);                         
     }
              
     public void processEvent(Event event){        
@@ -148,7 +153,7 @@ public class ExploreCutsonTrackCandidates extends BaseAnalysis{
         HistoGroup histoGroupPhi = histoGroupMap.get("phi");  
         HistoGroup histoGroupZ = histoGroupMap.get("z"); 
         for(Track trk : tracksPass2){
-            if(trk.isValid()){
+            if(trk.isValid(zMin, zMax, pMin, thetaMin/180.*Math.PI, chi2OverNDFMax)){
                 if(!trk.getBMTClusters().isEmpty()){
                     for(Cluster cls : trk.getBSTClusters()){
                         histoGroupBSTSection.getH1F("bstSectors for R" + Integer.toString((cls.layer()+1)/2) + "S" + Integer.toString(trk.getBMTClusters().get(0).sector())).fill(cls.sector());

@@ -36,6 +36,11 @@ import org.jlab.groot.data.H2F;
  */
 public class CompareSeedTrack extends BaseAnalysis{ 
     
+    private double zMin = -7;
+    private double zMax = -1;
+    private double pMin = 0.3;
+    private double thetaMin = 35; // degree
+    private double chi2OverNDFMax = 10;    
        
     public CompareSeedTrack(){}
     
@@ -175,7 +180,7 @@ public class CompareSeedTrack extends BaseAnalysis{
         
         for(Seed seed : seeds){
             for(Track trk : tracksPass2){
-                if(seed.isSameClusterswithTrack(trk) && trk.isValid()){
+                if(seed.isSameClusterswithTrack(trk) && trk.isValid(zMin, zMax, pMin, thetaMin/180.*Math.PI, chi2OverNDFMax)){
                     histoGroupSeedTrackPass2Diff.getHistoPDiff().fill(trk.momentum().mag() - seed.momentum().mag());
                     histoGroupSeedTrackPass2Diff.getHistoThetaDiff().fill(trk.momentum().theta() - seed.momentum().theta());
                     histoGroupSeedTrackPass2Diff.getHistoPhiDiff().fill(trk.momentum().phi() - seed.momentum().phi());            
@@ -204,7 +209,7 @@ public class CompareSeedTrack extends BaseAnalysis{
         TrackHistoGroup histoGroupTrackPass1Pass2Diff = (TrackHistoGroup) histoGroupMap.get("trackPass1Pass2Diff");  
         for(Track trk1 : tracksPass1){
             for(Track trk2 : tracksPass2){
-                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2) && trk2.isValid()){
+                if(trk1.isSameTrackWithAllSameSeedClustersOnGeometry(trk2) && trk2.isValid(zMin, zMax, pMin, thetaMin/180.*Math.PI, chi2OverNDFMax)){
                     histoGroupTrackPass1Pass2Diff.getHistoNKFItersDiff().fill(trk2.nKFIters() - trk1.nKFIters());
                     histoGroupTrackPass1Pass2Diff.getHistoChi2overndfDiff().fill(trk2.chi2()/trk2.ndf() - trk1.chi2()/trk1.ndf());
                     histoGroupTrackPass1Pass2Diff.getHistoNDFDiff().fill(trk2.ndf() - trk1.ndf());                    

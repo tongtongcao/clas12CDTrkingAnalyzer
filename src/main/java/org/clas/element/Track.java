@@ -802,7 +802,23 @@ public class Track implements Comparable<Track> {
             return new Particle(this.pid(), this.vertex().x(), this.vertex().y(), this.vertex().z(), this.momentum().x(), this.momentum().y(), this.momentum().z());
         else
             return null;
-    } 
+    }
+         
+    public boolean isValid(double zMin, double zMax, double pMin, double thetaMin, double chi2OverNDFMax, double chi2PIDMin) {
+        boolean value = false;
+        if(this.vertex().z()>zMin && this.vertex().z()<zMax
+            && this.p()>pMin
+            && this.momentum().theta() > thetaMin
+            && this.chi2()/this.ndf() < chi2OverNDFMax) value=true;                 
+        
+        if(Math.abs(this.chi2pid) > chi2PIDMin) value = false;
+        
+        return value;
+    }
+    
+    public boolean isValid(double zMin, double zMax, double pMin, double thetaMin, double chi2OverNDFMax) {
+        return isValid(zMin, zMax, pMin, thetaMin, chi2OverNDFMax, -1);
+    }      
     
     public boolean isValid() {
         return isValid(false, false);
