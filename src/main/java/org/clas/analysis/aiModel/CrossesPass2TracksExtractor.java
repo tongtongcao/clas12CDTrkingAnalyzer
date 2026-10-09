@@ -128,8 +128,8 @@ public class CrossesPass2TracksExtractor{
                                             r, z, i+4, 1);
                                     }
                                     else{
-                                        double phi = (Math.atan2(bmtClusters[i].originPoint().x(), bmtClusters[i].originPoint().y()) + 
-                                                Math.atan2(bmtClusters[i].endPoint().x(), bmtClusters[i].endPoint().y())) / 2;
+                                        double phi = (Math.atan2(bmtClusters[i].originPoint().y(), bmtClusters[i].originPoint().x()) + 
+                                                Math.atan2(bmtClusters[i].endPoint().y(), bmtClusters[i].endPoint().x())) / 2;
                                         clsInfo = String.format("%.4f,%.4f,%d,%d", 
                                             r, phi, i+4, 1);
                                     }
