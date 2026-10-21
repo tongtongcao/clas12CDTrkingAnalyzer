@@ -222,8 +222,8 @@ public class Match {
                 for(Cross crs2 : crosses2){
                     int cluster1Id = -1;
                     int cluster2Id = -1;
-                    if(crs1.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
-                    if(crs1.getCluster2() != null) cluster2Id = crs2.getCluster2().id();
+                    if(crs2.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
+                    if(crs2.getCluster2() != null) cluster2Id = crs2.getCluster2().id();
                     if(matchedCluster1Id == cluster1Id && matchedCluster2Id == cluster2Id){
                         crs1.setFoundMatchedCross(true);
                         crs2.setFoundMatchedCross(true);
@@ -249,7 +249,7 @@ public class Match {
             if(matchedCluster1Id != -1){
                 for(Cross crs2 : crosses2){
                     int cluster1Id = -1;
-                    if(crs1.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
+                    if(crs2.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
                     if(matchedCluster1Id == cluster1Id){
                         crs1.setFoundMatchedCross(true);
                         crs2.setFoundMatchedCross(true);
@@ -327,9 +327,11 @@ public class Match {
                     }                                        
                     if(matchedCrossPairList.size() > maxNumMatchedCrosses){
                         maxNumMatchedCrosses = matchedCrossPairList.size();
-                        matchedSeedListWithMostMatchedCrosses2.clear();
+                        matchedSeedListWithMostMatchedCrosses2.clear();                        
                         matchedSeedListWithMostMatchedCrosses2.add(seed2);
+                        matchedCrossPairListList.clear();
                         matchedCrossPairListList.add(matchedCrossPairList);
+                        matchedClusterPairListList.clear();
                         matchedClusterPairListList.add(matchedClusterPairList);
                     }
                     else if(!matchedCrossPairList.isEmpty() && matchedCrossPairList.size() == maxNumMatchedCrosses){
@@ -452,7 +454,9 @@ public class Match {
                         maxNumMatchedCrosses = matchedCrossPairList.size();
                         matchedTrackListWithMostMatchedCrosses2.clear();
                         matchedTrackListWithMostMatchedCrosses2.add(track2);
+                        matchedCrossPairListList.clear();
                         matchedCrossPairListList.add(matchedCrossPairList);
+                        matchedClusterPairListList.clear();
                         matchedClusterPairListList.add(matchedClusterPairList);
                     }
                     else if(!matchedCrossPairList.isEmpty() && matchedCrossPairList.size() == maxNumMatchedCrosses){
