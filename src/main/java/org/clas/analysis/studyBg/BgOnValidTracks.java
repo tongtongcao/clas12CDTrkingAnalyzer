@@ -2464,7 +2464,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 
         System.out.println(String.format("Cut on hit purity of tracks: %10.2f; Cut on hit efficiency of tracks: %10.2f", PURITYCUT[5], EFFICIENCYCUT[5]));
         System.out.println("                                   Evolution of tracking efficiency                                   ");
-        System.out.println("           |     origin |  hit recon  | clustering |  crossing  |  tracking  | valid cuts |");        
+        System.out.println("           |     origin |  hit recon | clustering |   crossing |    seeding |   tracking | valid cuts |");        
         System.out.println(String.format("efficiency " + "| %10.4f | % 10.4f | %10.4f | %10.4f | %10.4f | %10.4f | %10.4f |", 
                 ratio[0], ratio[1], ratio[2], ratio[3], ratio[4], ratio[5], ratio[6]));
         System.out.println(String.format("error      " + "| %10.4f | % 10.4f | %10.4f | %10.4f | %10.4f | %10.4f | %10.4f |", 
@@ -2473,12 +2473,12 @@ public class BgOnValidTracks extends BaseAnalysis{
         if(saveEffStats){
             try (PrintWriter out = new PrintWriter(new FileWriter(effFileName))) {      
                 out.println(String.format(
-                    "%10.4f,% 10.4f,%10.4f,%10.4f,%10.4f,%10.4f,%10.4f,%10.4f", 
-                    ratio[0], ratio[1], ratio[2], ratio[3], ratio[4], ratio[5], ratio[6], ratio[7]
+                    "%10.4f,% 10.4f,%10.4f,%10.4f,%10.4f,%10.4f,%10.4f", 
+                    ratio[0], ratio[1], ratio[2], ratio[3], ratio[4], ratio[5], ratio[6]
                 ));
                 out.println(String.format(
-                    "%10.4f,% 10.4f,%10.4f,%10.4f,%10.4f,%10.4f,%10.4f,%10.4f", 
-                    ratio_err[0], ratio_err[1], ratio_err[2], ratio_err[3], ratio_err[4], ratio_err[5], ratio_err[6], ratio_err[7]
+                    "%10.4f,% 10.4f,%10.4f,%10.4f,%10.4f,%10.4f,%10.4f", 
+                    ratio_err[0], ratio_err[1], ratio_err[2], ratio_err[3], ratio_err[4], ratio_err[5], ratio_err[6]
                 ));
 
             } catch (IOException e) {
