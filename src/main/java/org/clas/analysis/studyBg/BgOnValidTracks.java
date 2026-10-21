@@ -42,6 +42,12 @@ public class BgOnValidTracks extends BaseAnalysis{
     final static double EFFICIENCYCUT[] = {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
     final static double PURITYCUT[] = {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
     
+    final static double minEFFICIENCYCUT = EFFICIENCYCUT[0];
+    final static double maxEFFICIENCYCUT = EFFICIENCYCUT[CUTOPTIONS-1];
+    final static double cutInterval = (maxEFFICIENCYCUT - minEFFICIENCYCUT) / (CUTOPTIONS - 1);
+    final static double minHistoAxis = minEFFICIENCYCUT - cutInterval/2.;
+    final static double maxHistoAxis = maxEFFICIENCYCUT + cutInterval/2.; 
+    
     private int numTotalTracks1 = 0;
     
     private int numHitMatchedTracksHitLevelPurity[] = new int[CUTOPTIONS];
@@ -105,7 +111,7 @@ public class BgOnValidTracks extends BaseAnalysis{
     private int numCrossMatchedTracksCrossLevel[][] = new int[CUTOPTIONS][CUTOPTIONS];
     private int numCrossMatchedTracksSeedLevel[][] = new int[CUTOPTIONS][CUTOPTIONS];
     private int numCrossMatchedTracksTrackLevel[][] = new int[CUTOPTIONS][CUTOPTIONS];
-    private int numCrossMatchedTracksValidTrackLevel[][] = new int[CUTOPTIONS][CUTOPTIONS]; 
+    private int numCrossMatchedTracksValidTrackLevel[][] = new int[CUTOPTIONS][CUTOPTIONS];     
     
     public BgOnValidTracks(){}
     
@@ -1194,6 +1200,292 @@ public class BgOnValidTracks extends BaseAnalysis{
         h2_efficiencyVsTheta_matchedValidTracks.setTitleY("efficiency");
         histoGroupMatchedValidTracks.addDataSet(h2_efficiencyVsTheta_matchedValidTracks, 3);                  
         histoGroupMap.put(histoGroupMatchedValidTracks.getName(), histoGroupMatchedValidTracks);
+                
+        HistoGroup histoGroupTrkEfficiencyVsPurityBasedHitMatch= new HistoGroup("trkEfficiencyVsPurityBasedHitMatch", 3, 2);
+        H1F h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchHitLevel", "tracking efficiency vs purity based on hit match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel.setTitleX("cut on hit purity of track");
+        h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel.setTitleY("tracking efficiecny");        
+        H1F h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchClusterLevel", "tracking efficiency vs purity based on hit match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel.setTitleX("cut on hit purity of track");
+        h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel.setTitleY("tracking efficiecny");          
+        H1F h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchCrossLevel", "tracking efficiency vs purity based on hit match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel.setTitleX("cut on hit purity of track");
+        h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchSeedLevel", "tracking efficiency vs purity based on hit match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel.setTitleX("cut on hit purity of track");
+        h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchTrackLevel", "tracking efficiency vs purity based on hit match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel.setTitleX("cut on hit purity of track");
+        h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel", "tracking efficiency vs purity based on hit match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel.setTitleX("cut on hit purity of track");
+        h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel.setTitleY("tracking efficiecny");          
+        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel, 0);
+        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyVsPurityBasedHitMatch.getName(), histoGroupTrkEfficiencyVsPurityBasedHitMatch);
+        
+        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch= new HistoGroup("trkEfficiencyVsEfficiencyBasedHitMatch", 3, 2);
+        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel", "tracking efficiency vs efficiency based on hit match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel.setTitleX("cut on hit efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel.setTitleY("tracking efficiecny");        
+        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel", "tracking efficiency vs efficiency based on hit match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel.setTitleX("cut on hit efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel.setTitleY("tracking efficiecny");          
+        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel", "tracking efficiency vs efficiency based on hit match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel.setTitleX("cut on hit efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel", "tracking efficiency vs efficiency based on hit match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel.setTitleX("cut  on hit efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel", "tracking efficiency vs efficiency based on hit match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel.setTitleX("cut on hit efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel", "tracking efficiency vs efficiency based on hit match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel.setTitleX("cut on hit efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel.setTitleY("tracking efficiecny");          
+        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel, 0);
+        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getName(), histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch);         
+        
+        HistoGroup histoGroupTrkEfficiencyBasedHitMatch= new HistoGroup("trkEfficiencyBasedHitMatch", 3, 2);
+        H2F h2_trackingEfficiencyBasedHitMatchHitLevel = new H2F("trackingEfficiencyBasedHitMatchHitLevel", "tracking efficiency based on hit match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedHitMatchHitLevel.setTitleX("cut on hit efficiency of track");
+        h2_trackingEfficiencyBasedHitMatchHitLevel.setTitleY("cut on hit purity of track");        
+        H2F h2_trackingEfficiencyBasedHitMatchClusterLevel = new H2F("trackingEfficiencyBasedHitMatchClusterLevel", "tracking efficiency based on hit match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedHitMatchClusterLevel.setTitleX("cut on hit efficiency of track");
+        h2_trackingEfficiencyBasedHitMatchClusterLevel.setTitleY("cut on hit purity of track");          
+        H2F h2_trackingEfficiencyBasedHitMatchCrossLevel = new H2F("trackingEfficiencyBasedHitMatchCrossLevel", "tracking efficiency based on hit match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedHitMatchCrossLevel.setTitleX("cut on hit efficiency of track");
+        h2_trackingEfficiencyBasedHitMatchCrossLevel.setTitleY("cut on hit purity of track"); 
+        H2F h2_trackingEfficiencyBasedHitMatchSeedLevel = new H2F("trackingEfficiencyBasedHitMatchSeedLevel", "tracking efficiency based on hit match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedHitMatchSeedLevel.setTitleX("cut on hit efficiency of track");
+        h2_trackingEfficiencyBasedHitMatchSeedLevel.setTitleY("cut on hit purity of track"); 
+        H2F h2_trackingEfficiencyBasedHitMatchTrackLevel = new H2F("trackingEfficiencyBasedHitMatchTrackLevel", "tracking efficiency based on hit match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedHitMatchTrackLevel.setTitleX("cut on hit efficiency of track");
+        h2_trackingEfficiencyBasedHitMatchTrackLevel.setTitleY("cut on hit purity of track"); 
+        H2F h2_trackingEfficiencyBasedHitMatchValidTrackLevel = new H2F("trackingEfficiencyBasedHitMatchValidTrackLevel", "tracking efficiency based on hit match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedHitMatchValidTrackLevel.setTitleX("cut on hit efficiency of track");
+        h2_trackingEfficiencyBasedHitMatchValidTrackLevel.setTitleY("cut on hit purity of track");          
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchHitLevel, 0);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyBasedHitMatch.getName(), histoGroupTrkEfficiencyBasedHitMatch);   
+        
+        HistoGroup histoGroupTrkEfficiencyVsPurityBasedClusterMatch= new HistoGroup("trkEfficiencyVsPurityBasedClusterMatch", 3, 2);
+        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchHitLevel", "tracking efficiency vs purity based on cluster match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel.setTitleX("cut on cluster purity of track");
+        h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel.setTitleY("tracking efficiecny");        
+        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchClusterLevel", "tracking efficiency vs purity based on cluster match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel.setTitleX("cut on cluster purity of track");
+        h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel.setTitleY("tracking efficiecny");          
+        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchCrossLevel", "tracking efficiency vs purity based on cluster match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel.setTitleX("cut on cluster purity of track");
+        h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchSeedLevel", "tracking efficiency vs purity based on cluster match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel.setTitleX("cut on cluster purity of track");
+        h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchTrackLevel", "tracking efficiency vs purity based on cluster match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel.setTitleX("cut on cluster purity of track");
+        h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel", "tracking efficiency vs purity based on cluster match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel.setTitleX("cut on cluster purity of track");
+        h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel.setTitleY("tracking efficiecny");          
+        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel, 0);
+        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getName(), histoGroupTrkEfficiencyVsPurityBasedClusterMatch); 
+        
+        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch= new HistoGroup("trkEfficiencyVsEfficiencyBasedClusterMatch", 3, 2);
+        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel", "tracking efficiency vs efficiency based on cluster match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel.setTitleX("cut on cluster efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel.setTitleY("tracking efficiecny");        
+        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel", "tracking efficiency vs efficiency based on cluster match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel.setTitleX("cut on cluster efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel.setTitleY("tracking efficiecny");          
+        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel", "tracking efficiency vs efficiency based on cluster match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel.setTitleX("cut on cluster efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel", "tracking efficiency vs efficiency based on cluster match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel.setTitleX("cut  on cluster efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel", "tracking efficiency vs efficiency based on cluster match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel.setTitleX("cut on cluster efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel", "tracking efficiency vs efficiency based on cluster match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel.setTitleX("cut on cluster efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel.setTitleY("tracking efficiecny");          
+        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel, 0);
+        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getName(), histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch);         
+                
+        HistoGroup histoGroupTrkEfficiencyBasedClusterMatch= new HistoGroup("trkEfficiencyBasedClusterMatch", 3, 2);
+        H2F h2_trackingEfficiencyBasedClusterMatchHitLevel = new H2F("trackingEfficiencyBasedClusterMatchHitLevel", "tracking efficiency based on cluster match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedClusterMatchHitLevel.setTitleX("cut on cluster efficiency of track");
+        h2_trackingEfficiencyBasedClusterMatchHitLevel.setTitleY("cut on cluster purity of track");        
+        H2F h2_trackingEfficiencyBasedClusterMatchClusterLevel = new H2F("trackingEfficiencyBasedClusterMatchClusterLevel", "tracking efficiency based on cluster match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedClusterMatchClusterLevel.setTitleX("cut on cluster efficiency of track");
+        h2_trackingEfficiencyBasedClusterMatchClusterLevel.setTitleY("cut on cluster purity of track");          
+        H2F h2_trackingEfficiencyBasedClusterMatchCrossLevel = new H2F("trackingEfficiencyBasedClusterMatchCrossLevel", "tracking efficiency based on cluster match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedClusterMatchCrossLevel.setTitleX("cut on cluster efficiency of track");
+        h2_trackingEfficiencyBasedClusterMatchCrossLevel.setTitleY("cut on cluster purity of track"); 
+        H2F h2_trackingEfficiencyBasedClusterMatchSeedLevel = new H2F("trackingEfficiencyBasedClusterMatchSeedLevel", "tracking efficiency based on cluster match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedClusterMatchSeedLevel.setTitleX("cut on cluster efficiency of track");
+        h2_trackingEfficiencyBasedClusterMatchSeedLevel.setTitleY("cut on cluster purity of track"); 
+        H2F h2_trackingEfficiencyBasedClusterMatchTrackLevel = new H2F("trackingEfficiencyBasedClusterMatchTrackLevel", "tracking efficiency based on cluster match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedClusterMatchTrackLevel.setTitleX("cut on cluster efficiency of track");
+        h2_trackingEfficiencyBasedClusterMatchTrackLevel.setTitleY("cut on cluster purity of track"); 
+        H2F h2_trackingEfficiencyBasedClusterMatchValidTrackLevel = new H2F("trackingEfficiencyBasedClusterMatchValidTrackLevel", "tracking efficiency based on cluster match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedClusterMatchValidTrackLevel.setTitleX("cut on cluster efficiency of track");
+        h2_trackingEfficiencyBasedClusterMatchValidTrackLevel.setTitleY("cut on cluster purity of track"); 
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchHitLevel, 0);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyBasedClusterMatch.getName(), histoGroupTrkEfficiencyBasedClusterMatch);   
+        
+        HistoGroup histoGroupTrkEfficiencyVsPurityBasedCrossMatch= new HistoGroup("trkEfficiencyVsPurityBasedCrossMatch", 3, 2);
+        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchHitLevel", "tracking efficiency vs purity based on cross match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel.setTitleX("cut on cross purity of track");
+        h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel.setTitleY("tracking efficiecny");        
+        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchClusterLevel", "tracking efficiency vs purity based on cross match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel.setTitleX("cut on cross purity of track");
+        h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel.setTitleY("tracking efficiecny");          
+        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchCrossLevel", "tracking efficiency vs purity based on cross match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel.setTitleX("cut on cross purity of track");
+        h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchSeedLevel", "tracking efficiency vs purity based on cross match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel.setTitleX("cut on cross purity of track");
+        h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchTrackLevel", "tracking efficiency vs purity based on cross match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel.setTitleX("cut on cross purity of track");
+        h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel", "tracking efficiency vs purity based on cross match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel.setTitleX("cut on cross purity of track");
+        h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel.setTitleY("tracking efficiecny");          
+        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel, 0);
+        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getName(), histoGroupTrkEfficiencyVsPurityBasedCrossMatch); 
+        
+        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch= new HistoGroup("trkEfficiencyVsEfficiencyBasedCrossMatch", 3, 2);
+        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel", "tracking efficiency vs efficiency based on cross match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel.setTitleX("cut on cross efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel.setTitleY("tracking efficiecny");        
+        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel", "tracking efficiency vs efficiency based on cross match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel.setTitleX("cut on cross efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel.setTitleY("tracking efficiecny");          
+        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel", "tracking efficiency vs efficiency based on cross match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel.setTitleX("cut on cross efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel", "tracking efficiency vs efficiency based on cross match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel.setTitleX("cut  on cross efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel", "tracking efficiency vs efficiency based on cross match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel.setTitleX("cut on cross efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel.setTitleY("tracking efficiecny"); 
+        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel", "tracking efficiency vs efficiency based on cross match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel.setTitleX("cut on cross efficiency of track");
+        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel.setTitleY("tracking efficiecny");          
+        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel, 0);
+        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getName(), histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch);                 
+
+        HistoGroup histoGroupTrkEfficiencyBasedCrossMatch= new HistoGroup("trkEfficiencyBasedCrossMatch", 3, 2);
+        H2F h2_trackingEfficiencyBasedCrossMatchHitLevel = new H2F("trackingEfficiencyBasedCrossMatchHitLevel", "tracking efficiency based on cross match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedCrossMatchHitLevel.setTitleX("cut on cross efficiency of track");
+        h2_trackingEfficiencyBasedCrossMatchHitLevel.setTitleY("cut on cross purity of track");        
+        H2F h2_trackingEfficiencyBasedCrossMatchClusterLevel = new H2F("trackingEfficiencyBasedCrossMatchClusterLevel", "tracking efficiency based on cross match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedCrossMatchClusterLevel.setTitleX("cut on cross efficiency of track");
+        h2_trackingEfficiencyBasedCrossMatchClusterLevel.setTitleY("cut on cross purity of track");          
+        H2F h2_trackingEfficiencyBasedCrossMatchCrossLevel = new H2F("trackingEfficiencyBasedCrossMatchCrossLevel", "tracking efficiency based on cross match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedCrossMatchCrossLevel.setTitleX("cut on cross efficiency of track");
+        h2_trackingEfficiencyBasedCrossMatchCrossLevel.setTitleY("cut on cross purity of track"); 
+        H2F h2_trackingEfficiencyBasedCrossMatchSeedLevel = new H2F("trackingEfficiencyBasedCrossMatchSeedLevel", "tracking efficiency based on cross match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedCrossMatchSeedLevel.setTitleX("cut on cross efficiency of track");
+        h2_trackingEfficiencyBasedCrossMatchSeedLevel.setTitleY("cut on cross purity of track"); 
+        H2F h2_trackingEfficiencyBasedCrossMatchTrackLevel = new H2F("trackingEfficiencyBasedCrossMatchTrackLevel", "tracking efficiency based on cross match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedCrossMatchTrackLevel.setTitleX("cut on cross efficiency of track");
+        h2_trackingEfficiencyBasedCrossMatchTrackLevel.setTitleY("cut on cross purity of track"); 
+        H2F h2_trackingEfficiencyBasedCrossMatchValidTrackLevel = new H2F("trackingEfficiencyBasedCrossMatchValidTrackLevel", "tracking efficiency based on cross match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
+        h2_trackingEfficiencyBasedCrossMatchValidTrackLevel.setTitleX("cut on cross efficiency of track");
+        h2_trackingEfficiencyBasedCrossMatchValidTrackLevel.setTitleY("cut on cross purity of track"); 
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchHitLevel, 0);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchClusterLevel, 1);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchCrossLevel, 2);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchSeedLevel, 3);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchTrackLevel, 4);
+        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchValidTrackLevel, 5);
+        histoGroupMap.put(histoGroupTrkEfficiencyBasedCrossMatch.getName(), histoGroupTrkEfficiencyBasedCrossMatch);   
+        
+        HistoGroup histoGroupTrackEfficiencyBasedHitMatch = new HistoGroup("trackEfficiencyBasedHitMatch", CUTOPTIONS, CUTOPTIONS);
+        for(int i = 0; i < CUTOPTIONS; i++){
+            for(int j = 0; j < CUTOPTIONS; j++){
+                int numRemainingTracksBasedHitMatch[] = {numTotalTracks1, numHitMatchedTracksHitLevel[i][j], numHitMatchedTracksClusterLevel[i][j], 
+            numHitMatchedTracksCrossLevel[i][j], numHitMatchedTracksSeedLevel[i][j], numHitMatchedTracksTrackLevel[i][j], numHitMatchedTracksValidTrackLevel[i][j]};
+                H1F h1_trackingEfficiencyBasedHitMatch = new H1F("trackingEfficiencyBasedHitMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), 7, -0.5, 6.5);        
+                h1_trackingEfficiencyBasedHitMatch.setTitleX("recon level");
+                h1_trackingEfficiencyBasedHitMatch.setTitleY("Counts");
+                h1_trackingEfficiencyBasedHitMatch.setLineColor(1);
+                histoGroupTrackEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyBasedHitMatch, i*CUTOPTIONS+j);
+            }
+        }
+        histoGroupMap.put(histoGroupTrackEfficiencyBasedHitMatch.getName(), histoGroupTrackEfficiencyBasedHitMatch);   
+        
+        HistoGroup histoGroupTrackEfficiencyBasedClusterMatch = new HistoGroup("trackEfficiencyBasedClusterMatch", CUTOPTIONS, CUTOPTIONS);
+        for(int i = 0; i < CUTOPTIONS; i++){
+            for(int j = 0; j < CUTOPTIONS; j++){
+                int numRemainingTracksBasedClusterMatch[] = {numTotalTracks1, numClusterMatchedTracksHitLevel[i][j], numClusterMatchedTracksClusterLevel[i][j], 
+            numClusterMatchedTracksCrossLevel[i][j], numClusterMatchedTracksSeedLevel[i][j], numClusterMatchedTracksTrackLevel[i][j], numClusterMatchedTracksValidTrackLevel[i][j]};
+                H1F h1_trackingEfficiencyBasedClusterMatch = new H1F("trackingEfficiencyBasedClusterMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), 7, -0.5, 6.5);      
+                h1_trackingEfficiencyBasedClusterMatch.setTitleX("recon level");
+                h1_trackingEfficiencyBasedClusterMatch.setTitleY("Counts");
+                h1_trackingEfficiencyBasedClusterMatch.setLineColor(1);
+                histoGroupTrackEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyBasedClusterMatch, i*CUTOPTIONS+j);
+            }
+        }
+        histoGroupMap.put(histoGroupTrackEfficiencyBasedClusterMatch.getName(), histoGroupTrackEfficiencyBasedClusterMatch); 
+
+        HistoGroup histoGroupTrackEfficiencyBasedCrossMatch = new HistoGroup("trackEfficiencyBasedCrossMatch", CUTOPTIONS, CUTOPTIONS);
+        for(int i = 0; i < CUTOPTIONS; i++){
+            for(int j = 0; j < CUTOPTIONS; j++){
+                int numRemainingTracksBasedCrossMatch[] = {numTotalTracks1, numCrossMatchedTracksHitLevel[i][j], numCrossMatchedTracksClusterLevel[i][j], 
+            numCrossMatchedTracksCrossLevel[i][j], numCrossMatchedTracksSeedLevel[i][j], numCrossMatchedTracksTrackLevel[i][j], numCrossMatchedTracksValidTrackLevel[i][j]};
+                H1F h1_trackingEfficiencyBasedCrossMatch = new H1F("trackingEfficiencyBasedCrossMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), 7, -0.5, 6.5);      
+                h1_trackingEfficiencyBasedCrossMatch.setTitleX("recon level");
+                h1_trackingEfficiencyBasedCrossMatch.setTitleY("Counts");
+                h1_trackingEfficiencyBasedCrossMatch.setLineColor(1);
+                histoGroupTrackEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyBasedCrossMatch, i*CUTOPTIONS+j);
+            }
+        }
+        histoGroupMap.put(histoGroupTrackEfficiencyBasedCrossMatch.getName(), histoGroupTrackEfficiencyBasedCrossMatch);        
+               
     }
              
     public void processEvent(Event event1, Event event2, boolean uTrack){        
@@ -2040,384 +2332,127 @@ public class BgOnValidTracks extends BaseAnalysis{
         }
     }
     
-    public void postEventProcess(String effFileName, boolean saveEffStats) {  
-        double minEFFICIENCYCUT = EFFICIENCYCUT[0];
-        double maxEFFICIENCYCUT = EFFICIENCYCUT[CUTOPTIONS-1];
-        double cutInterval = (maxEFFICIENCYCUT - minEFFICIENCYCUT) / (CUTOPTIONS - 1);
-        double minHistoAxis = minEFFICIENCYCUT - cutInterval/2.;
-        double maxHistoAxis = maxEFFICIENCYCUT + cutInterval/2.;        
-        
-        HistoGroup histoGroupTrkEfficiencyVsPurityBasedHitMatch= new HistoGroup("trkEfficiencyVsPurityBasedHitMatch", 3, 2);
-        H1F h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchHitLevel", "tracking efficiency vs purity based on hit match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel.setTitleX("cut on hit purity of track");
-        h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel.setTitleY("tracking efficiecny");        
-        H1F h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchClusterLevel", "tracking efficiency vs purity based on hit match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel.setTitleX("cut on hit purity of track");
-        h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel.setTitleY("tracking efficiecny");          
-        H1F h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchCrossLevel", "tracking efficiency vs purity based on hit match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel.setTitleX("cut on hit purity of track");
-        h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchSeedLevel", "tracking efficiency vs purity based on hit match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel.setTitleX("cut on hit purity of track");
-        h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchTrackLevel", "tracking efficiency vs purity based on hit match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel.setTitleX("cut on hit purity of track");
-        h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel = new H1F("trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel", "tracking efficiency vs purity based on hit match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel.setTitleX("cut on hit purity of track");
-        h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel.setTitleY("tracking efficiecny");          
-        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel, 0);
-        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyVsPurityBasedHitMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyVsPurityBasedHitMatch.getName(), histoGroupTrkEfficiencyVsPurityBasedHitMatch); 
-        
-        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch= new HistoGroup("trkEfficiencyVsEfficiencyBasedHitMatch", 3, 2);
-        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel", "tracking efficiency vs efficiency based on hit match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel.setTitleX("cut on hit efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel.setTitleY("tracking efficiecny");        
-        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel", "tracking efficiency vs efficiency based on hit match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel.setTitleX("cut on hit efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel.setTitleY("tracking efficiecny");          
-        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel", "tracking efficiency vs efficiency based on hit match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel.setTitleX("cut on hit efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel", "tracking efficiency vs efficiency based on hit match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel.setTitleX("cut  on hit efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel", "tracking efficiency vs efficiency based on hit match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel.setTitleX("cut on hit efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel", "tracking efficiency vs efficiency based on hit match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel.setTitleX("cut on hit efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel.setTitleY("tracking efficiecny");          
-        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel, 0);
-        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getName(), histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch);         
-        
-        HistoGroup histoGroupTrkEfficiencyBasedHitMatch= new HistoGroup("trkEfficiencyBasedHitMatch", 3, 2);
-        H2F h2_trackingEfficiencyBasedHitMatchHitLevel = new H2F("trackingEfficiencyBasedHitMatchHitLevel", "tracking efficiency based on hit match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedHitMatchHitLevel.setTitleX("cut on hit efficiency of track");
-        h2_trackingEfficiencyBasedHitMatchHitLevel.setTitleY("cut on hit purity of track");        
-        H2F h2_trackingEfficiencyBasedHitMatchClusterLevel = new H2F("trackingEfficiencyBasedHitMatchClusterLevel", "tracking efficiency based on hit match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedHitMatchClusterLevel.setTitleX("cut on hit efficiency of track");
-        h2_trackingEfficiencyBasedHitMatchClusterLevel.setTitleY("cut on hit purity of track");          
-        H2F h2_trackingEfficiencyBasedHitMatchCrossLevel = new H2F("trackingEfficiencyBasedHitMatchCrossLevel", "tracking efficiency based on hit match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedHitMatchCrossLevel.setTitleX("cut on hit efficiency of track");
-        h2_trackingEfficiencyBasedHitMatchCrossLevel.setTitleY("cut on hit purity of track"); 
-        H2F h2_trackingEfficiencyBasedHitMatchSeedLevel = new H2F("trackingEfficiencyBasedHitMatchSeedLevel", "tracking efficiency based on hit match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedHitMatchSeedLevel.setTitleX("cut on hit efficiency of track");
-        h2_trackingEfficiencyBasedHitMatchSeedLevel.setTitleY("cut on hit purity of track"); 
-        H2F h2_trackingEfficiencyBasedHitMatchTrackLevel = new H2F("trackingEfficiencyBasedHitMatchTrackLevel", "tracking efficiency based on hit match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedHitMatchTrackLevel.setTitleX("cut on hit efficiency of track");
-        h2_trackingEfficiencyBasedHitMatchTrackLevel.setTitleY("cut on hit purity of track"); 
-        H2F h2_trackingEfficiencyBasedHitMatchValidTrackLevel = new H2F("trackingEfficiencyBasedHitMatchValidTrackLevel", "tracking efficiency based on hit match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedHitMatchValidTrackLevel.setTitleX("cut on hit efficiency of track");
-        h2_trackingEfficiencyBasedHitMatchValidTrackLevel.setTitleY("cut on hit purity of track");          
-        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchHitLevel, 0);
-        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyBasedHitMatch.addDataSet(h2_trackingEfficiencyBasedHitMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyBasedHitMatch.getName(), histoGroupTrkEfficiencyBasedHitMatch); 
-        
+    public void postEventProcess(String effFileName, boolean saveEffStats) {                 
+        HistoGroup histoGroupTrkEfficiencyVsPurityBasedHitMatch = histoGroupMap.get("trkEfficiencyVsPurityBasedHitMatch");        
+        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch = histoGroupMap.get("trkEfficiencyVsEfficiencyBasedHitMatch");        
+        HistoGroup histoGroupTrkEfficiencyBasedHitMatch = histoGroupMap.get("trkEfficiencyBasedHitMatch");                
         for(int i = 0; i < CUTOPTIONS; i++){
-            h1_trackingEfficiencyVsPurityBasedHitMatchHitLevel.setBinContent(i, (double)numHitMatchedTracksHitLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedHitMatchClusterLevel.setBinContent(i, (double)numHitMatchedTracksClusterLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedHitMatchCrossLevel.setBinContent(i, (double)numHitMatchedTracksCrossLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedHitMatchSeedLevel.setBinContent(i, (double)numHitMatchedTracksSeedLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedHitMatchTrackLevel.setBinContent(i, (double)numHitMatchedTracksTrackLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel.setBinContent(i, (double)numHitMatchedTracksValidTrackLevelPurity[i]/numTotalTracks1);
+            histoGroupTrkEfficiencyVsPurityBasedHitMatch.getH1F("trackingEfficiencyVsPurityBasedHitMatchHitLevel").setBinContent(i, (double)numHitMatchedTracksHitLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedHitMatch.getH1F("trackingEfficiencyVsPurityBasedHitMatchClusterLevel").setBinContent(i, (double)numHitMatchedTracksClusterLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedHitMatch.getH1F("trackingEfficiencyVsPurityBasedHitMatchCrossLevel").setBinContent(i, (double)numHitMatchedTracksCrossLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedHitMatch.getH1F("trackingEfficiencyVsPurityBasedHitMatchSeedLevel").setBinContent(i, (double)numHitMatchedTracksSeedLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedHitMatch.getH1F("trackingEfficiencyVsPurityBasedHitMatchTrackLevel").setBinContent(i, (double)numHitMatchedTracksTrackLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedHitMatch.getH1F("trackingEfficiencyVsPurityBasedHitMatchValidTrackLevel").setBinContent(i, (double)numHitMatchedTracksValidTrackLevelPurity[i]/numTotalTracks1);
             
-            h1_trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel.setBinContent(i, (double)numHitMatchedTracksHitLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel.setBinContent(i, (double)numHitMatchedTracksClusterLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel.setBinContent(i, (double)numHitMatchedTracksCrossLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel.setBinContent(i, (double)numHitMatchedTracksSeedLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel.setBinContent(i, (double)numHitMatchedTracksTrackLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel.setBinContent(i, (double)numHitMatchedTracksValidTrackLevelEfficiency[i]/numTotalTracks1);               
+            histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getH1F("trackingEfficiencyVsEfficiencyBasedHitMatchHitLevel").setBinContent(i, (double)numHitMatchedTracksHitLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getH1F("trackingEfficiencyVsEfficiencyBasedHitMatchClusterLevel").setBinContent(i, (double)numHitMatchedTracksClusterLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getH1F("trackingEfficiencyVsEfficiencyBasedHitMatchCrossLevel").setBinContent(i, (double)numHitMatchedTracksCrossLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getH1F("trackingEfficiencyVsEfficiencyBasedHitMatchSeedLevel").setBinContent(i, (double)numHitMatchedTracksSeedLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getH1F("trackingEfficiencyVsEfficiencyBasedHitMatchTrackLevel").setBinContent(i, (double)numHitMatchedTracksTrackLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedHitMatch.getH1F("trackingEfficiencyVsEfficiencyBasedHitMatchValidTrackLevel").setBinContent(i, (double)numHitMatchedTracksValidTrackLevelEfficiency[i]/numTotalTracks1);               
             
             for(int j = 0; j < CUTOPTIONS; j++){
-                h2_trackingEfficiencyBasedHitMatchHitLevel.setBinContent(i, j, (double)numHitMatchedTracksHitLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedHitMatchClusterLevel.setBinContent(i, j, (double)numHitMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedHitMatchCrossLevel.setBinContent(i, j, (double)numHitMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedHitMatchSeedLevel.setBinContent(i, j, (double)numHitMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedHitMatchTrackLevel.setBinContent(i, j, (double)numHitMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedHitMatchValidTrackLevel.setBinContent(i, j, (double)numHitMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedHitMatch.getH2F("trackingEfficiencyBasedHitMatchHitLevel").setBinContent(i, j, (double)numHitMatchedTracksHitLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedHitMatch.getH2F("trackingEfficiencyBasedHitMatchClusterLevel").setBinContent(i, j, (double)numHitMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedHitMatch.getH2F("trackingEfficiencyBasedHitMatchCrossLevel").setBinContent(i, j, (double)numHitMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedHitMatch.getH2F("trackingEfficiencyBasedHitMatchSeedLevel").setBinContent(i, j, (double)numHitMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedHitMatch.getH2F("trackingEfficiencyBasedHitMatchTrackLevel").setBinContent(i, j, (double)numHitMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedHitMatch.getH2F("trackingEfficiencyBasedHitMatchValidTrackLevel").setBinContent(i, j, (double)numHitMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
             }
         }  
         
-        HistoGroup histoGroupTrkEfficiencyVsPurityBasedClusterMatch= new HistoGroup("trkEfficiencyVsPurityBasedClusterMatch", 3, 2);
-        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchHitLevel", "tracking efficiency vs purity based on cluster match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel.setTitleX("cut on cluster purity of track");
-        h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel.setTitleY("tracking efficiecny");        
-        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchClusterLevel", "tracking efficiency vs purity based on cluster match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel.setTitleX("cut on cluster purity of track");
-        h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel.setTitleY("tracking efficiecny");          
-        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchCrossLevel", "tracking efficiency vs purity based on cluster match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel.setTitleX("cut on cluster purity of track");
-        h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchSeedLevel", "tracking efficiency vs purity based on cluster match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel.setTitleX("cut on cluster purity of track");
-        h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchTrackLevel", "tracking efficiency vs purity based on cluster match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel.setTitleX("cut on cluster purity of track");
-        h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel = new H1F("trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel", "tracking efficiency vs purity based on cluster match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel.setTitleX("cut on cluster purity of track");
-        h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel.setTitleY("tracking efficiecny");          
-        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel, 0);
-        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyVsPurityBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getName(), histoGroupTrkEfficiencyVsPurityBasedClusterMatch); 
-        
-        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch= new HistoGroup("trkEfficiencyVsEfficiencyBasedClusterMatch", 3, 2);
-        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel", "tracking efficiency vs efficiency based on cluster match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel.setTitleX("cut on cluster efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel.setTitleY("tracking efficiecny");        
-        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel", "tracking efficiency vs efficiency based on cluster match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel.setTitleX("cut on cluster efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel.setTitleY("tracking efficiecny");          
-        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel", "tracking efficiency vs efficiency based on cluster match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel.setTitleX("cut on cluster efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel", "tracking efficiency vs efficiency based on cluster match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel.setTitleX("cut  on cluster efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel", "tracking efficiency vs efficiency based on cluster match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel.setTitleX("cut on cluster efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel", "tracking efficiency vs efficiency based on cluster match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel.setTitleX("cut on cluster efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel.setTitleY("tracking efficiecny");          
-        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel, 0);
-        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getName(), histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch);         
-                
-        HistoGroup histoGroupTrkEfficiencyBasedClusterMatch= new HistoGroup("trkEfficiencyBasedClusterMatch", 3, 2);
-        H2F h2_trackingEfficiencyBasedClusterMatchHitLevel = new H2F("trackingEfficiencyBasedClusterMatchHitLevel", "tracking efficiency based on cluster match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedClusterMatchHitLevel.setTitleX("cut on cluster efficiency of track");
-        h2_trackingEfficiencyBasedClusterMatchHitLevel.setTitleY("cut on cluster purity of track");        
-        H2F h2_trackingEfficiencyBasedClusterMatchClusterLevel = new H2F("trackingEfficiencyBasedClusterMatchClusterLevel", "tracking efficiency based on cluster match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedClusterMatchClusterLevel.setTitleX("cut on cluster efficiency of track");
-        h2_trackingEfficiencyBasedClusterMatchClusterLevel.setTitleY("cut on cluster purity of track");          
-        H2F h2_trackingEfficiencyBasedClusterMatchCrossLevel = new H2F("trackingEfficiencyBasedClusterMatchCrossLevel", "tracking efficiency based on cluster match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedClusterMatchCrossLevel.setTitleX("cut on cluster efficiency of track");
-        h2_trackingEfficiencyBasedClusterMatchCrossLevel.setTitleY("cut on cluster purity of track"); 
-        H2F h2_trackingEfficiencyBasedClusterMatchSeedLevel = new H2F("trackingEfficiencyBasedClusterMatchSeedLevel", "tracking efficiency based on cluster match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedClusterMatchSeedLevel.setTitleX("cut on cluster efficiency of track");
-        h2_trackingEfficiencyBasedClusterMatchSeedLevel.setTitleY("cut on cluster purity of track"); 
-        H2F h2_trackingEfficiencyBasedClusterMatchTrackLevel = new H2F("trackingEfficiencyBasedClusterMatchTrackLevel", "tracking efficiency based on cluster match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedClusterMatchTrackLevel.setTitleX("cut on cluster efficiency of track");
-        h2_trackingEfficiencyBasedClusterMatchTrackLevel.setTitleY("cut on cluster purity of track"); 
-        H2F h2_trackingEfficiencyBasedClusterMatchValidTrackLevel = new H2F("trackingEfficiencyBasedClusterMatchValidTrackLevel", "tracking efficiency based on cluster match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedClusterMatchValidTrackLevel.setTitleX("cut on cluster efficiency of track");
-        h2_trackingEfficiencyBasedClusterMatchValidTrackLevel.setTitleY("cut on cluster purity of track"); 
-        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchHitLevel, 0);
-        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyBasedClusterMatch.addDataSet(h2_trackingEfficiencyBasedClusterMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyBasedClusterMatch.getName(), histoGroupTrkEfficiencyBasedClusterMatch); 
-        
+        HistoGroup histoGroupTrkEfficiencyVsPurityBasedClusterMatch = histoGroupMap.get("trkEfficiencyVsPurityBasedClusterMatch");        
+        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch = histoGroupMap.get("trkEfficiencyVsEfficiencyBasedClusterMatch");        
+        HistoGroup histoGroupTrkEfficiencyBasedClusterMatch = histoGroupMap.get("trkEfficiencyBasedClusterMatch");                
         for(int i = 0; i < CUTOPTIONS; i++){
-            h1_trackingEfficiencyVsPurityBasedClusterMatchHitLevel.setBinContent(i, (double)numClusterMatchedTracksHitLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedClusterMatchClusterLevel.setBinContent(i, (double)numClusterMatchedTracksClusterLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedClusterMatchCrossLevel.setBinContent(i, (double)numClusterMatchedTracksCrossLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedClusterMatchSeedLevel.setBinContent(i, (double)numClusterMatchedTracksSeedLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedClusterMatchTrackLevel.setBinContent(i, (double)numClusterMatchedTracksTrackLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel.setBinContent(i, (double)numClusterMatchedTracksValidTrackLevelPurity[i]/numTotalTracks1);
+            histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getH1F("trackingEfficiencyVsPurityBasedClusterMatchHitLevel").setBinContent(i, (double)numClusterMatchedTracksHitLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getH1F("trackingEfficiencyVsPurityBasedClusterMatchClusterLevel").setBinContent(i, (double)numClusterMatchedTracksClusterLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getH1F("trackingEfficiencyVsPurityBasedClusterMatchCrossLevel").setBinContent(i, (double)numClusterMatchedTracksCrossLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getH1F("trackingEfficiencyVsPurityBasedClusterMatchSeedLevel").setBinContent(i, (double)numClusterMatchedTracksSeedLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getH1F("trackingEfficiencyVsPurityBasedClusterMatchTrackLevel").setBinContent(i, (double)numClusterMatchedTracksTrackLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedClusterMatch.getH1F("trackingEfficiencyVsPurityBasedClusterMatchValidTrackLevel").setBinContent(i, (double)numClusterMatchedTracksValidTrackLevelPurity[i]/numTotalTracks1);
             
-            h1_trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel.setBinContent(i, (double)numClusterMatchedTracksHitLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel.setBinContent(i, (double)numClusterMatchedTracksClusterLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel.setBinContent(i, (double)numClusterMatchedTracksCrossLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel.setBinContent(i, (double)numClusterMatchedTracksSeedLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel.setBinContent(i, (double)numClusterMatchedTracksTrackLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel.setBinContent(i, (double)numClusterMatchedTracksValidTrackLevelEfficiency[i]/numTotalTracks1);            
+            histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyVsEfficiencyBasedClusterMatchHitLevel").setBinContent(i, (double)numClusterMatchedTracksHitLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyVsEfficiencyBasedClusterMatchClusterLevel").setBinContent(i, (double)numClusterMatchedTracksClusterLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyVsEfficiencyBasedClusterMatchCrossLevel").setBinContent(i, (double)numClusterMatchedTracksCrossLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyVsEfficiencyBasedClusterMatchSeedLevel").setBinContent(i, (double)numClusterMatchedTracksSeedLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyVsEfficiencyBasedClusterMatchTrackLevel").setBinContent(i, (double)numClusterMatchedTracksTrackLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyVsEfficiencyBasedClusterMatchValidTrackLevel").setBinContent(i, (double)numClusterMatchedTracksValidTrackLevelEfficiency[i]/numTotalTracks1);            
             
             for(int j = 0; j < CUTOPTIONS; j++){
-                h2_trackingEfficiencyBasedClusterMatchHitLevel.setBinContent(i, j, (double)numClusterMatchedTracksHitLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedClusterMatchClusterLevel.setBinContent(i, j, (double)numClusterMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedClusterMatchCrossLevel.setBinContent(i, j, (double)numClusterMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedClusterMatchSeedLevel.setBinContent(i, j, (double)numClusterMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedClusterMatchTrackLevel.setBinContent(i, j, (double)numClusterMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedClusterMatchValidTrackLevel.setBinContent(i, j, (double)numClusterMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedClusterMatch.getH2F("trackingEfficiencyBasedClusterMatchHitLevel").setBinContent(i, j, (double)numClusterMatchedTracksHitLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedClusterMatch.getH2F("trackingEfficiencyBasedClusterMatchClusterLevel").setBinContent(i, j, (double)numClusterMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedClusterMatch.getH2F("trackingEfficiencyBasedClusterMatchCrossLevel").setBinContent(i, j, (double)numClusterMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedClusterMatch.getH2F("trackingEfficiencyBasedClusterMatchSeedLevel").setBinContent(i, j, (double)numClusterMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedClusterMatch.getH2F("trackingEfficiencyBasedClusterMatchTrackLevel").setBinContent(i, j, (double)numClusterMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedClusterMatch.getH2F("trackingEfficiencyBasedClusterMatchValidTrackLevel").setBinContent(i, j, (double)numClusterMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
+            }
+        }   
+        
+        HistoGroup histoGroupTrkEfficiencyVsPurityBasedCrossMatch = histoGroupMap.get("trkEfficiencyVsPurityBasedCrossMatch");        
+        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch = histoGroupMap.get("trkEfficiencyVsEfficiencyBasedCrossMatch");        
+        HistoGroup histoGroupTrkEfficiencyBasedCrossMatch = histoGroupMap.get("trkEfficiencyBasedCrossMatch");                           
+        for(int i = 0; i < CUTOPTIONS; i++){
+            histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getH1F("trackingEfficiencyVsPurityBasedCrossMatchHitLevel").setBinContent(i, (double)numCrossMatchedTracksHitLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getH1F("trackingEfficiencyVsPurityBasedCrossMatchClusterLevel").setBinContent(i, (double)numCrossMatchedTracksClusterLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getH1F("trackingEfficiencyVsPurityBasedCrossMatchCrossLevel").setBinContent(i, (double)numCrossMatchedTracksCrossLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getH1F("trackingEfficiencyVsPurityBasedCrossMatchSeedLevel").setBinContent(i, (double)numCrossMatchedTracksSeedLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getH1F("trackingEfficiencyVsPurityBasedCrossMatchTrackLevel").setBinContent(i, (double)numCrossMatchedTracksTrackLevelPurity[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getH1F("trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel").setBinContent(i, (double)numCrossMatchedTracksValidTrackLevelPurity[i]/numTotalTracks1);
+            
+            histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel").setBinContent(i, (double)numCrossMatchedTracksHitLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel").setBinContent(i, (double)numCrossMatchedTracksClusterLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel").setBinContent(i, (double)numCrossMatchedTracksCrossLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel").setBinContent(i, (double)numCrossMatchedTracksSeedLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel").setBinContent(i, (double)numCrossMatchedTracksTrackLevelEfficiency[i]/numTotalTracks1); 
+            histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel").setBinContent(i, (double)numCrossMatchedTracksValidTrackLevelEfficiency[i]/numTotalTracks1);            
+            
+            for(int j = 0; j < CUTOPTIONS; j++){
+                histoGroupTrkEfficiencyBasedCrossMatch.getH2F("trackingEfficiencyBasedCrossMatchHitLevel").setBinContent(i, j, (double)numCrossMatchedTracksHitLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedCrossMatch.getH2F("trackingEfficiencyBasedCrossMatchClusterLevel").setBinContent(i, j, (double)numCrossMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedCrossMatch.getH2F("trackingEfficiencyBasedCrossMatchCrossLevel").setBinContent(i, j, (double)numCrossMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedCrossMatch.getH2F("trackingEfficiencyBasedCrossMatchSeedLevel").setBinContent(i, j, (double)numCrossMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedCrossMatch.getH2F("trackingEfficiencyBasedCrossMatchTrackLevel").setBinContent(i, j, (double)numCrossMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
+                histoGroupTrkEfficiencyBasedCrossMatch.getH2F("trackingEfficiencyBasedCrossMatchValidTrackLevel").setBinContent(i, j, (double)numCrossMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
             }
         } 
         
-        HistoGroup histoGroupTrkEfficiencyVsPurityBasedCrossMatch= new HistoGroup("trkEfficiencyVsPurityBasedCrossMatch", 3, 2);
-        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchHitLevel", "tracking efficiency vs purity based on cross match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel.setTitleX("cut on cross purity of track");
-        h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel.setTitleY("tracking efficiecny");        
-        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchClusterLevel", "tracking efficiency vs purity based on cross match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel.setTitleX("cut on cross purity of track");
-        h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel.setTitleY("tracking efficiecny");          
-        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchCrossLevel", "tracking efficiency vs purity based on cross match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel.setTitleX("cut on cross purity of track");
-        h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchSeedLevel", "tracking efficiency vs purity based on cross match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel.setTitleX("cut on cross purity of track");
-        h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchTrackLevel", "tracking efficiency vs purity based on cross match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel.setTitleX("cut on cross purity of track");
-        h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel = new H1F("trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel", "tracking efficiency vs purity based on cross match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel.setTitleX("cut on cross purity of track");
-        h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel.setTitleY("tracking efficiecny");          
-        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel, 0);
-        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyVsPurityBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyVsPurityBasedCrossMatch.getName(), histoGroupTrkEfficiencyVsPurityBasedCrossMatch); 
-        
-        HistoGroup histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch= new HistoGroup("trkEfficiencyVsEfficiencyBasedCrossMatch", 3, 2);
-        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel", "tracking efficiency vs efficiency based on cross match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel.setTitleX("cut on cross efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel.setTitleY("tracking efficiecny");        
-        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel", "tracking efficiency vs efficiency based on cross match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel.setTitleX("cut on cross efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel.setTitleY("tracking efficiecny");          
-        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel", "tracking efficiency vs efficiency based on cross match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel.setTitleX("cut on cross efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel", "tracking efficiency vs efficiency based on cross match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel.setTitleX("cut  on cross efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel", "tracking efficiency vs efficiency based on cross match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel.setTitleX("cut on cross efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel.setTitleY("tracking efficiecny"); 
-        H1F h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel = new H1F("trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel", "tracking efficiency vs efficiency based on cross match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel.setTitleX("cut on cross efficiency of track");
-        h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel.setTitleY("tracking efficiecny");          
-        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel, 0);
-        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch.getName(), histoGroupTrkEfficiencyVsEfficiencyBasedCrossMatch);                 
-
-        HistoGroup histoGroupTrkEfficiencyBasedCrossMatch= new HistoGroup("trkEfficiencyBasedCrossMatch", 3, 2);
-        H2F h2_trackingEfficiencyBasedCrossMatchHitLevel = new H2F("trackingEfficiencyBasedCrossMatchHitLevel", "tracking efficiency based on cross match at hit level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedCrossMatchHitLevel.setTitleX("cut on cross efficiency of track");
-        h2_trackingEfficiencyBasedCrossMatchHitLevel.setTitleY("cut on cross purity of track");        
-        H2F h2_trackingEfficiencyBasedCrossMatchClusterLevel = new H2F("trackingEfficiencyBasedCrossMatchClusterLevel", "tracking efficiency based on cross match at cluster level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedCrossMatchClusterLevel.setTitleX("cut on cross efficiency of track");
-        h2_trackingEfficiencyBasedCrossMatchClusterLevel.setTitleY("cut on cross purity of track");          
-        H2F h2_trackingEfficiencyBasedCrossMatchCrossLevel = new H2F("trackingEfficiencyBasedCrossMatchCrossLevel", "tracking efficiency based on cross match at cross level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedCrossMatchCrossLevel.setTitleX("cut on cross efficiency of track");
-        h2_trackingEfficiencyBasedCrossMatchCrossLevel.setTitleY("cut on cross purity of track"); 
-        H2F h2_trackingEfficiencyBasedCrossMatchSeedLevel = new H2F("trackingEfficiencyBasedCrossMatchSeedLevel", "tracking efficiency based on cross match at seed level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedCrossMatchSeedLevel.setTitleX("cut on cross efficiency of track");
-        h2_trackingEfficiencyBasedCrossMatchSeedLevel.setTitleY("cut on cross purity of track"); 
-        H2F h2_trackingEfficiencyBasedCrossMatchTrackLevel = new H2F("trackingEfficiencyBasedCrossMatchTrackLevel", "tracking efficiency based on cross match at track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedCrossMatchTrackLevel.setTitleX("cut on cross efficiency of track");
-        h2_trackingEfficiencyBasedCrossMatchTrackLevel.setTitleY("cut on cross purity of track"); 
-        H2F h2_trackingEfficiencyBasedCrossMatchValidTrackLevel = new H2F("trackingEfficiencyBasedCrossMatchValidTrackLevel", "tracking efficiency based on cross match at valid track level", CUTOPTIONS, minHistoAxis, maxHistoAxis, CUTOPTIONS, minHistoAxis, maxHistoAxis);
-        h2_trackingEfficiencyBasedCrossMatchValidTrackLevel.setTitleX("cut on cross efficiency of track");
-        h2_trackingEfficiencyBasedCrossMatchValidTrackLevel.setTitleY("cut on cross purity of track"); 
-        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchHitLevel, 0);
-        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchClusterLevel, 1);
-        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchCrossLevel, 2);
-        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchSeedLevel, 3);
-        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchTrackLevel, 4);
-        histoGroupTrkEfficiencyBasedCrossMatch.addDataSet(h2_trackingEfficiencyBasedCrossMatchValidTrackLevel, 5);
-        histoGroupMap.put(histoGroupTrkEfficiencyBasedCrossMatch.getName(), histoGroupTrkEfficiencyBasedCrossMatch);
-
-        
-        for(int i = 0; i < CUTOPTIONS; i++){
-            h1_trackingEfficiencyVsPurityBasedCrossMatchHitLevel.setBinContent(i, (double)numCrossMatchedTracksHitLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedCrossMatchClusterLevel.setBinContent(i, (double)numCrossMatchedTracksClusterLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedCrossMatchCrossLevel.setBinContent(i, (double)numCrossMatchedTracksCrossLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedCrossMatchSeedLevel.setBinContent(i, (double)numCrossMatchedTracksSeedLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedCrossMatchTrackLevel.setBinContent(i, (double)numCrossMatchedTracksTrackLevelPurity[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsPurityBasedCrossMatchValidTrackLevel.setBinContent(i, (double)numCrossMatchedTracksValidTrackLevelPurity[i]/numTotalTracks1);
-            
-            h1_trackingEfficiencyVsEfficiencyBasedCrossMatchHitLevel.setBinContent(i, (double)numCrossMatchedTracksHitLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedCrossMatchClusterLevel.setBinContent(i, (double)numCrossMatchedTracksClusterLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedCrossMatchCrossLevel.setBinContent(i, (double)numCrossMatchedTracksCrossLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedCrossMatchSeedLevel.setBinContent(i, (double)numCrossMatchedTracksSeedLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedCrossMatchTrackLevel.setBinContent(i, (double)numCrossMatchedTracksTrackLevelEfficiency[i]/numTotalTracks1); 
-            h1_trackingEfficiencyVsEfficiencyBasedCrossMatchValidTrackLevel.setBinContent(i, (double)numCrossMatchedTracksValidTrackLevelEfficiency[i]/numTotalTracks1);             
-            
-            for(int j = 0; j < CUTOPTIONS; j++){
-                h2_trackingEfficiencyBasedCrossMatchHitLevel.setBinContent(i, j, (double)numCrossMatchedTracksHitLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedCrossMatchClusterLevel.setBinContent(i, j, (double)numCrossMatchedTracksClusterLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedCrossMatchCrossLevel.setBinContent(i, j, (double)numCrossMatchedTracksCrossLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedCrossMatchSeedLevel.setBinContent(i, j, (double)numCrossMatchedTracksSeedLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedCrossMatchTrackLevel.setBinContent(i, j, (double)numCrossMatchedTracksTrackLevel[i][j]/numTotalTracks1); 
-                h2_trackingEfficiencyBasedCrossMatchValidTrackLevel.setBinContent(i, j, (double)numCrossMatchedTracksValidTrackLevel[i][j]/numTotalTracks1); 
-            }
-        }
-          
-        HistoGroup histoGroupTrackEfficiencyBasedHitMatch = new HistoGroup("trackEfficiencyBasedHitMatch", CUTOPTIONS, CUTOPTIONS);
+        HistoGroup histoGroupTrackEfficiencyBasedHitMatch = histoGroupMap.get("trackEfficiencyBasedHitMatch");  
         for(int i = 0; i < CUTOPTIONS; i++){
             for(int j = 0; j < CUTOPTIONS; j++){
                 int numRemainingTracksBasedHitMatch[] = {numTotalTracks1, numHitMatchedTracksHitLevel[i][j], numHitMatchedTracksClusterLevel[i][j], 
-            numHitMatchedTracksCrossLevel[i][j], numHitMatchedTracksSeedLevel[i][j], numHitMatchedTracksTrackLevel[i][j], numHitMatchedTracksValidTrackLevel[i][j]};
-                H1F h1_trackingEfficiencyBasedHitMatch = new H1F("trackingEfficiencyBasedHitMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), 7, -0.5, 6.5);
+            numHitMatchedTracksCrossLevel[i][j], numHitMatchedTracksSeedLevel[i][j], numHitMatchedTracksTrackLevel[i][j], numHitMatchedTracksValidTrackLevel[i][j]};                
                 for(int k = 0; k < numRemainingTracksBasedHitMatch.length; k++){
-                    h1_trackingEfficiencyBasedHitMatch.setBinContent(k, (double) numRemainingTracksBasedHitMatch[k]/numRemainingTracksBasedHitMatch[0]);
+                    histoGroupTrackEfficiencyBasedHitMatch.getH1F("trackingEfficiencyBasedHitMatch" + Integer.toString(i) + Integer.toString(j)).setBinContent(k, (double) numRemainingTracksBasedHitMatch[k]/numRemainingTracksBasedHitMatch[0]);
                 }        
-                h1_trackingEfficiencyBasedHitMatch.setTitleX("recon level");
-                h1_trackingEfficiencyBasedHitMatch.setTitleY("Counts");
-                h1_trackingEfficiencyBasedHitMatch.setLineColor(1);
-                histoGroupTrackEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyBasedHitMatch, i*CUTOPTIONS+j);
             }
         }
-        histoGroupMap.put(histoGroupTrackEfficiencyBasedHitMatch.getName(), histoGroupTrackEfficiencyBasedHitMatch); 
         
-        HistoGroup histoGroupTrackEfficiencyBasedClusterMatch = new HistoGroup("trackEfficiencyBasedClusterMatch", CUTOPTIONS, CUTOPTIONS);
+        HistoGroup histoGroupTrackEfficiencyBasedClusterMatch = histoGroupMap.get("trackEfficiencyBasedClusterMatch");  
         for(int i = 0; i < CUTOPTIONS; i++){
             for(int j = 0; j < CUTOPTIONS; j++){
                 int numRemainingTracksBasedClusterMatch[] = {numTotalTracks1, numClusterMatchedTracksHitLevel[i][j], numClusterMatchedTracksClusterLevel[i][j], 
-            numClusterMatchedTracksCrossLevel[i][j], numClusterMatchedTracksSeedLevel[i][j], numClusterMatchedTracksTrackLevel[i][j], numClusterMatchedTracksValidTrackLevel[i][j]};
-                H1F h1_trackingEfficiencyBasedClusterMatch = new H1F("trackingEfficiencyBasedClusterMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), 7, -0.5, 6.5);
+            numClusterMatchedTracksCrossLevel[i][j], numClusterMatchedTracksSeedLevel[i][j], numClusterMatchedTracksTrackLevel[i][j], numClusterMatchedTracksValidTrackLevel[i][j]};           
                 for(int k = 0; k < numRemainingTracksBasedClusterMatch.length; k++){
-                    h1_trackingEfficiencyBasedClusterMatch.setBinContent(k, (double) numRemainingTracksBasedClusterMatch[k]/numRemainingTracksBasedClusterMatch[0]);
+                    histoGroupTrackEfficiencyBasedClusterMatch.getH1F("trackingEfficiencyBasedClusterMatch" + Integer.toString(i) + Integer.toString(j)).setBinContent(k, (double) numRemainingTracksBasedClusterMatch[k]/numRemainingTracksBasedClusterMatch[0]);
                 }        
-                h1_trackingEfficiencyBasedClusterMatch.setTitleX("recon level");
-                h1_trackingEfficiencyBasedClusterMatch.setTitleY("Counts");
-                h1_trackingEfficiencyBasedClusterMatch.setLineColor(1);
-                histoGroupTrackEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyBasedClusterMatch, i*CUTOPTIONS+j);
             }
         }
         histoGroupMap.put(histoGroupTrackEfficiencyBasedClusterMatch.getName(), histoGroupTrackEfficiencyBasedClusterMatch); 
 
-        HistoGroup histoGroupTrackEfficiencyBasedCrossMatch = new HistoGroup("trackEfficiencyBasedCrossMatch", CUTOPTIONS, CUTOPTIONS);
+        HistoGroup histoGroupTrackEfficiencyBasedCrossMatch = histoGroupMap.get("trackEfficiencyBasedCrossMatch");  
         for(int i = 0; i < CUTOPTIONS; i++){
             for(int j = 0; j < CUTOPTIONS; j++){
                 int numRemainingTracksBasedCrossMatch[] = {numTotalTracks1, numCrossMatchedTracksHitLevel[i][j], numCrossMatchedTracksClusterLevel[i][j], 
             numCrossMatchedTracksCrossLevel[i][j], numCrossMatchedTracksSeedLevel[i][j], numCrossMatchedTracksTrackLevel[i][j], numCrossMatchedTracksValidTrackLevel[i][j]};
-                H1F h1_trackingEfficiencyBasedCrossMatch = new H1F("trackingEfficiencyBasedCrossMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), 7, -0.5, 6.5);
                 for(int k = 0; k < numRemainingTracksBasedCrossMatch.length; k++){
-                    h1_trackingEfficiencyBasedCrossMatch.setBinContent(k, (double) numRemainingTracksBasedCrossMatch[k]/numRemainingTracksBasedCrossMatch[0]);
+                    histoGroupTrackEfficiencyBasedCrossMatch.getH1F("trackingEfficiencyBasedCrossMatch" + Integer.toString(i) + Integer.toString(j)).setBinContent(k, (double) numRemainingTracksBasedCrossMatch[k]/numRemainingTracksBasedCrossMatch[0]);
                 }        
-                h1_trackingEfficiencyBasedCrossMatch.setTitleX("recon level");
-                h1_trackingEfficiencyBasedCrossMatch.setTitleY("Counts");
-                h1_trackingEfficiencyBasedCrossMatch.setLineColor(1);
-                histoGroupTrackEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyBasedCrossMatch, i*CUTOPTIONS+j);
             }
         }
         histoGroupMap.put(histoGroupTrackEfficiencyBasedCrossMatch.getName(), histoGroupTrackEfficiencyBasedCrossMatch);
         
-        final int cutPoint = 5;        
+        final int cutPoint = 5;       
         int numRemainingTracksBasedHitMatch[] = {numTotalTracks1, numHitMatchedTracksHitLevel[cutPoint][cutPoint], numHitMatchedTracksClusterLevel[cutPoint][cutPoint], 
             numHitMatchedTracksCrossLevel[cutPoint][cutPoint], numHitMatchedTracksSeedLevel[cutPoint][cutPoint], numHitMatchedTracksTrackLevel[cutPoint][cutPoint], numHitMatchedTracksValidTrackLevel[cutPoint][cutPoint]};                
         double[] ratio = new double[numRemainingTracksBasedHitMatch.length];
@@ -2426,8 +2461,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             ratio[i] = (double) numRemainingTracksBasedHitMatch[i]/numRemainingTracksBasedHitMatch[0];
             ratio_err[i] = (double) numRemainingTracksBasedHitMatch[i] * (numRemainingTracksBasedHitMatch[i] + numRemainingTracksBasedHitMatch[0]) / Math.pow(numRemainingTracksBasedHitMatch[i], 3);
         }
-        
-        
+                
         System.out.println(String.format("Cut on hit purity of tracks: %10.2f; Cut on hit efficiency of tracks: %10.2f", PURITYCUT[5], EFFICIENCYCUT[5]));
         System.out.println("                                   Evolution of tracking efficiency                                   ");
         System.out.println("           |     origin |  hit recon  | clustering |  crossing  |  tracking  | valid cuts |");        
@@ -2582,12 +2616,11 @@ public class BgOnValidTracks extends BaseAnalysis{
                 reader1.close(); 
                 reader2.close();
             }
-            analysis.saveHistos(histoName);
-            analysis.postEventProcess(effFileName, saveEffStats);  
+            analysis.postEventProcess(effFileName, saveEffStats);             
+            analysis.saveHistos(histoName); 
         }
         else{
             analysis.readHistos(inputList.get(0)); 
-            analysis.postEventProcess(effFileName, saveEffStats);  
         }
         
         if(displayPlots) {
