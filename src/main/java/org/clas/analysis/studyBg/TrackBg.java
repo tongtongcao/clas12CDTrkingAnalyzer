@@ -161,7 +161,7 @@ public class TrackBg extends BaseAnalysis {
     }
     
     public void processEvent(List<Track> tracks1, List<Track> tracks2, Match match) {         
-        match.trackMatch(tracks1, tracks2);
+        match.trackMatch(tracks1, tracks2, Constants.PASS, Constants.PASS);
         
         List<Track> matchedTrackList1 = new ArrayList<>(match.get_map_track1_track2().keySet());
         List<Track> lostTrackList1 = new ArrayList();

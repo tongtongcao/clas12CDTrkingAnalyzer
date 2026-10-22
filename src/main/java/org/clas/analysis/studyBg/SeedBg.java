@@ -163,7 +163,7 @@ public class SeedBg extends BaseAnalysis {
     }
     
     public void processEvent(List<Seed> seeds1, List<Seed> seeds2, Match match) {          
-        match.seedMatch(seeds1, seeds2);
+        match.seedMatch(seeds1, seeds2, Constants.PASS, Constants.PASS);
         
         List<Seed> matchedSeedList1 = new ArrayList<>(match.get_map_seed1_seed2().keySet());
         List<Seed> lostSeedList1 = new ArrayList();

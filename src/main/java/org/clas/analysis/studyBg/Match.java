@@ -37,7 +37,6 @@ public class Match {
     private Map<Cross, Cross> map_crs1_crs2_BMT= new HashMap();    
     private Map<Seed, Seed> map_seed1_seed2= new HashMap();
     private Map<Track, Track> map_track1_track2= new HashMap();
-    private Map<Track, Track> map_track1_pseudoTrack2= new HashMap();
     
     public Match(){}
         
@@ -46,11 +45,11 @@ public class Match {
         this.localEvent2 = localEvent2;
     }
     
-    public void hitMatch(){
-        List<Hit> hitsBST1 = localEvent1.getBSTHits(Constants.PASS);        
-        List<Hit> hitsBST2 = localEvent2.getBSTHits(Constants.PASS);                
-        List<Hit> hitsBMT1 = localEvent1.getBMTHits(Constants.PASS);
-        List<Hit> hitsBMT2 = localEvent2.getBMTHits(Constants.PASS);
+    public void hitMatch(int event1Pass, int event2Pass){
+        List<Hit> hitsBST1 = localEvent1.getBSTHits(event1Pass);        
+        List<Hit> hitsBST2 = localEvent2.getBSTHits(event2Pass);                
+        List<Hit> hitsBMT1 = localEvent1.getBMTHits(event1Pass);
+        List<Hit> hitsBMT2 = localEvent2.getBMTHits(event2Pass);
         
         hitMatchBST(hitsBST1, hitsBST2);
         hitMatchBMT(hitsBMT1, hitsBMT2);
@@ -89,11 +88,11 @@ public class Match {
         }                
     }    
     
-    public void clusterMatch(){
-        List<Cluster> clustersBST1 = localEvent1.getBSTClusters(Constants.PASS);        
-        List<Cluster> clustersBST2 = localEvent2.getBSTClusters(Constants.PASS);                
-        List<Cluster> clustersBMT1 = localEvent1.getBMTClusters(Constants.PASS);
-        List<Cluster> clustersBMT2 = localEvent2.getBMTClusters(Constants.PASS);
+    public void clusterMatch(int event1Pass, int event2Pass){
+        List<Cluster> clustersBST1 = localEvent1.getBSTClusters(event1Pass);        
+        List<Cluster> clustersBST2 = localEvent2.getBSTClusters(event2Pass);                
+        List<Cluster> clustersBMT1 = localEvent1.getBMTClusters(event1Pass);
+        List<Cluster> clustersBMT2 = localEvent2.getBMTClusters(event2Pass);
         
         clusterMatchBST(clustersBST1, clustersBST2);
         clusterMatchBMT(clustersBMT1, clustersBMT2);
@@ -182,20 +181,20 @@ public class Match {
         }               
     }
     
-    public void crossMatch(){
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
+    public void crossMatch(int event1Pass, int event2Pass){
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
         
-        List<Cross> crossesBST1 = localEvent1.getBSTCrosses(Constants.PASS);        
-        List<Cross> crossesBST2 = localEvent2.getBSTCrosses(Constants.PASS);                
-        List<Cross> crossesBMT1 = localEvent1.getBMTCrosses(Constants.PASS);
-        List<Cross> crossesBMT2 = localEvent2.getBMTCrosses(Constants.PASS);
+        List<Cross> crossesBST1 = localEvent1.getBSTCrosses(event1Pass);        
+        List<Cross> crossesBST2 = localEvent2.getBSTCrosses(event2Pass);                
+        List<Cross> crossesBMT1 = localEvent1.getBMTCrosses(event1Pass);
+        List<Cross> crossesBMT2 = localEvent2.getBMTCrosses(event2Pass);
         
         makeCrossMatchMapBST(crossesBST1, crossesBST2);
         makeCrossMatchMapBMT(crossesBMT1, crossesBMT2);
     }    
     
-    public void crossMatch(List<Cross> crossesBST1, List<Cross> crossesBST2, List<Cross> crossesBMT1, List<Cross> crossesBMT2){   
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
+    public void crossMatch(List<Cross> crossesBST1, List<Cross> crossesBST2, List<Cross> crossesBMT1, List<Cross> crossesBMT2, int event1Pass, int event2Pass){   
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
         
         makeCrossMatchMapBST(crossesBST1, crossesBST2);
         makeCrossMatchMapBMT(crossesBMT1, crossesBMT2);
@@ -267,9 +266,9 @@ public class Match {
         }
     } 
     
-    public void seedMatch(){
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void seedMatch(int event1Pass, int event2Pass){
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         List<Seed> seeds1 = localEvent1.getSeeds(Constants.PASS);        
         List<Seed> seeds2 = localEvent2.getSeeds(Constants.PASS);                
@@ -277,9 +276,9 @@ public class Match {
         makeSeedMatchMap(seeds1, seeds2);
     }    
     
-    public void seedMatch(List<Seed> seeds1, List<Seed> seeds2){   
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void seedMatch(List<Seed> seeds1, List<Seed> seeds2, int event1Pass, int event2Pass){   
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         makeSeedMatchMap(seeds1, seeds2);
     }
@@ -382,31 +381,31 @@ public class Match {
         }
     }
     
-    public void trackMatch(boolean uTrack){
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void trackMatch(int event1Pass, int event2Pass, boolean uTrack){
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         List<Track> tracks1;              
         List<Track> tracks2;
         if(!uTrack){
-            tracks1 = localEvent1.getTracks(Constants.PASS); 
-            tracks2 = localEvent2.getTracks(Constants.PASS);
+            tracks1 = localEvent1.getTracks(event1Pass); 
+            tracks2 = localEvent2.getTracks(event2Pass);
         }
         else{
-            tracks1 = localEvent1.getUTracks(Constants.PASS); 
-            tracks2 = localEvent2.getUTracks(Constants.PASS);
+            tracks1 = localEvent1.getUTracks(event1Pass); 
+            tracks2 = localEvent2.getUTracks(event2Pass);
         }                
         
         makeTrackMatchMap(tracks1, tracks2);
-    }    
+    } 
     
-    public void trackMatch(List<Track> tracks1, List<Track> tracks2){   
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void trackMatch(List<Track> tracks1, List<Track> tracks2, int event1Pass, int event2Pass){   
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         makeTrackMatchMap(tracks1, tracks2);
     }
-
+    
     public Map<Track, Track> get_map_track1_track2(){
         return map_track1_track2;
     } 

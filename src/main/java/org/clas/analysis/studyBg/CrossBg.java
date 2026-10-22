@@ -156,7 +156,7 @@ public class CrossBg extends BaseAnalysis {
     }
     
     public void processEvent(List<Cross> crossesBST1, List<Cross> crossesBST2, List<Cross> crossesBMT1, List<Cross> crossesBMT2, Match match) {     
-        match.crossMatch(crossesBST1, crossesBST2, crossesBMT1, crossesBMT2);
+        match.crossMatch(crossesBST1, crossesBST2, crossesBMT1, crossesBMT2, Constants.PASS, Constants.PASS);
         
         //// BST
         List<Cross> matchedCrsList1BST = new ArrayList<>(match.get_map_crs1_crs2_BST().keySet());
