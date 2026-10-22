@@ -52,6 +52,7 @@ public class BgOnValidTracks extends BaseAnalysis{
     
     private int numTotalTracks1 = 0;
     private int numTotalMatchedTracks2 = 0;
+    private int numTotalMatchedValidTracks2 = 0;
     
     private int numHitMatchedTracksHitLevelPurity[] = new int[CUTOPTIONS];
     private int numHitMatchedTracksClusterLevelPurity[] = new int[CUTOPTIONS];
@@ -1691,7 +1692,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             int numBMTCrossesOnTrk2 = 0;
             int numCrossesOnTrk2 = 0;
             if(match.get_map_track1_track2().containsKey(trk1)){
-                numTotalMatchedTracks2++;
+                numTotalMatchedTracks2++;                               
                 Track trk2 = match.get_map_track1_track2().get(trk1);
                 numBSTHitsOnTrk2 = trk2.getBSTHits().size();
                 numBMTHitsOnTrk2 = trk2.getBMTHits().size();
@@ -1735,7 +1736,10 @@ public class BgOnValidTracks extends BaseAnalysis{
                 histoGroupMatchedTracks.getHistoPt("evt2").fill(trk2.pt());
                 histoGroupMatchedTracks.getHistoPhi0("evt2").fill(trk2.phi0());
                 histoGroupMatchedTracks.getHistoD0("evt2").fill(trk2.d0()); 
-                histoGroupMatchedTracks.getHistoChi2pid("evt2").fill(trk2.chi2pid());                                                 
+                histoGroupMatchedTracks.getHistoChi2pid("evt2").fill(trk2.chi2pid());
+                
+                if(trk2.isValid(true, false)) numTotalMatchedValidTracks2++;
+                
             } else{
                 histoGroupNoMatchedTrack1.getHistoNKFIters().fill(trk1.nKFIters());
                 histoGroupNoMatchedTrack1.getHistoChi2overndf().fill(trk1.chi2()/trk1.ndf());
@@ -2780,7 +2784,9 @@ public class BgOnValidTracks extends BaseAnalysis{
         
         
         System.out.println("Number of toal valid tracks in pure samples: " + numTotalTracks1 + 
-                "\nNumber of total matched tracks in bg samples: " + numTotalMatchedTracks2 + "\n\n");
+                "\nNumber of total matched tracks in bg samples: " + numTotalMatchedTracks2 +
+                "\nNumber of total matched tracks with valid cuts in bg samples: " + numTotalMatchedValidTracks2
+                + "\n\n");
         
         final int cutPoint = 5;       
         int numRemainingTracksBasedHitMatch[] = {numTotalTracks1, numHitMatchedTracksHitLevel[cutPoint][cutPoint], numHitMatchedTracksClusterLevel[cutPoint][cutPoint], 
