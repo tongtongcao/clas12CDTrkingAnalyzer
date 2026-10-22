@@ -28,6 +28,7 @@ import org.clas.element.Cross;
 import org.clas.element.Seed;
 import org.clas.element.Track;
 import org.clas.graph.HistoGroup;
+import org.clas.graph.TrackHistoGroup;
 import org.jlab.groot.data.H1F;
 import org.jlab.groot.data.H2F;
 
@@ -127,7 +128,16 @@ public class BgOnValidTracks extends BaseAnalysis{
     public BgOnValidTracks(){}
     
     @Override
-    public void createHistoGroupMap(){ 
+    public void createHistoGroupMap(){
+        TrackHistoGroup histoGroupNoMatchedTrack1 = new TrackHistoGroup("NoMatchedTrack1", 3, 6);
+        histoGroupNoMatchedTrack1.addTrackHistos(1,0);
+        histoGroupMap.put(histoGroupNoMatchedTrack1.getName(), histoGroupNoMatchedTrack1); 
+        
+        TrackHistoGroup histoGroupMatchedTracks = new TrackHistoGroup("MatchedTracks", 3, 6);
+        histoGroupMatchedTracks.addTrackHistos("evt1", 1, 0);
+        histoGroupMatchedTracks.addTrackHistos("evt2", 2, 0);
+        histoGroupMap.put(histoGroupMatchedTracks.getName(), histoGroupMatchedTracks);        
+        
         HistoGroup histoGroupMatchedTracksHitEfficiency = new HistoGroup("MatchedTracksHitEfficiency", 3, 3);       
         H2F h2_pVsHitEfficiency_matchedTracks = new H2F("pVsHitEfficiency_matchedTracks", "p vs hit efficiency", 101, 0, 1.01, 100, 0, 2.5);
         h2_pVsHitEfficiency_matchedTracks.setTitleX("efficiency");
@@ -1658,6 +1668,8 @@ public class BgOnValidTracks extends BaseAnalysis{
         Match matchPass1 = new Match();
         matchPass1.trackMatch(tracks1, pass1Tracks2, Constants.TRACKINGPASS2, Constants.TRACKINGPASS1);
         
+        TrackHistoGroup histoGroupNoMatchedTrack1 = (TrackHistoGroup) histoGroupMap.get("NoMatchedTrack1");         
+        TrackHistoGroup histoGroupMatchedTracks = (TrackHistoGroup) histoGroupMap.get("MatchedTracks"); 
         for(Track trk1 : tracks1){
             int numBSTHitsOnTrk1 = trk1.getBSTHits().size();
             int numBMTHitsOnTrk1 = trk1.getBMTHits().size();
@@ -1689,8 +1701,59 @@ public class BgOnValidTracks extends BaseAnalysis{
                 numClustersOnTrk2 = trk2.getClusters().size();
                 numBSTCrossesOnTrk2 = trk2.getBSTCrosses().size();
                 numBMTCrossesOnTrk2 = trk2.getBMTCrosses().size();
-                numCrossesOnTrk2 = trk2.getCrosses().size();                
-            }
+                numCrossesOnTrk2 = trk2.getCrosses().size(); 
+                
+                histoGroupMatchedTracks.getHistoNKFIters("evt1").fill(trk1.nKFIters());
+                histoGroupMatchedTracks.getHistoChi2overndf("evt1").fill(trk1.chi2()/trk1.ndf());
+                histoGroupMatchedTracks.getHistoNDF("evt1").fill(trk1.ndf());
+                histoGroupMatchedTracks.getHistoP("evt1").fill(trk1.momentum().mag());
+                histoGroupMatchedTracks.getHistoTheta("evt1").fill(trk1.momentum().theta());
+                histoGroupMatchedTracks.getHistoPhi("evt1").fill(trk1.momentum().phi());            
+                histoGroupMatchedTracks.getHistoVx("evt1").fill(trk1.vertex().x());
+                histoGroupMatchedTracks.getHistoVy("evt1").fill(trk1.vertex().y());
+                histoGroupMatchedTracks.getHistoVz("evt1").fill(trk1.vertex().z());
+                histoGroupMatchedTracks.getHistoQ("evt1").fill(trk1.q());
+                histoGroupMatchedTracks.getHistoTandip("evt1").fill(trk1.tandip());
+                histoGroupMatchedTracks.getHistoZ0("evt1").fill(trk1.z0());
+                histoGroupMatchedTracks.getHistoPt("evt1").fill(trk1.pt());
+                histoGroupMatchedTracks.getHistoPhi0("evt1").fill(trk1.phi0());
+                histoGroupMatchedTracks.getHistoD0("evt1").fill(trk1.d0()); 
+                histoGroupMatchedTracks.getHistoChi2pid("evt1").fill(trk1.chi2pid()); 
+                
+                histoGroupMatchedTracks.getHistoNKFIters("evt2").fill(trk2.nKFIters());
+                histoGroupMatchedTracks.getHistoChi2overndf("evt2").fill(trk2.chi2()/trk2.ndf());
+                histoGroupMatchedTracks.getHistoNDF("evt2").fill(trk2.ndf());
+                histoGroupMatchedTracks.getHistoP("evt2").fill(trk2.momentum().mag());
+                histoGroupMatchedTracks.getHistoTheta("evt2").fill(trk2.momentum().theta());
+                histoGroupMatchedTracks.getHistoPhi("evt2").fill(trk2.momentum().phi());            
+                histoGroupMatchedTracks.getHistoVx("evt2").fill(trk2.vertex().x());
+                histoGroupMatchedTracks.getHistoVy("evt2").fill(trk2.vertex().y());
+                histoGroupMatchedTracks.getHistoVz("evt2").fill(trk2.vertex().z());
+                histoGroupMatchedTracks.getHistoQ("evt2").fill(trk2.q());
+                histoGroupMatchedTracks.getHistoTandip("evt2").fill(trk2.tandip());
+                histoGroupMatchedTracks.getHistoZ0("evt2").fill(trk2.z0());
+                histoGroupMatchedTracks.getHistoPt("evt2").fill(trk2.pt());
+                histoGroupMatchedTracks.getHistoPhi0("evt2").fill(trk2.phi0());
+                histoGroupMatchedTracks.getHistoD0("evt2").fill(trk2.d0()); 
+                histoGroupMatchedTracks.getHistoChi2pid("evt2").fill(trk2.chi2pid());                                                 
+            } else{
+                histoGroupNoMatchedTrack1.getHistoNKFIters().fill(trk1.nKFIters());
+                histoGroupNoMatchedTrack1.getHistoChi2overndf().fill(trk1.chi2()/trk1.ndf());
+                histoGroupNoMatchedTrack1.getHistoNDF().fill(trk1.ndf());
+                histoGroupNoMatchedTrack1.getHistoP().fill(trk1.momentum().mag());
+                histoGroupNoMatchedTrack1.getHistoTheta().fill(trk1.momentum().theta());
+                histoGroupNoMatchedTrack1.getHistoPhi().fill(trk1.momentum().phi());            
+                histoGroupNoMatchedTrack1.getHistoVx().fill(trk1.vertex().x());
+                histoGroupNoMatchedTrack1.getHistoVy().fill(trk1.vertex().y());
+                histoGroupNoMatchedTrack1.getHistoVz().fill(trk1.vertex().z());
+                histoGroupNoMatchedTrack1.getHistoQ().fill(trk1.q());
+                histoGroupNoMatchedTrack1.getHistoTandip().fill(trk1.tandip());
+                histoGroupNoMatchedTrack1.getHistoZ0().fill(trk1.z0());
+                histoGroupNoMatchedTrack1.getHistoPt().fill(trk1.pt());
+                histoGroupNoMatchedTrack1.getHistoPhi0().fill(trk1.phi0());
+                histoGroupNoMatchedTrack1.getHistoD0().fill(trk1.d0());  
+                histoGroupNoMatchedTrack1.getHistoChi2pid().fill(trk1.chi2pid()); 
+            }           
                                                
             //// Hit level
             // Hit: for a hit on track of sample 1, check if ther is matched hit in sample 2
