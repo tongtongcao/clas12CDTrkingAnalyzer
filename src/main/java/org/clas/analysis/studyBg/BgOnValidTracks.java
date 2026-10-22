@@ -1585,7 +1585,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             for(int j = 0; j < CUTOPTIONS; j++){
                 H1F h1_trackingEfficiencyBasedHitMatch = new H1F("trackingEfficiencyBasedHitMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), STAGESRECONPIPELINE+1, -0.5, STAGESRECONPIPELINE+0.5);        
                 h1_trackingEfficiencyBasedHitMatch.setTitleX("recon level");
-                h1_trackingEfficiencyBasedHitMatch.setTitleY("Counts");
+                h1_trackingEfficiencyBasedHitMatch.setTitleY("trking eff.");
                 h1_trackingEfficiencyBasedHitMatch.setLineColor(1);
                 histoGroupTrackEfficiencyBasedHitMatch.addDataSet(h1_trackingEfficiencyBasedHitMatch, i*CUTOPTIONS+j);
             }
@@ -1597,7 +1597,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             for(int j = 0; j < CUTOPTIONS; j++){
                 H1F h1_trackingEfficiencyBasedClusterMatch = new H1F("trackingEfficiencyBasedClusterMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), STAGESRECONPIPELINE+1, -0.5, STAGESRECONPIPELINE+0.5);      
                 h1_trackingEfficiencyBasedClusterMatch.setTitleX("recon level");
-                h1_trackingEfficiencyBasedClusterMatch.setTitleY("Counts");
+                h1_trackingEfficiencyBasedClusterMatch.setTitleY("rking eff.");
                 h1_trackingEfficiencyBasedClusterMatch.setLineColor(1);
                 histoGroupTrackEfficiencyBasedClusterMatch.addDataSet(h1_trackingEfficiencyBasedClusterMatch, i*CUTOPTIONS+j);
             }
@@ -1609,7 +1609,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             for(int j = 0; j < CUTOPTIONS; j++){
                 H1F h1_trackingEfficiencyBasedCrossMatch = new H1F("trackingEfficiencyBasedCrossMatch" + Integer.toString(i) + Integer.toString(j), "eff >= " + Double.toString(EFFICIENCYCUT[i]) + " & pur >= " + Double.toString(PURITYCUT[j]), STAGESRECONPIPELINE+1, -0.5, STAGESRECONPIPELINE+0.5);      
                 h1_trackingEfficiencyBasedCrossMatch.setTitleX("recon level");
-                h1_trackingEfficiencyBasedCrossMatch.setTitleY("Counts");
+                h1_trackingEfficiencyBasedCrossMatch.setTitleY("rking eff.");
                 h1_trackingEfficiencyBasedCrossMatch.setLineColor(1);
                 histoGroupTrackEfficiencyBasedCrossMatch.addDataSet(h1_trackingEfficiencyBasedCrossMatch, i*CUTOPTIONS+j);
             }
