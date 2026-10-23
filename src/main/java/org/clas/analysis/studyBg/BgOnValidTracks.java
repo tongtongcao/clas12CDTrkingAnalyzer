@@ -2163,7 +2163,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             double purityBSTCrossTrackLevel = 0;
             double purityBSTCrossValidTrackLevel = 0;
             if(numBSTHitsOnTrk2 > 0){
-                purityBSTHitHitLevel = numMatchedBSTHitsHitLevel / (double) numBSTHitsOnTrk2;
+                //purityBSTHitHitLevel = numMatchedBSTHitsHitLevel / (double) numBSTHitsOnTrk2;
                 purityBSTHitClusterLevel = numMatchedBSTHitsClusterLevel / (double) numBSTHitsOnTrk2;
                 purityBSTHitCrossLevel = numMatchedBSTHitsCrossLevel / (double) numBSTHitsOnTrk2;
                 purityBSTHitSeedLevel = numMatchedBSTHitsSeedLevel / (double) numBSTHitsOnTrk2;
@@ -2172,7 +2172,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 purityBSTHitValidTrackLevel = numMatchedBSTHitsValidTrackLevel / (double) numBSTHitsOnTrk2;
             }
             if(numBSTClustersOnTrk2 > 0){
-                purityBSTClusterHitLevel = numMatchedBSTClustersHitLevel / (double) numBSTClustersOnTrk2;
+                //purityBSTClusterHitLevel = numMatchedBSTClustersHitLevel / (double) numBSTClustersOnTrk2;
                 purityBSTClusterClusterLevel = numMatchedBSTClustersClusterLevel / (double) numBSTClustersOnTrk2;
                 purityBSTClusterCrossLevel = numMatchedBSTClustersCrossLevel / (double) numBSTClustersOnTrk2;
                 purityBSTClusterSeedLevel = numMatchedBSTClustersSeedLevel / (double) numBSTClustersOnTrk2;
@@ -2181,7 +2181,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 purityBSTClusterValidTrackLevel = numMatchedBSTClustersValidTrackLevel / (double) numBSTClustersOnTrk2;
             }
             if(numBSTCrossesOnTrk2 > 0){
-                purityBSTCrossHitLevel = numMatchedBSTCrossesHitLevel / (double) numBSTCrossesOnTrk2;
+                //purityBSTCrossHitLevel = numMatchedBSTCrossesHitLevel / (double) numBSTCrossesOnTrk2;
                 purityBSTCrossClusterLevel = numMatchedBSTCrossesClusterLevel / (double) numBSTCrossesOnTrk2;
                 purityBSTCrossCrossLevel = numMatchedBSTCrossesCrossLevel / (double) numBSTCrossesOnTrk2;
                 purityBSTCrossSeedLevel = numMatchedBSTCrossesSeedLevel / (double) numBSTCrossesOnTrk2;
@@ -2212,7 +2212,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             double purityBMTCrossTrackLevel = 0;
             double purityBMTCrossValidTrackLevel = 0;
             if(numBMTHitsOnTrk2 > 0){
-                purityBMTHitHitLevel = numMatchedBMTHitsHitLevel / (double) numBMTHitsOnTrk2;
+                //purityBMTHitHitLevel = numMatchedBMTHitsHitLevel / (double) numBMTHitsOnTrk2;
                 purityBMTHitClusterLevel = numMatchedBMTHitsClusterLevel / (double) numBMTHitsOnTrk2;
                 purityBMTHitCrossLevel = numMatchedBMTHitsCrossLevel / (double) numBMTHitsOnTrk2;
                 purityBMTHitSeedLevel = numMatchedBMTHitsSeedLevel / (double) numBMTHitsOnTrk2;
@@ -2221,7 +2221,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 purityBMTHitValidTrackLevel = numMatchedBMTHitsValidTrackLevel / (double) numBMTHitsOnTrk2; 
             }
             if(numBMTClustersOnTrk2 > 0){
-                purityBMTClusterHitLevel = numMatchedBMTClustersHitLevel / (double) numBMTClustersOnTrk2;
+                //purityBMTClusterHitLevel = numMatchedBMTClustersHitLevel / (double) numBMTClustersOnTrk2;
                 purityBMTClusterClusterLevel = numMatchedBMTClustersClusterLevel / (double) numBMTClustersOnTrk2;
                 purityBMTClusterCrossLevel = numMatchedBMTClustersCrossLevel / (double) numBMTClustersOnTrk2;
                 purityBMTClusterSeedLevel = numMatchedBMTClustersSeedLevel / (double) numBMTClustersOnTrk2;
@@ -2230,7 +2230,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 purityBMTClusterValidTrackLevel = numMatchedBMTClustersValidTrackLevel / (double) numBMTClustersOnTrk2; 
             }
             if(numBMTCrossesOnTrk2 > 0){
-                purityBMTCrossHitLevel = numMatchedBMTCrossesHitLevel / (double) numBMTCrossesOnTrk2;
+                //purityBMTCrossHitLevel = numMatchedBMTCrossesHitLevel / (double) numBMTCrossesOnTrk2;
                 purityBMTCrossClusterLevel = numMatchedBMTCrossesClusterLevel / (double) numBMTCrossesOnTrk2;
                 purityBMTCrossCrossLevel = numMatchedBMTCrossesCrossLevel / (double) numBMTCrossesOnTrk2;
                 purityBMTCrossSeedLevel = numMatchedBMTCrossesSeedLevel / (double) numBMTCrossesOnTrk2;
@@ -2261,7 +2261,7 @@ public class BgOnValidTracks extends BaseAnalysis{
             double purityCrossTrackLevel = 0;
             double purityCrossValidTrackLevel = 0;
             if(numHitsOnTrk2 > 0){
-                purityHitHitLevel = numMatchedHitsHitLevel / (double) numHitsOnTrk2;
+                //purityHitHitLevel = numMatchedHitsHitLevel / (double) numHitsOnTrk2;
                 purityHitClusterLevel = numMatchedHitsClusterLevel / (double) numHitsOnTrk2;
                 purityHitCrossLevel = numMatchedHitsCrossLevel / (double) numHitsOnTrk2;
                 purityHitSeedLevel = numMatchedHitsSeedLevel / (double) numHitsOnTrk2;
@@ -2270,7 +2270,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 purityHitValidTrackLevel = numMatchedHitsValidTrackLevel / (double) numHitsOnTrk2;
             }
             if(numClustersOnTrk2 > 0){
-                purityClusterHitLevel = numMatchedClustersHitLevel / (double) numClustersOnTrk2;
+                //purityClusterHitLevel = numMatchedClustersHitLevel / (double) numClustersOnTrk2;
                 purityClusterClusterLevel = numMatchedClustersClusterLevel / (double) numClustersOnTrk2;
                 purityClusterCrossLevel = numMatchedClustersCrossLevel / (double) numClustersOnTrk2;
                 purityClusterSeedLevel = numMatchedClustersSeedLevel / (double) numClustersOnTrk2;
@@ -2279,7 +2279,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 purityClusterValidTrackLevel = numMatchedClustersValidTrackLevel / (double) numClustersOnTrk2;
             }
             if(numCrossesOnTrk2 > 0){
-                purityCrossHitLevel = numMatchedCrossesHitLevel / (double) numCrossesOnTrk2;
+                //purityCrossHitLevel = numMatchedCrossesHitLevel / (double) numCrossesOnTrk2;
                 purityCrossClusterLevel = numMatchedCrossesClusterLevel / (double) numCrossesOnTrk2;
                 purityCrossCrossLevel = numMatchedCrossesCrossLevel / (double) numCrossesOnTrk2;
                 purityCrossSeedLevel = numMatchedCrossesSeedLevel / (double) numCrossesOnTrk2;
