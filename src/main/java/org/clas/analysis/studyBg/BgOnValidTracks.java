@@ -2798,8 +2798,8 @@ public class BgOnValidTracks extends BaseAnalysis{
             ratio_err[i] = (double) numRemainingTracksBasedHitMatch[i] * (numRemainingTracksBasedHitMatch[i] + numRemainingTracksBasedHitMatch[0]) / Math.pow(numRemainingTracksBasedHitMatch[i], 3);
         }
                         
-        System.out.println("                                   Evolution of tracking efficiency                                   ");
-        System.out.println(String.format("Cut on hit purity of tracks: %10.2f; Cut on hit efficiency of tracks: %10.2f", PURITYCUT[5], EFFICIENCYCUT[5]));        
+        System.out.println("                                   Evolution of tracking efficiency                                   ");        
+        System.out.println(String.format("Cut on hit purity of tracks: %3.2f; Cut on hit efficiency of tracks: %3.2f", PURITYCUT[cutPoint], EFFICIENCYCUT[cutPoint]));  
         System.out.println("           |     origin |  hit recon | clustering |   crossing |    seeding |pass1 trking|pass2 trking| valid cuts |");        
         System.out.println(String.format("efficiency " + "| %10.4f | % 10.4f | %10.4f | %10.4f | %10.4f | %10.4f | %10.4f | %10.4f |", 
                 ratio[0], ratio[1], ratio[2], ratio[3], ratio[4], ratio[5], ratio[6], ratio[7]));

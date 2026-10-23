@@ -57,6 +57,7 @@ public class Cross implements Comparable<Cross> {
     //// Match between pure and bg samples    
     private boolean foundMatchedCross = false; // if matched cross found
     private int matchedCrossId = -1; // ID of matched cross
+    private int numMatchedClusters = -1; // Number of matched clusters
     private int totalTruthHits = 0; // total truth hits on matched cross in pure sample
     private double efficiency = 0; // # of truth hits / # of total truth hits on matched cross in pure sample
     
@@ -338,7 +339,15 @@ public class Cross implements Comparable<Cross> {
                
     public int getMatchedCrossId(){
         return matchedCrossId;
-    }    
+    }
+
+    public void setNumMatchedClusters(int numMatchedClusters){
+        this.numMatchedClusters = numMatchedClusters;
+    }
+               
+    public int getNumMatchedClusters(){
+        return numMatchedClusters;
+    }     
     
     public void setEfficiency(double efficiency){
         this.efficiency = efficiency;
