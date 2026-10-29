@@ -169,6 +169,6 @@ public abstract class BaseAnalysis {
         GStyle.getAxisAttributesX().setTitleFontName("Arial");
         GStyle.getAxisAttributesY().setTitleFontName("Arial");
         GStyle.getAxisAttributesZ().setTitleFontName("Arial");
-        //GStyle.getAxisAttributesZ().setLog(true);
+        GStyle.getAxisAttributesZ().setLog(true);
     }    
 } 
