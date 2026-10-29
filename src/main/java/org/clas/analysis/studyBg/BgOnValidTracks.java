@@ -136,7 +136,11 @@ public class BgOnValidTracks extends BaseAnalysis{
         
         TrackHistoGroup histoGroupMatchedTracks = new TrackHistoGroup("MatchedTracks", 3, 6);
         histoGroupMatchedTracks.addTrackHistos("evt1", 1, 0);
-        histoGroupMatchedTracks.addTrackHistos("evt2", 2, 0);
+        histoGroupMatchedTracks.addTrackHistos("evt2", 2, 0);        
+        H2F h2_hitPurityVsHitEfficiency_matchedTracks = new H2F("hitPurityVsHitEfficiency_matchedTracks", "hit purity vs hit efficiency", 101, 0, 1.01, 101, 0, 1.01);
+        h2_hitPurityVsHitEfficiency_matchedTracks.setTitleX("efficiency");
+        h2_hitPurityVsHitEfficiency_matchedTracks.setTitleY("purity");  
+        histoGroupMatchedTracks.addDataSet(h2_hitPurityVsHitEfficiency_matchedTracks, 16);   
         histoGroupMap.put(histoGroupMatchedTracks.getName(), histoGroupMatchedTracks);        
         
         HistoGroup histoGroupMatchedTracksHitEfficiency = new HistoGroup("MatchedTracksHitEfficiency", 3, 3);       
@@ -1736,7 +1740,7 @@ public class BgOnValidTracks extends BaseAnalysis{
                 histoGroupMatchedTracks.getHistoPt("evt2").fill(trk2.pt());
                 histoGroupMatchedTracks.getHistoPhi0("evt2").fill(trk2.phi0());
                 histoGroupMatchedTracks.getHistoD0("evt2").fill(trk2.d0()); 
-                histoGroupMatchedTracks.getHistoChi2pid("evt2").fill(trk2.chi2pid());
+                histoGroupMatchedTracks.getHistoChi2pid("evt2").fill(trk2.chi2pid());                                
                 
                 if(trk2.isValid(true, false)) numTotalMatchedValidTracks2++;
                 
@@ -2290,6 +2294,8 @@ public class BgOnValidTracks extends BaseAnalysis{
             
             if(match.get_map_track1_track2().containsKey(trk1)){
                 Track trk2 = match.get_map_track1_track2().get(trk1);
+                
+                histoGroupMatchedTracks.getH2F("hitPurityVsHitEfficiency_matchedTracks").fill(efficiencyHitTrackLevel, purityHitTrackLevel);
                 
                 HistoGroup histoGroupMatchedTracksHitEfficiency = histoGroupMap.get("MatchedTracksHitEfficiency");
                 HistoGroup histoGroupMatchedTracksHitPurity = histoGroupMap.get("MatchedTracksHitPurity");
