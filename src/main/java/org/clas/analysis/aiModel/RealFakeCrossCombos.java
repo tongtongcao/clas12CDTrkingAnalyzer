@@ -165,8 +165,10 @@ public class RealFakeCrossCombos{
                             for(int i = 0; i < 6; i++){
                                 String clsInfo;
                                 if(bmtClusters[i] != null) {
-                                    double r = (Math.sqrt(Math.pow(bmtClusters[i].originPoint().x(), 2) + Math.pow(bmtClusters[i].originPoint().y(), 2)) + 
-                                            Math.sqrt(Math.pow(bmtClusters[i].endPoint().x(), 2) + Math.pow(bmtClusters[i].endPoint().y(), 2))) / 2;
+                                    // Average radius of the two endpoints
+                                    double r1 = Math.hypot(bmtClusters[i].originPoint().x(), bmtClusters[i].originPoint().y());
+                                    double r2 = Math.hypot(bmtClusters[i].endPoint().x(), bmtClusters[i].endPoint().y());
+                                    double r = 0.5 * (r1 + r2); 
                                     
                                     if(bmtClusters[i].bmtType() == Constants.BMTC){
                                         double z = (bmtClusters[i].originPoint().z() + bmtClusters[i].endPoint().z()) / 2;
@@ -174,8 +176,11 @@ public class RealFakeCrossCombos{
                                         map_realCombos.put(i+4, clsFeatures);
                                     }
                                     else{
-                                        double phi = (Math.atan2(bmtClusters[i].originPoint().y(), bmtClusters[i].originPoint().x()) + 
-                                                Math.atan2(bmtClusters[i].endPoint().y(), bmtClusters[i].endPoint().x())) / 2;
+                                        // Average phi of the two endpoints
+                                        double phi1 = Math.atan2(bmtClusters[i].originPoint().y(), bmtClusters[i].originPoint().x());
+                                        double phi2 = Math.atan2(bmtClusters[i].endPoint().y(), bmtClusters[i].endPoint().x());
+                                        double phi = circularMean(phi1, phi2); 
+                                        
                                         List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, phi, (double)(i+4), 1.));
                                         map_realCombos.put(i+4, clsFeatures);
                                     }
@@ -262,15 +267,22 @@ public class RealFakeCrossCombos{
                             
                             if (!candidatesBMT.isEmpty()) {
                                 Cluster randomBMTCluster = candidatesBMT.get(random.nextInt(candidatesBMT.size()));
-                                double r = (Math.sqrt(Math.pow(randomBMTCluster.originPoint().x(), 2) + Math.pow(randomBMTCluster.originPoint().y(), 2))
-                                        + Math.sqrt(Math.pow(randomBMTCluster.endPoint().x(), 2) + Math.pow(randomBMTCluster.endPoint().y(), 2))) / 2;
+                                
+                                // Average radius of the two endpoints
+                                double r1 = Math.hypot(randomBMTCluster.originPoint().x(), randomBMTCluster.originPoint().y());
+                                double r2 = Math.hypot(randomBMTCluster.endPoint().x(), randomBMTCluster.endPoint().y());
+                                double r = 0.5 * (r1 + r2);                                  
+                                
                                 if (randomBMTCluster.bmtType() == Constants.BMTC) {
                                     double z = (randomBMTCluster.originPoint().z() + randomBMTCluster.endPoint().z()) / 2;
                                     List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, z, (double) (randomNumberBMTLayer + 3), 1.));
                                     map_fakeBMTCluster.put(randomNumberBMTLayer + 3, clsFeatures);
-                                } else {
-                                    double phi = (Math.atan2(randomBMTCluster.originPoint().y(), randomBMTCluster.originPoint().x())
-                                            + Math.atan2(randomBMTCluster.endPoint().y(), randomBMTCluster.endPoint().x())) / 2;
+                                } else {                                    
+                                    // Average phi of the two endpoints
+                                    double phi1 = Math.atan2(randomBMTCluster.originPoint().y(), randomBMTCluster.originPoint().x());
+                                    double phi2 = Math.atan2(randomBMTCluster.endPoint().y(), randomBMTCluster.endPoint().x());
+                                    double phi = circularMean(phi1, phi2); 
+                                    
                                     List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, phi, (double) (randomNumberBMTLayer + 3), 1.));
                                     map_fakeBMTCluster.put(randomNumberBMTLayer + 3, clsFeatures);
                                 }
@@ -308,4 +320,10 @@ public class RealFakeCrossCombos{
             }
         }
     }
+    
+    private static double circularMean(double phi1, double phi2) {
+        double sinSum = Math.sin(phi1) + Math.sin(phi2);
+        double cosSum = Math.cos(phi1) + Math.cos(phi2);
+        return Math.atan2(sinSum, cosSum);
+    }    
 }
