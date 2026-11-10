@@ -68,6 +68,7 @@ public class CrossesPass2TracksExtractorTransformer{
         ProgressPrintout progress = new ProgressPrintout();
         int counter = 0;
         try(FileWriter writer = new FileWriter(outputName)){
+            boolean flag = false;
             for(String input : inputList){
                 HipoReader reader = new HipoReader();
                 reader.open(input);
@@ -76,7 +77,6 @@ public class CrossesPass2TracksExtractorTransformer{
                 Reader localReader = new Reader(new Banks(schema));
                 Event event = new Event();
                 while(reader.hasNext()){
-                    boolean flag = false;
                     
                     reader.nextEvent(event);
 
@@ -141,9 +141,11 @@ public class CrossesPass2TracksExtractorTransformer{
                     if(flag) break;
                     progress.updateStatus();
                                         
-                }
+                }                
                 progress.showStatus();
                 reader.close();                 
+                
+                if(flag) break;
             }
         }
     }
