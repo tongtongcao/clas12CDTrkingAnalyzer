@@ -155,7 +155,7 @@ public class CompareAllSeedsTracks extends BaseAnalysis{
             else{
                 histoGroupOverview.getH1F("ifSameBestTrackbyTwoRoutines").fill(0);
                 
-                int numMatchedClusters = bestTrackByTrackRoutine.numMatchedClustersWithTrack(bestTrackBySeedRoutine);
+                int numMatchedClusters = bestTrackByTrackRoutine.numSameSeedClustersOnGeometry(bestTrackBySeedRoutine);
                             
                 histoGroupOverview.getH2F("ratioMatchedClusters").fill((double)numMatchedClusters/bestTrackBySeedRoutine.getClusters().size(), (double)numMatchedClusters/bestTrackByTrackRoutine.getClusters().size());
                 
@@ -328,7 +328,7 @@ public class CompareAllSeedsTracks extends BaseAnalysis{
             int numSameTracks = 0;
             for(Track trk : trackList){
                 for(Track currentTrk : currentTrackList){
-                    if(currentTrk.isSameClusterswithTrack(trk)) {
+                    if(currentTrk.isSameTrackWithAllSameSeedClustersOnGeometry(trk)) {
                         numSameTracks++;
                         break;
                     }
@@ -352,8 +352,8 @@ public class CompareAllSeedsTracks extends BaseAnalysis{
         parser.addOption("-o"          ,"",     "output file name prefix");
         parser.addOption("-n"          ,"-1",   "maximum number of events to process");        
         parser.addOption("-plot"       ,"1",    "display histograms (0/1)");
-        parser.addOption("-bg", "1", "if bg (0/1)");
-        parser.addOption("-pass", "1", "if bg (1/2)");
+        parser.addOption("-pass", "1", "pass 1 or 2");
+        parser.addOption("-uTrack", "1", "if unconstrained track (0/1)");
         parser.addOption("-histo"      ,"0",    "read histogram file (0/1)");        
         parser.parse(args);
         

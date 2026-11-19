@@ -57,6 +57,7 @@ public class Cross implements Comparable<Cross> {
     //// Match between pure and bg samples    
     private boolean foundMatchedCross = false; // if matched cross found
     private int matchedCrossId = -1; // ID of matched cross
+    private int numMatchedClusters = -1; // Number of matched clusters
     private int totalTruthHits = 0; // total truth hits on matched cross in pure sample
     private double efficiency = 0; // # of truth hits / # of total truth hits on matched cross in pure sample
     
@@ -338,7 +339,15 @@ public class Cross implements Comparable<Cross> {
                
     public int getMatchedCrossId(){
         return matchedCrossId;
-    }    
+    }
+
+    public void setNumMatchedClusters(int numMatchedClusters){
+        this.numMatchedClusters = numMatchedClusters;
+    }
+               
+    public int getNumMatchedClusters(){
+        return numMatchedClusters;
+    }     
     
     public void setEfficiency(double efficiency){
         this.efficiency = efficiency;
@@ -346,7 +355,38 @@ public class Cross implements Comparable<Cross> {
                
     public double getEfficiency(){
         return efficiency;
-    } 
+    }
+    
+    public int numSameSeedClustersOnGeometry(Cross o){
+        if(this.getCluster1() != null){
+            if(this.detectorType() == Constants.DETECTORBMT){
+                if(this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1())) return 1;
+                else return 0;
+            }
+            else{
+                boolean statusCls1 = this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1());
+                boolean statusCls2 = this.getCluster2().isSameSeedClusterOnGeometry(o.getCluster2());
+                if(statusCls1 && statusCls2) return 2;
+                else if(!statusCls1 && !statusCls2) return 0;
+                else return 1;
+            }
+        }        
+        else return 0;
+    }
+    
+    public boolean isSameCrossWithAllSameSeedClustersOnGeometry(Cross o){
+        if(this.getCluster1() != null){
+            if(this.detectorType() == Constants.DETECTORBMT){
+                return this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1());
+            }
+            else{
+                boolean statusCls1 = this.getCluster1().isSameSeedClusterOnGeometry(o.getCluster1());
+                boolean statusCls2 = this.getCluster2().isSameSeedClusterOnGeometry(o.getCluster2());
+                return statusCls1 && statusCls2;
+            }
+        }        
+        else return false;
+    }    
     
     // Map to sector of BMT 
     private List<Integer> getSectorListMapToBMTSector() {

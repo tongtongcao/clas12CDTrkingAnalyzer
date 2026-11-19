@@ -17,6 +17,7 @@ public class BMTADC {
     private int ped;
     private int integral;
     private double timestamp;
+    private int bmtType = Constants.BMTNO;
         
     public BMTADC(int sector, int layer, int component, int order, int ADC, double time, int ped, int integral, double timestamp){
         this.sector = sector;
@@ -28,6 +29,17 @@ public class BMTADC {
         this.ped = ped;
         this.integral = integral;
         this.timestamp = timestamp;
+        if(layer == 1 || layer == 4 || layer == 6){
+            bmtType = Constants.BMTC;
+        }
+        else if(layer == 2 || layer == 3 || layer == 5){
+            bmtType = Constants.BMTZ;
+        }
+        else bmtType = Constants.BMTNO;
+    }
+    
+    public int bmtType(){
+        return bmtType;
     }
     
     public int sector(){
@@ -70,7 +82,7 @@ public class BMTADC {
         return order == 0;
     }     
     
-    public boolean matchADC(BMTADC adc){
+    public boolean isSameADC(BMTADC adc){
         return this.sector == adc.sector() && this.layer() == adc.layer() && this.component == adc.component() && this.ADC == adc.ADC() && this.integral == adc.integral();
     }    
 }

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
+import org.jlab.geom.prim.Point3D;
 
 import org.clas.element.RunConfig;
 import org.clas.element.MCParticle;
@@ -61,43 +62,84 @@ public class Reader {
     public List<Track> readTracks(Event event, int trackingPass, int trackingMode) {        
         List<Track> tracks = new ArrayList();
         
-        Bank trackBank      = banks.getTrackBank(trackingPass, trackingMode);           
+        Bank trackingBank      = banks.getTrackBank(trackingPass, trackingMode); 
         
-        if(trackBank!=null) {
-            event.read(trackBank);
+        Bank trackCVBank = banks.getCVRecTrackBank(trackingPass);   
+        Bank trackAIBank = banks.getAIRecTrackBank(trackingPass); 
+        Bank particleCVBank = banks.getCVRecParticleBank(trackingPass);
+        Bank particleAIBank = banks.getCVRecParticleBank(trackingPass);
+        
+        if(trackingBank!=null) {
+            event.read(trackingBank);
             // create tracks list from track bank
-            for(int it = 0; it < trackBank.getRows(); it++){
+            for(int it = 0; it < trackingBank.getRows(); it++){
                 Track track = new Track(trackingPass, trackingMode,
-                                        trackBank.getInt("ID", it),
-                                        trackBank.getByte("nKFIters", it),
-                                        trackBank.getByte("q", it),
-                                        trackBank.getFloat("p", it),
-                                        trackBank.getFloat("pt", it),
-                                        trackBank.getFloat("phi0", it),
-                                        trackBank.getFloat("tandip", it),
-                                        trackBank.getFloat("z0", it),
-                                        trackBank.getFloat("d0", it),
-                                        trackBank.getFloat("chi2", it),
-                                        trackBank.getInt("ndf", it),
-                                        trackBank.getInt("pid", it),
-                                        trackBank.getInt("seedID", it),
-                                        trackBank.getFloat("xb", it),
-                                        trackBank.getFloat("yb", it),
-                                        trackBank.getInt("status", it));
+                                        trackingBank.getInt("ID", it),
+                                        trackingBank.getByte("nKFIters", it),
+                                        trackingBank.getByte("q", it),
+                                        trackingBank.getFloat("p", it),
+                                        trackingBank.getFloat("pt", it),
+                                        trackingBank.getFloat("phi0", it),
+                                        trackingBank.getFloat("tandip", it),
+                                        trackingBank.getFloat("z0", it),
+                                        trackingBank.getFloat("d0", it),
+                                        trackingBank.getFloat("chi2", it),
+                                        trackingBank.getInt("ndf", it),
+                                        trackingBank.getInt("pid", it),
+                                        trackingBank.getInt("seedID", it),
+                                        trackingBank.getFloat("xb", it),
+                                        trackingBank.getFloat("yb", it),
+                                        trackingBank.getInt("status", it));
                 
                 if(trackingMode == Constants.TRACKINGMODE2){
-                    track.crossIds(trackBank.getInt("Cross1_ID", it),
-                                    trackBank.getInt("Cross2_ID", it),
-                                    trackBank.getInt("Cross3_ID", it),
-                                    trackBank.getInt("Cross4_ID", it),
-                                    trackBank.getInt("Cross5_ID", it),
-                                    trackBank.getInt("Cross6_ID", it),
-                                    trackBank.getInt("Cross7_ID", it),
-                                    trackBank.getInt("Cross8_ID", it),
-                                    trackBank.getInt("Cross9_ID", it));
+                    track.crossIds(trackingBank.getInt("Cross1_ID", it),
+                                    trackingBank.getInt("Cross2_ID", it),
+                                    trackingBank.getInt("Cross3_ID", it),
+                                    trackingBank.getInt("Cross4_ID", it),
+                                    trackingBank.getInt("Cross5_ID", it),
+                                    trackingBank.getInt("Cross6_ID", it),
+                                    trackingBank.getInt("Cross7_ID", it),
+                                    trackingBank.getInt("Cross8_ID", it),
+                                    trackingBank.getInt("Cross9_ID", it));
                 }
-
+                
                 tracks.add(track);
+            }
+            
+            // add information from particle bank
+            if(trackingMode == Constants.TRACKINGMODE2){
+                event.read(trackCVBank);
+                event.read(trackAIBank);
+                event.read(particleCVBank);
+                event.read(particleAIBank);
+
+                Bank trackBank;
+                Bank particleBank;
+
+                //if(trackAIBank != null && trackAIBank.getRows() > 0) {
+                    //trackBank = trackAIBank;
+                    //particleBank = particleAIBank;
+                //}
+                //else {
+                trackBank = trackCVBank;
+                particleBank = particleCVBank;
+                //}        
+
+                if(trackBank!=null && particleBank!=null) {
+                    for(int loop = 0; loop < trackBank.getRows(); loop++){
+                        int pindex = trackBank.getShort("pindex", loop);
+                        int status = particleBank.getShort("status", pindex);
+
+                        // Central Detector only
+                        if(((int) Math.abs(status)/1000)==4) {                         
+                            int index = trackBank.getShort("index", loop);
+                            Track track  = tracks.get(index); 
+                            track.pid(particleBank.getInt("pid", pindex));                
+                            track.chi2pid(particleBank.getFloat("chi2pid", pindex));  
+                            track.beta(particleBank.getFloat("beta", pindex));  
+                        }
+                    }
+                }  
             }
         }
         return tracks;
@@ -259,11 +301,7 @@ public class Reader {
         }        
         
         return crosses;
-    }
-      
-    public List<Cluster> readClusters(Event event) {
-        return readClusters(event, Constants.DETECTORBST, Constants.TRACKINGPASS2);
-    }
+    }      
     
     public List<Cluster> readClusters(Event event, int detectorType, int trackingPass) {
         Bank clusterBank = banks.getClusterBank(detectorType, trackingPass);
@@ -312,15 +350,14 @@ public class Reader {
                             clusterBank.getInt("Hit3_ID", loop),
                             clusterBank.getInt("Hit4_ID", loop),
                             clusterBank.getInt("Hit5_ID", loop));
-                
-                /*
-                try{
+                                
+                if (clusterBank.getSchema().hasEntry("DAFWeight")) {
                     cls.dafWeight(clusterBank.getFloat("DAFWeight", loop));
-                }              
-                catch(Exception e){
-                   LOGGER.log(Level.FINER, "no item DAFWeight in cluster bank!");
                 }
-                */
+                
+                if (clusterBank.getSchema().hasEntry("centroidValue")) {
+                    cls.centroidValue(clusterBank.getFloat("centroidValue", loop));
+                }
                 
                 clusters.add(cls); 
             }
@@ -355,6 +392,18 @@ public class Reader {
                         hitBank.getInt("trkID", loop),
                         hitBank.getByte("status", loop)
                         );
+                
+                if (hitBank.getSchema().hasEntry("xo")) {
+                   double xo = hitBank.getFloat("xo", loop);
+                   double yo = hitBank.getFloat("yo", loop);
+                   double zo = hitBank.getFloat("zo", loop);
+                   double xe = hitBank.getFloat("xe", loop);
+                   double ye = hitBank.getFloat("ye", loop);
+                   double ze = hitBank.getFloat("ze", loop);
+                   
+                   hit.setOriginPoint(new Point3D(xo, yo, zo));
+                   hit.setEndPoint(new Point3D(xo, yo, zo));
+                }
                 
                 hits.add(hit);
             }

@@ -37,7 +37,6 @@ public class Match {
     private Map<Cross, Cross> map_crs1_crs2_BMT= new HashMap();    
     private Map<Seed, Seed> map_seed1_seed2= new HashMap();
     private Map<Track, Track> map_track1_track2= new HashMap();
-    private Map<Track, Track> map_track1_pseudoTrack2= new HashMap();
     
     public Match(){}
         
@@ -46,11 +45,11 @@ public class Match {
         this.localEvent2 = localEvent2;
     }
     
-    public void hitMatch(){
-        List<Hit> hitsBST1 = localEvent1.getBSTHits(Constants.PASS);        
-        List<Hit> hitsBST2 = localEvent2.getBSTHits(Constants.PASS);                
-        List<Hit> hitsBMT1 = localEvent1.getBMTHits(Constants.PASS);
-        List<Hit> hitsBMT2 = localEvent2.getBMTHits(Constants.PASS);
+    public void hitMatch(int event1Pass, int event2Pass){
+        List<Hit> hitsBST1 = localEvent1.getBSTHits(event1Pass);        
+        List<Hit> hitsBST2 = localEvent2.getBSTHits(event2Pass);                
+        List<Hit> hitsBMT1 = localEvent1.getBMTHits(event1Pass);
+        List<Hit> hitsBMT2 = localEvent2.getBMTHits(event2Pass);
         
         hitMatchBST(hitsBST1, hitsBST2);
         hitMatchBMT(hitsBMT1, hitsBMT2);
@@ -81,7 +80,7 @@ public class Match {
     public void makeHitMatchMap(List<Hit> hits1, List<Hit> hits2, Map<Hit, Hit> map_hit1_hit2) {  
         for(Hit hit1 : hits1){
             for(Hit hit2 : hits2){
-                if(hit2.isMatchedHit(hit1)){
+                if(hit2.isSameHitOnGeometry(hit1)){
                     map_hit1_hit2.put(hit1, hit2);
                     break;
                 }
@@ -89,11 +88,11 @@ public class Match {
         }                
     }    
     
-    public void clusterMatch(){
-        List<Cluster> clustersBST1 = localEvent1.getBSTClusters(Constants.PASS);        
-        List<Cluster> clustersBST2 = localEvent2.getBSTClusters(Constants.PASS);                
-        List<Cluster> clustersBMT1 = localEvent1.getBMTClusters(Constants.PASS);
-        List<Cluster> clustersBMT2 = localEvent2.getBMTClusters(Constants.PASS);
+    public void clusterMatch(int event1Pass, int event2Pass){
+        List<Cluster> clustersBST1 = localEvent1.getBSTClusters(event1Pass);        
+        List<Cluster> clustersBST2 = localEvent2.getBSTClusters(event2Pass);                
+        List<Cluster> clustersBMT1 = localEvent1.getBMTClusters(event1Pass);
+        List<Cluster> clustersBMT2 = localEvent2.getBMTClusters(event2Pass);
         
         clusterMatchBST(clustersBST1, clustersBST2);
         clusterMatchBMT(clustersBMT1, clustersBMT2);
@@ -123,12 +122,13 @@ public class Match {
     ////// Make cluster map with matched hits between pure and bg samples
     // Priorities for map: seed strip (priority 1), purity = truth hits / hits on cluster in S2 (priority 2) and efficiency = truth hits / all truth hits in S1 (priority 3)
     // Matched clusters could have no matched seed strip
+    // No matched cluster if no any clusters in bg samples have shared hits with the cluster in pure sample
     // CLUSTERCENTROIDDIFFCUT: parameter for centrod difference cut; positive infinity as default 
     public void makeClusterMatchMap(List<Cluster> clusters1, List<Cluster> clusters2, Map<Cluster, Cluster> map_cls1_cls2) {                         
         for(Cluster cls1 : clusters1){
             List<Cluster> matchedClsListWithMatchedHits = new ArrayList();
             for(Cluster cls2 : clusters2){
-                if(cls1.clusterMatchedHits(cls2) > 0 && Math.abs(cls2.centroid() - cls1.centroid()) < CLUSTERCENTROIDDIFFCUT) matchedClsListWithMatchedHits.add(cls2);
+                if(cls1.clusterSameHitsOnGeometry(cls2) > 0 && Math.abs(cls2.centroid() - cls1.centroid()) < CLUSTERCENTROIDDIFFCUT) matchedClsListWithMatchedHits.add(cls2);
             }
             
             if(!matchedClsListWithMatchedHits.isEmpty()){
@@ -137,7 +137,7 @@ public class Match {
                 List<Cluster> matchedClsListWithSameSeedStrip = new ArrayList();
                 for(Cluster cls2 : matchedClsListWithMatchedHits){                
                     Hit seedHit2 = cls2.getSeedHit();
-                    if(seedHit2.isMatchedHit(seedHit1)) matchedClsListWithSameSeedStrip.add(cls2);                      
+                    if(seedHit2.isSameHitOnGeometry(seedHit1)) matchedClsListWithSameSeedStrip.add(cls2);                      
                 }
                 
                 List<Cluster> matchedClsList = new ArrayList();
@@ -182,20 +182,20 @@ public class Match {
         }               
     }
     
-    public void crossMatch(){
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
+    public void crossMatch(int event1Pass, int event2Pass){
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
         
-        List<Cross> crossesBST1 = localEvent1.getBSTCrosses(Constants.PASS);        
-        List<Cross> crossesBST2 = localEvent2.getBSTCrosses(Constants.PASS);                
-        List<Cross> crossesBMT1 = localEvent1.getBMTCrosses(Constants.PASS);
-        List<Cross> crossesBMT2 = localEvent2.getBMTCrosses(Constants.PASS);
+        List<Cross> crossesBST1 = localEvent1.getBSTCrosses(event1Pass);        
+        List<Cross> crossesBST2 = localEvent2.getBSTCrosses(event2Pass);                
+        List<Cross> crossesBMT1 = localEvent1.getBMTCrosses(event1Pass);
+        List<Cross> crossesBMT2 = localEvent2.getBMTCrosses(event2Pass);
         
         makeCrossMatchMapBST(crossesBST1, crossesBST2);
         makeCrossMatchMapBMT(crossesBMT1, crossesBMT2);
     }    
     
-    public void crossMatch(List<Cross> crossesBST1, List<Cross> crossesBST2, List<Cross> crossesBMT1, List<Cross> crossesBMT2){   
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
+    public void crossMatch(List<Cross> crossesBST1, List<Cross> crossesBST2, List<Cross> crossesBMT1, List<Cross> crossesBMT2, int event1Pass, int event2Pass){   
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
         
         makeCrossMatchMapBST(crossesBST1, crossesBST2);
         makeCrossMatchMapBMT(crossesBMT1, crossesBMT2);
@@ -211,6 +211,10 @@ public class Match {
         return map_crs1_crs2_BMT;
     }
     
+    ////// Make BST cross map with matched cluster(s) between pure and bg samples
+    // Firstly, check if there is a cross with two matched clusters
+    // Secondly, if no applear in the first step, check if there is a cross with one matched cluster. 
+    // If two matched crosses exist in the second step, select one with higher purity
     public void makeCrossMatchMapBST(List<Cross> crosses1, List<Cross> crosses2){
         for(Cross crs1 : crosses1){
             int matchedCluster1Id = -1;
@@ -218,29 +222,81 @@ public class Match {
             if(crs1.getCluster1() != null) matchedCluster1Id = crs1.getCluster1().getMatchedClusterId();
             if(crs1.getCluster2() != null) matchedCluster2Id = crs1.getCluster2().getMatchedClusterId();
             
+            boolean matchFlag = false;
             if(matchedCluster1Id != -1 && matchedCluster2Id != -1){
                 for(Cross crs2 : crosses2){
-                    int cluster1Id = -1;
-                    int cluster2Id = -1;
-                    if(crs1.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
-                    if(crs1.getCluster2() != null) cluster2Id = crs2.getCluster2().id();
+                    int cluster1Id = -999;
+                    int cluster2Id = -999;
+                    if(crs2.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
+                    if(crs2.getCluster2() != null) cluster2Id = crs2.getCluster2().id();
                     if(matchedCluster1Id == cluster1Id && matchedCluster2Id == cluster2Id){
                         crs1.setFoundMatchedCross(true);
                         crs2.setFoundMatchedCross(true);
                         crs1.setMatchedCrossId(crs2.id());
                         crs2.setMatchedCrossId(crs1.id());
+                        crs1.setNumMatchedClusters(2);
+                        crs2.setNumMatchedClusters(2);
                         int totalTruthHits = crs1.getHits().size();
                         crs2.setTotalTruthHits(totalTruthHits);
                         double efficency = crs2.getNumNormalHits()/(double)totalTruthHits;
                         crs2.setEfficiency(efficency);
                         map_crs1_crs2_BST.put(crs1, crs2);
+                        matchFlag = true;
                         break;
-                    }
+                    } 
                 }
+            }
+            if(!matchFlag){
+                if(matchedCluster1Id != -1 || matchedCluster2Id != -1){
+                    List<Cross> matchedCrosses = new ArrayList(); // maximum 2
+                    for(Cross crs2 : crosses2){
+                        int cluster1Id = -999;
+                        int cluster2Id = -999;
+                        if(crs2.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
+                        if(crs2.getCluster2() != null) cluster2Id = crs2.getCluster2().id();
+                        if((matchedCluster1Id == cluster1Id && matchedCluster2Id != cluster2Id) || ((matchedCluster1Id != cluster1Id &&  matchedCluster2Id == cluster2Id))){
+                            matchedCrosses.add(crs2);
+                            if(matchedCrosses.size() == 2) break; // maximum 2
+                        } 
+                    }
+                    if(matchedCrosses.size() == 1){
+                        Cross crs2 = matchedCrosses.get(0);
+                        crs1.setFoundMatchedCross(true);
+                        crs2.setFoundMatchedCross(true);
+                        crs1.setMatchedCrossId(crs2.id());
+                        crs2.setMatchedCrossId(crs1.id());
+                        crs1.setNumMatchedClusters(2);
+                        crs2.setNumMatchedClusters(2);
+                        int totalTruthHits = crs1.getHits().size();
+                        crs2.setTotalTruthHits(totalTruthHits);
+                        double efficency = crs2.getNumNormalHits()/(double)totalTruthHits;
+                        crs2.setEfficiency(efficency);
+                        map_crs1_crs2_BST.put(crs1, crs2);
+                    }
+                    else if(matchedCrosses.size() == 2){
+                        Cross crs2 = null;
+                        if(matchedCrosses.get(0).getRatioNormalHits() > matchedCrosses.get(1).getRatioNormalHits()) crs2 = matchedCrosses.get(0);
+                        else crs2 = matchedCrosses.get(1);
+                        if(crs2 != null){
+                            crs1.setFoundMatchedCross(true);
+                            crs2.setFoundMatchedCross(true);
+                            crs1.setMatchedCrossId(crs2.id());
+                            crs2.setMatchedCrossId(crs1.id());
+                            crs1.setNumMatchedClusters(2);
+                            crs2.setNumMatchedClusters(2);                            
+                            int totalTruthHits = crs1.getHits().size();
+                            crs2.setTotalTruthHits(totalTruthHits);
+                            double efficency = crs2.getNumNormalHits()/(double)totalTruthHits;
+                            crs2.setEfficiency(efficency);
+                            map_crs1_crs2_BST.put(crs1, crs2);
+                        }
+                    }
+                } 
             }
         }
     }
     
+    ////// Make BMT cross map with matched cluster between pure and bg samples
     public void makeCrossMatchMapBMT(List<Cross> crosses1, List<Cross> crosses2){
         for(Cross crs1 : crosses1){
             int matchedCluster1Id = -1;
@@ -249,7 +305,7 @@ public class Match {
             if(matchedCluster1Id != -1){
                 for(Cross crs2 : crosses2){
                     int cluster1Id = -1;
-                    if(crs1.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
+                    if(crs2.getCluster1() != null) cluster1Id = crs2.getCluster1().id();
                     if(matchedCluster1Id == cluster1Id){
                         crs1.setFoundMatchedCross(true);
                         crs2.setFoundMatchedCross(true);
@@ -267,9 +323,9 @@ public class Match {
         }
     } 
     
-    public void seedMatch(){
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void seedMatch(int event1Pass, int event2Pass){
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         List<Seed> seeds1 = localEvent1.getSeeds(Constants.PASS);        
         List<Seed> seeds2 = localEvent2.getSeeds(Constants.PASS);                
@@ -277,9 +333,9 @@ public class Match {
         makeSeedMatchMap(seeds1, seeds2);
     }    
     
-    public void seedMatch(List<Seed> seeds1, List<Seed> seeds2){   
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void seedMatch(List<Seed> seeds1, List<Seed> seeds2, int event1Pass, int event2Pass){   
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         makeSeedMatchMap(seeds1, seeds2);
     }
@@ -288,6 +344,9 @@ public class Match {
         return map_seed1_seed2;
     } 
     
+    ////// Make seed map with matched crosses between pure and bg samples
+    // Priorities for map: maximum number of matched cross (priority 1), maximum hit purity (priority 2)
+    // No matched seed if no any seeds in bg samples have shared crosses with the seed in pure sample
     public void makeSeedMatchMap(List<Seed> seeds1, List<Seed> seeds2){
         for(Seed seed1 : seeds1){
             Map<Cross, Integer> map_cr1_crs2Id_BST = new HashMap();
@@ -327,9 +386,11 @@ public class Match {
                     }                                        
                     if(matchedCrossPairList.size() > maxNumMatchedCrosses){
                         maxNumMatchedCrosses = matchedCrossPairList.size();
-                        matchedSeedListWithMostMatchedCrosses2.clear();
+                        matchedSeedListWithMostMatchedCrosses2.clear();                        
                         matchedSeedListWithMostMatchedCrosses2.add(seed2);
+                        matchedCrossPairListList.clear();
                         matchedCrossPairListList.add(matchedCrossPairList);
+                        matchedClusterPairListList.clear();
                         matchedClusterPairListList.add(matchedClusterPairList);
                     }
                     else if(!matchedCrossPairList.isEmpty() && matchedCrossPairList.size() == maxNumMatchedCrosses){
@@ -380,37 +441,38 @@ public class Match {
         }
     }
     
-    public void trackMatch(boolean uTrack){
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void trackMatch(int event1Pass, int event2Pass, boolean uTrack){
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         List<Track> tracks1;              
         List<Track> tracks2;
         if(!uTrack){
-            tracks1 = localEvent1.getTracks(Constants.PASS); 
-            tracks2 = localEvent2.getTracks(Constants.PASS);
+            tracks1 = localEvent1.getTracks(event1Pass); 
+            tracks2 = localEvent2.getTracks(event2Pass);
         }
         else{
-            tracks1 = localEvent1.getUTracks(Constants.PASS); 
-            tracks2 = localEvent2.getUTracks(Constants.PASS);
+            tracks1 = localEvent1.getUTracks(event1Pass); 
+            tracks2 = localEvent2.getUTracks(event2Pass);
         }                
         
         makeTrackMatchMap(tracks1, tracks2);
-    }    
+    } 
     
-    public void trackMatch(List<Track> tracks1, List<Track> tracks2){   
-        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch();
-        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch();
+    public void trackMatch(List<Track> tracks1, List<Track> tracks2, int event1Pass, int event2Pass){   
+        if(map_cls1_cls2_BST.isEmpty() && map_cls1_cls2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) clusterMatch(event1Pass, event2Pass);
+        if(map_crs1_crs2_BST.isEmpty() && map_crs1_crs2_BMT.isEmpty() && localEvent1 != null && localEvent2 != null) crossMatch(event1Pass, event2Pass);
         
         makeTrackMatchMap(tracks1, tracks2);
     }
-
+    
     public Map<Track, Track> get_map_track1_track2(){
         return map_track1_track2;
     } 
     
-    // Make track map between pure and bg samples
-    // If no mapped track in bg sample, build a pesudo-track to be mapped with track in pure sample
+    ////// Make track map with matched crosses between pure and bg samples
+    // Priorities for map: maximum number of matched track (priority 1), maximum hit purity (priority 2)
+    // No matched track if no any seeds in bg samples have shared crosses with the track in pure sample
     public void makeTrackMatchMap(List<Track> tracks1, List<Track> tracks2){
         for(Track track1 : tracks1){
             Map<Cross, Integer> map_crs1_crs2Id_BST = new HashMap();
@@ -452,7 +514,9 @@ public class Match {
                         maxNumMatchedCrosses = matchedCrossPairList.size();
                         matchedTrackListWithMostMatchedCrosses2.clear();
                         matchedTrackListWithMostMatchedCrosses2.add(track2);
+                        matchedCrossPairListList.clear();
                         matchedCrossPairListList.add(matchedCrossPairList);
+                        matchedClusterPairListList.clear();
                         matchedClusterPairListList.add(matchedClusterPairList);
                     }
                     else if(!matchedCrossPairList.isEmpty() && matchedCrossPairList.size() == maxNumMatchedCrosses){

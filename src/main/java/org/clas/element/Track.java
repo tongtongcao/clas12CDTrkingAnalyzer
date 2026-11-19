@@ -35,6 +35,9 @@ public class Track implements Comparable<Track> {
     private double yb;
     private int status;
     
+    private double chi2pid = 0;
+    private double beta = -1;
+    
     private Vector3 vertex = new Vector3(0.0,0.0,0.0);
     private Vector3 momentum = new Vector3(0.0,0.0,0.0);
     
@@ -197,6 +200,10 @@ public class Track implements Comparable<Track> {
         return ndf;
     }
     
+    public void pid(int pid) {
+        this.pid = pid;
+    }    
+    
     public int pid(){
         return pid;
     }
@@ -225,6 +232,22 @@ public class Track implements Comparable<Track> {
         return momentum;
     }
     
+    public void chi2pid(double chi2pid) {
+        this.chi2pid = chi2pid;
+    }
+    
+    public double chi2pid() {
+        return this.chi2pid;
+    }       
+    
+    public void beta(double beta) {
+        this.beta = beta;
+    }
+    
+    public double beta() {
+        return this.beta;
+    }     
+         
     public void crossIds(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9){
         this.crossIds[0] = i1;
         this.crossIds[1] = i2;
@@ -779,19 +802,56 @@ public class Track implements Comparable<Track> {
             return new Particle(this.pid(), this.vertex().x(), this.vertex().y(), this.vertex().z(), this.momentum().x(), this.momentum().y(), this.momentum().z());
         else
             return null;
-    } 
-    
-    public boolean isValid() {
+    }
+         
+    public boolean isValid(double zMin, double zMax, double pMin, double thetaMin, double chi2OverNDFMax, double chi2PIDMin) {
         boolean value = false;
-        if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFMAX) value=true;
+        if(this.vertex().z()>zMin && this.vertex().z()<zMax
+            && this.p()>pMin
+            && this.momentum().theta() > thetaMin
+            && this.chi2()/this.ndf() < chi2OverNDFMax
+            && Math.abs(this.chi2pid) > chi2PIDMin) value=true;                        
+        
         return value;
     }
+    
+    public boolean isValid(double zMin, double zMax, double pMin, double thetaMin, double chi2OverNDFMax) {
+        return isValid(zMin, zMax, pMin, thetaMin, chi2OverNDFMax, -1);
+    }      
+    
+    public boolean isValid() {
+        return isValid(false, false);
+    }
+    
+    public boolean isValid(boolean chi2pidCut) {
+        return isValid(false, chi2pidCut);
+    }    
+      
+    
+    public boolean isValid(boolean looseChi2OverNDF, boolean chi2pidCut) {
+        boolean value = false;
+        if(this.vertex().z()>Constants.ZMIN && this.vertex().z()<Constants.ZMAX
+            && this.p()>Constants.PMIN
+            && this.momentum().theta() > Constants.THETAMIN){
+            if(looseChi2OverNDF){
+                if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFLOOSE) value=true;
+            }
+            else{
+                if(this.chi2()/this.ndf() < Constants.CHI2OVERNDFTIGHT) value=true;
+            }                     
+        }
+        
+        if(chi2pidCut && Math.abs(this.chi2pid) > Constants.CHI2PID) value = false;
+        
+        return value;
+    }
+       
                 
-    public int numMatchedHitsWithTrack(Track o){
+    public int numSameHitsOnGeometry(Track o){
         int numMatchedHits = 0;
         for(Hit thisHit : this.hits){
             for(Hit oHit : o.getHits()){
-                if(thisHit.isMatchedHit(oHit)){
+                if(thisHit.isSameHitOnGeometry(oHit)){
                     numMatchedHits++;
                     break;
                 }
@@ -801,19 +861,24 @@ public class Track implements Comparable<Track> {
         return numMatchedHits;
     }    
     
-    public int numMatchedClustersWithTrack(Track o){
-        int numMatchedClusters = 0;
+    public int numSameSeedClustersOnGeometry(Track o){
+        int numSameSeedClusters = 0;
         for(Cluster thisCls : this.clusters){
             for(Cluster oCls : o.getClusters()){
-                if(oCls.detectorType() == thisCls.detectorType() && oCls.layer() == thisCls.layer() && oCls.id() == thisCls.id()){
-                    numMatchedClusters++;
+                if(thisCls.isSameSeedClusterOnGeometry(oCls)){
+                    numSameSeedClusters++;
                     break;
                 }
             }
         }
         
-        return numMatchedClusters;
+        return numSameSeedClusters;
     }
+    
+    public boolean isSameTrackWithAllSameSeedClustersOnGeometry(Track o){
+        int numSameSeedClusters =  numSameSeedClustersOnGeometry(o);
+        return this.clusters.size() == numSameSeedClusters && o.clusters.size() == numSameSeedClusters;
+    }    
     
     public int numMatchedCrossesWithTrack(Track o){
         int numMatchedCrosses = 0;
@@ -828,11 +893,7 @@ public class Track implements Comparable<Track> {
         
         return numMatchedCrosses;
     }    
-    
-    public boolean isSameClusterswithTrack(Track o){
-        if(this.clusters.size() == numMatchedClustersWithTrack(o)) return true;
-        else return false;
-    }    
+        
     
     public boolean isClusterOverlapping(Track o) {
         for(Cluster c : this.clusters) {
