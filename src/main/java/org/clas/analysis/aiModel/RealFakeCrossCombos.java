@@ -124,7 +124,7 @@ public class RealFakeCrossCombos{
                         if(trk.isValid()){
                             
                             // Construct real case and save info into a map
-                            Map<Integer, List<Double>> map_realCombos = new HashMap();
+                            Map<Integer, List<Double>> map_crsLayer_crsFeatures_real = new HashMap();
                                                                                     
                             Cross[] bstCrosses = new Cross[3];
                             Cluster[] bmtClusters = new Cluster[6];
@@ -147,23 +147,17 @@ public class RealFakeCrossCombos{
                                 }
                             }
                             
-                            for(int i = 0; i < 3; i++){
-                                String crsInfo;                               
-                                if(bstCrosses[i] != null){
-                                    crsInfo = String.format("%.4f,%.4f,%.4f,%d,%d", 
-                                            bstCrosses[i].point().x(), bstCrosses[i].point().y(), bstCrosses[i].point().z(), i+1,1);
+                            for(int i = 0; i < 3; i++){                           
+                                if(bstCrosses[i] != null){                                    
                                     List<Double> crsFeatures = new ArrayList<>(Arrays.asList(bstCrosses[i].point().x(), bstCrosses[i].point().y(), bstCrosses[i].point().z(), (double)(i+1), 1.0));
-                                    map_realCombos.put(i+1, crsFeatures);
+                                    map_crsLayer_crsFeatures_real.put(i+1, crsFeatures);
                                 } else {
-                                    crsInfo = String.format("%d,%d,%d,%d,%d", 
-                                            0, 0, 0, i+1, 0);
                                      List<Double> crsFeatures = new ArrayList<>(Arrays.asList(0., 0., 0., (double)(i+1), 0.));
-                                     map_realCombos.put(i+1, crsFeatures);
+                                     map_crsLayer_crsFeatures_real.put(i+1, crsFeatures);
                                 }                                                                                               
                             }
                             
                             for(int i = 0; i < 6; i++){
-                                String clsInfo;
                                 if(bmtClusters[i] != null) {
                                     // Average radius of the two endpoints
                                     double r1 = Math.hypot(bmtClusters[i].originPoint().x(), bmtClusters[i].originPoint().y());
@@ -173,7 +167,7 @@ public class RealFakeCrossCombos{
                                     if(bmtClusters[i].bmtType() == Constants.BMTC){
                                         double z = (bmtClusters[i].originPoint().z() + bmtClusters[i].endPoint().z()) / 2;
                                         List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, z, (double)(i+4), 1.));
-                                        map_realCombos.put(i+4, clsFeatures);
+                                        map_crsLayer_crsFeatures_real.put(i+4, clsFeatures);
                                     }
                                     else{
                                         // Average phi of the two endpoints
@@ -182,12 +176,12 @@ public class RealFakeCrossCombos{
                                         double phi = circularMean(phi1, phi2); 
                                         
                                         List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, phi, (double)(i+4), 1.));
-                                        map_realCombos.put(i+4, clsFeatures);
+                                        map_crsLayer_crsFeatures_real.put(i+4, clsFeatures);
                                     }
                                 }
                                 else {
                                     List<Double> clsFeatures = new ArrayList<>(Arrays.asList(0., 0., (double)(i+4), 0.));
-                                    map_realCombos.put(i+4, clsFeatures);
+                                    map_crsLayer_crsFeatures_real.put(i+4, clsFeatures);
                                 }                                                                     
                             }                        
                                                         
@@ -209,7 +203,7 @@ public class RealFakeCrossCombos{
                             
                             // Write real case
                             for (int l = 1; l <= 9; l++) {
-                                List<Double> features = map_realCombos.get(l);
+                                List<Double> features = map_crsLayer_crsFeatures_real.get(l);
                                 if(l <= 3){
                                     String crsInfo = String.format("%.4f,%.4f,%.4f,%d,%d", 
                                             features.get(0), features.get(1), features.get(2), features.get(3).intValue(),features.get(4).intValue());
@@ -225,7 +219,7 @@ public class RealFakeCrossCombos{
                             counter++;                                                        
                             
                             // Construct and write fake case with a fake BST cross
-                            Map<Integer, List<Double>> map_fakeBSTCross = new HashMap(map_realCombos);  
+                            Map<Integer, List<Double>> map_crsLayer_crsFeatures_bstFake = new HashMap(map_crsLayer_crsFeatures_real);  
                             int randomNumberBSTRegion = random.nextInt(3) + 1;
                             List<Cross> allCrossesBST_randomRegion = map_section_region_allCrossesBST.get(section).get(randomNumberBSTRegion);
                             List<Cross> candidatesBST = new ArrayList<>(allCrossesBST_randomRegion);
@@ -236,10 +230,10 @@ public class RealFakeCrossCombos{
                             if(!candidatesBST.isEmpty()) {
                                 Cross randomBSTCross = candidatesBST.get(random.nextInt(candidatesBST.size()));
                                 List<Double> crsFeaturesFake = new ArrayList<>(Arrays.asList(randomBSTCross.point().x(), randomBSTCross.point().y(), randomBSTCross.point().z(), (double)randomNumberBSTRegion, 1.0));
-                                map_fakeBSTCross.put(randomNumberBSTRegion, crsFeaturesFake);
+                                map_crsLayer_crsFeatures_bstFake.put(randomNumberBSTRegion, crsFeaturesFake);
                                 
                                 for (int l = 1; l <= 9; l++) {
-                                    List<Double> features = map_fakeBSTCross.get(l);
+                                    List<Double> features = map_crsLayer_crsFeatures_bstFake.get(l);
                                     if(l <= 3){
                                         String crsInfo = String.format("%.4f,%.4f,%.4f,%d,%d", 
                                                 features.get(0), features.get(1), features.get(2), features.get(3).intValue(),features.get(4).intValue());
@@ -256,7 +250,7 @@ public class RealFakeCrossCombos{
                             }                            
 
                             // Construct and write fake case with a fake BMT cluster
-                            Map<Integer, List<Double>> map_fakeBMTCluster = new HashMap(map_realCombos);
+                            Map<Integer, List<Double>> map_crsLayer_crsFeatures_bmtFake = new HashMap(map_crsLayer_crsFeatures_real);
                             int randomNumberBMTLayer = random.nextInt(6) + 1;
                             List<Cluster> allClusterBMT_randomLayer = map_section_layer_allClustersBMT.get(section).get(randomNumberBMTLayer);
                             List<Cluster> candidatesBMT = new ArrayList<>(allClusterBMT_randomLayer);  
@@ -276,7 +270,7 @@ public class RealFakeCrossCombos{
                                 if (randomBMTCluster.bmtType() == Constants.BMTC) {
                                     double z = (randomBMTCluster.originPoint().z() + randomBMTCluster.endPoint().z()) / 2;
                                     List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, z, (double) (randomNumberBMTLayer + 3), 1.));
-                                    map_fakeBMTCluster.put(randomNumberBMTLayer + 3, clsFeatures);
+                                    map_crsLayer_crsFeatures_bmtFake.put(randomNumberBMTLayer + 3, clsFeatures);
                                 } else {                                    
                                     // Average phi of the two endpoints
                                     double phi1 = Math.atan2(randomBMTCluster.originPoint().y(), randomBMTCluster.originPoint().x());
@@ -284,11 +278,11 @@ public class RealFakeCrossCombos{
                                     double phi = circularMean(phi1, phi2); 
                                     
                                     List<Double> clsFeatures = new ArrayList<>(Arrays.asList(r, phi, (double) (randomNumberBMTLayer + 3), 1.));
-                                    map_fakeBMTCluster.put(randomNumberBMTLayer + 3, clsFeatures);
+                                    map_crsLayer_crsFeatures_bmtFake.put(randomNumberBMTLayer + 3, clsFeatures);
                                 }
                                 
                                 for (int l = 1; l <= 9; l++) {
-                                    List<Double> features = map_fakeBMTCluster.get(l);
+                                    List<Double> features = map_crsLayer_crsFeatures_bmtFake.get(l);
                                     if(l <= 3){
                                         String crsInfo = String.format("%.4f,%.4f,%.4f,%d,%d", 
                                                 features.get(0), features.get(1), features.get(2), features.get(3).intValue(),features.get(4).intValue());
